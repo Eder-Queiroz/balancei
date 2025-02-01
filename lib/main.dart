@@ -1,5 +1,4 @@
 import 'package:balancei_app/router/routers.dart';
-import 'package:balancei_app/ui/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
