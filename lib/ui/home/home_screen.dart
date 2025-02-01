@@ -13,157 +13,154 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return Material(
-      child: SafeArea(
-        child: CustomScrollView(
-          slivers: <Widget>[
-            SliverPadding(
-              padding: EdgeInsets.only(
-                bottom: CommomSpacing.small,
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverPadding(
+          padding: EdgeInsets.only(
+            bottom: CommomSpacing.small,
+          ),
+          sliver: SliverToBoxAdapter(
+            child: Container(
+              width: double.infinity,
+              height: 210,
+              alignment: Alignment.center,
+              padding: EdgeInsets.symmetric(
+                horizontal: CommomSpacing.large,
               ),
-              sliver: SliverToBoxAdapter(
-                child: Container(
-                  width: double.infinity,
-                  height: 210,
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: CommomSpacing.large,
-                  ),
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                        Color(0xFF65558F),
-                        Color(0xFFD0BCFF),
-                      ])),
-                  child: Text.rich(
-                    style: textTheme.titleLarge!.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.normal,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                    Color(0xFF65558F),
+                    Color(0xFFD0BCFF),
+                  ])),
+              child: Text.rich(
+                style: textTheme.titleLarge!.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.normal,
+                ),
+                TextSpan(
+                  text: 'Bem-vindo ao ',
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: 'Balancei:',
+                      style: textTheme.titleLarge!.copyWith(
+                        color: Color(0XFFFFD8E4),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     TextSpan(
-                      text: 'Bem-vindo ao ',
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: 'Balancei:',
-                          style: textTheme.titleLarge!.copyWith(
-                            color: Color(0XFFFFD8E4),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        TextSpan(
-                          text: '\norganize suas finanças com facilidade.',
-                        ),
-                      ],
+                      text: '\norganize suas finanças com facilidade.',
                     ),
-                  ),
+                  ],
                 ),
               ),
             ),
-            SliverPersistentHeader(
-              pinned: true,
-              delegate: _SliverHeaderDelegate(
-                minHeight: 120,
-                maxHeight: 120,
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(CommomSpacing.medium),
-                    child: Column(
-                      spacing: CommomSpacing.small,
+          ),
+        ),
+        SliverPersistentHeader(
+          pinned: true,
+          delegate: _SliverHeaderDelegate(
+            minHeight: 120,
+            maxHeight: 120,
+            child: Card(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(CommomSpacing.medium),
+                child: Column(
+                  spacing: CommomSpacing.small,
+                  children: [
+                    Row(
                       children: [
-                        Row(
+                        Flexible(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Janeiro',
+                                style: textTheme.headlineSmall,
+                              ),
+                              Icon(
+                                Icons.keyboard_arrow_down,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Icon(
+                          Icons.visibility_off,
+                          color: Color(0xFF79747E),
+                          size: 18,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
                           children: [
-                            Flexible(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Janeiro',
-                                    style: textTheme.headlineSmall,
-                                  ),
-                                  Icon(
-                                    Icons.keyboard_arrow_down,
-                                  ),
-                                ],
+                            Text(
+                              'Saldo',
+                              style: textTheme.headlineSmall!.copyWith(
+                                color: Color(0xFF79747E),
                               ),
                             ),
-                            Icon(
-                              Icons.visibility_off,
-                              color: Color(0xFF79747E),
-                              size: 18,
+                            Text(
+                              'R\$ ******',
+                              style: textTheme.headlineSmall,
                             ),
                           ],
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        Column(
                           children: [
-                            Column(
-                              children: [
-                                Text(
-                                  'Saldo',
-                                  style: textTheme.headlineSmall!.copyWith(
-                                    color: Color(0xFF79747E),
-                                  ),
-                                ),
-                                Text(
-                                  'R\$ ******',
-                                  style: textTheme.headlineSmall,
-                                ),
-                              ],
+                            Text(
+                              'Receita',
+                              style: textTheme.headlineSmall!.copyWith(
+                                color: Color(0xFF79747E),
+                              ),
                             ),
-                            Column(
-                              children: [
-                                Text(
-                                  'Receita',
-                                  style: textTheme.headlineSmall!.copyWith(
-                                    color: Color(0xFF79747E),
-                                  ),
-                                ),
-                                Text(
-                                  'R\$ ******',
-                                  style: textTheme.headlineSmall,
-                                ),
-                              ],
+                            Text(
+                              'R\$ ******',
+                              style: textTheme.headlineSmall,
                             ),
-                            Column(
-                              children: [
-                                Text(
-                                  'Gastos',
-                                  style: textTheme.headlineSmall!.copyWith(
-                                    color: Color(0xFF79747E),
-                                  ),
-                                ),
-                                Text(
-                                  'R\$ ******',
-                                  style: textTheme.headlineSmall,
-                                ),
-                              ],
-                            )
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text(
+                              'Gastos',
+                              style: textTheme.headlineSmall!.copyWith(
+                                color: Color(0xFF79747E),
+                              ),
+                            ),
+                            Text(
+                              'R\$ ******',
+                              style: textTheme.headlineSmall,
+                            ),
                           ],
                         )
                       ],
-                    ),
-                  ),
+                    )
+                  ],
                 ),
               ),
             ),
-            SliverPadding(
-              padding: EdgeInsets.symmetric(
-                horizontal: CommomSpacing.large,
-                vertical: CommomSpacing.medium,
-              ),
-              sliver: SliverList.separated(
-                itemCount: buildTransactionList(textTheme).length,
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: CommomSpacing.small),
-                itemBuilder: (context, index) =>
-                    buildTransactionList(textTheme)[index],
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
+        SliverPadding(
+          padding: EdgeInsets.symmetric(
+            horizontal: CommomSpacing.large,
+            vertical: CommomSpacing.medium,
+          ),
+          sliver: SliverList.separated(
+            itemCount: buildTransactionList(textTheme).length,
+            separatorBuilder: (context, index) =>
+                const SizedBox(height: CommomSpacing.small),
+            itemBuilder: (context, index) =>
+                buildTransactionList(textTheme)[index],
+          ),
+        ),
+      ],
     );
   }
 
