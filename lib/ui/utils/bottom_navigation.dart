@@ -1,10 +1,12 @@
 import 'package:balancei_app/router/routers.dart';
 import 'package:balancei_app/ui/utils/commom_radius.dart';
+import 'package:balancei_app/ui/utils/extensions/custom_floating_action_button_location.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class BottomNavigation extends StatelessWidget {
   final Widget child;
+  final double bottomNavBarHeight = 60;
 
   const BottomNavigation({super.key, required this.child});
 
@@ -21,6 +23,22 @@ class BottomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColor,
+        shape: CircleBorder(),
+        mini: true,
+        onPressed: () {
+          return;
+        },
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+      ),
+      floatingActionButtonLocation: CustomFloatingActionButtonLocation(
+        bottomNavBarHeight,
+      ),
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.noAnimation,
       body: SafeArea(
         child: Column(
           children: [
@@ -28,6 +46,7 @@ class BottomNavigation extends StatelessWidget {
               child: child,
             ),
             Container(
+              height: bottomNavBarHeight,
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
@@ -48,12 +67,14 @@ class BottomNavigation extends StatelessWidget {
                 child: BottomNavigationBar(
                   items: const <BottomNavigationBarItem>[
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.home),
+                      icon: Icon(Icons.home_outlined),
                       label: 'Início',
+                      activeIcon: Icon(Icons.home_rounded),
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.dashboard),
+                      icon: Icon(Icons.dashboard_outlined),
                       label: 'Dashboard',
+                      activeIcon: Icon(Icons.dashboard_rounded),
                     ),
                   ],
                   elevation: 0,
