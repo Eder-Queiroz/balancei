@@ -36,7 +36,8 @@ class BottomNavigation extends StatelessWidget {
         ),
       ),
       floatingActionButtonLocation: CustomFloatingActionButtonLocation(
-        bottomNavBarHeight,
+        bottomNavBarHeight: bottomNavBarHeight,
+        context: context,
       ),
       floatingActionButtonAnimator: FloatingActionButtonAnimator.noAnimation,
       body: SafeArea(
