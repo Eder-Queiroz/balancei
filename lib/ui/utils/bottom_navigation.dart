@@ -1,8 +1,32 @@
-import 'package:balancei_app/router/routers.dart';
 import 'package:balancei_app/ui/utils/commom_radius.dart';
 import 'package:balancei_app/ui/utils/extensions/custom_floating_action_button_location.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
+enum BottomNavigationItem {
+  home(value: 0, location: '/'),
+  dashboard(value: 1, location: '/dashboard');
+
+  final int value;
+  final String location;
+
+  const BottomNavigationItem({required this.value, required this.location});
+
+  static BottomNavigationItem fromValue(int value) {
+    return BottomNavigationItem.values.firstWhere(
+      (element) => element.value == value,
+      orElse: () => throw Exception('[BottomNavigationItem] Value not found'),
+    );
+  }
+
+  static BottomNavigationItem fromLocation(String location) {
+    return BottomNavigationItem.values.firstWhere(
+      (element) => element.location == location,
+      orElse: () =>
+          throw Exception('[BottomNavigationItem] Location not found'),
+    );
+  }
+}
 
 class BottomNavigation extends StatelessWidget {
   final Widget child;
@@ -13,11 +37,7 @@ class BottomNavigation extends StatelessWidget {
   int _getCurrentIndex(BuildContext context) {
     final String currentLocation = GoRouterState.of(context).uri.path;
 
-    if (currentLocation.startsWith(DashboardRoute().location)) {
-      return 1;
-    }
-
-    return 0;
+    return BottomNavigationItem.fromLocation(currentLocation).value;
   }
 
   @override
@@ -82,14 +102,9 @@ class BottomNavigation extends StatelessWidget {
                   backgroundColor: Colors.white,
                   currentIndex: _getCurrentIndex(context),
                   onTap: (value) {
-                    switch (value) {
-                      case 0:
-                        HomeRoute().go(context);
-                        break;
-                      case 1:
-                        DashboardRoute().go(context);
-                        break;
-                    }
+                    final item = BottomNavigationItem.fromValue(value);
+
+                    context.go(item.location);
                   },
                 ),
               ),
