@@ -8,7 +8,7 @@ part 'transaction_entity.g.dart';
 @freezed
 class TransactionEntity with _$TransactionEntity {
   const factory TransactionEntity({
-    required String id,
+    required int id,
     required String title,
     required String description,
     required double amount,

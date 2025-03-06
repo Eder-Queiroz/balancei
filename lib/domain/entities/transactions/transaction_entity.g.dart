@@ -9,7 +9,7 @@ part of 'transaction_entity.dart';
 _$TransactionEntityImpl _$$TransactionEntityImplFromJson(
         Map<String, dynamic> json) =>
     _$TransactionEntityImpl(
-      id: json['id'] as String,
+      id: (json['id'] as num).toInt(),
       title: json['title'] as String,
       description: json['description'] as String,
       amount: (json['amount'] as num).toDouble(),

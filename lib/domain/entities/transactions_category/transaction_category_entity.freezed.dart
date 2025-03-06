@@ -21,7 +21,7 @@ TransactionCategoryEntity _$TransactionCategoryEntityFromJson(
 
 /// @nodoc
 mixin _$TransactionCategoryEntity {
-  String get id => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   String get icon => throw _privateConstructorUsedError;
   int get color => throw _privateConstructorUsedError;
@@ -42,7 +42,7 @@ abstract class $TransactionCategoryEntityCopyWith<$Res> {
           $Res Function(TransactionCategoryEntity) then) =
       _$TransactionCategoryEntityCopyWithImpl<$Res, TransactionCategoryEntity>;
   @useResult
-  $Res call({String id, String description, String icon, int color});
+  $Res call({int id, String description, String icon, int color});
 }
 
 /// @nodoc
@@ -70,7 +70,7 @@ class _$TransactionCategoryEntityCopyWithImpl<$Res,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -96,7 +96,7 @@ abstract class _$$TransactionCategoryEntityImplCopyWith<$Res>
       __$$TransactionCategoryEntityImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String description, String icon, int color});
+  $Res call({int id, String description, String icon, int color});
 }
 
 /// @nodoc
@@ -123,7 +123,7 @@ class __$$TransactionCategoryEntityImplCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -153,7 +153,7 @@ class _$TransactionCategoryEntityImpl implements _TransactionCategoryEntity {
       _$$TransactionCategoryEntityImplFromJson(json);
 
   @override
-  final String id;
+  final int id;
   @override
   final String description;
   @override
@@ -201,7 +201,7 @@ class _$TransactionCategoryEntityImpl implements _TransactionCategoryEntity {
 
 abstract class _TransactionCategoryEntity implements TransactionCategoryEntity {
   const factory _TransactionCategoryEntity(
-      {required final String id,
+      {required final int id,
       required final String description,
       required final String icon,
       required final int color}) = _$TransactionCategoryEntityImpl;
@@ -210,7 +210,7 @@ abstract class _TransactionCategoryEntity implements TransactionCategoryEntity {
       _$TransactionCategoryEntityImpl.fromJson;
 
   @override
-  String get id;
+  int get id;
   @override
   String get description;
   @override

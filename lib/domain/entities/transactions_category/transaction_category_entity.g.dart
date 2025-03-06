@@ -9,7 +9,7 @@ part of 'transaction_category_entity.dart';
 _$TransactionCategoryEntityImpl _$$TransactionCategoryEntityImplFromJson(
         Map<String, dynamic> json) =>
     _$TransactionCategoryEntityImpl(
-      id: json['id'] as String,
+      id: (json['id'] as num).toInt(),
       description: json['description'] as String,
       icon: json['icon'] as String,
       color: (json['color'] as num).toInt(),

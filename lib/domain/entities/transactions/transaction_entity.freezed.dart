@@ -20,7 +20,7 @@ TransactionEntity _$TransactionEntityFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$TransactionEntity {
-  String get id => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   double get amount => throw _privateConstructorUsedError;
@@ -48,7 +48,7 @@ abstract class $TransactionEntityCopyWith<$Res> {
       _$TransactionEntityCopyWithImpl<$Res, TransactionEntity>;
   @useResult
   $Res call(
-      {String id,
+      {int id,
       String title,
       String description,
       double amount,
@@ -92,7 +92,7 @@ class _$TransactionEntityCopyWithImpl<$Res, $Val extends TransactionEntity>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -152,7 +152,7 @@ abstract class _$$TransactionEntityImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String id,
+      {int id,
       String title,
       String description,
       double amount,
@@ -195,7 +195,7 @@ class __$$TransactionEntityImplCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -255,7 +255,7 @@ class _$TransactionEntityImpl implements _TransactionEntity {
       _$$TransactionEntityImplFromJson(json);
 
   @override
-  final String id;
+  final int id;
   @override
   final String title;
   @override
@@ -326,7 +326,7 @@ class _$TransactionEntityImpl implements _TransactionEntity {
 
 abstract class _TransactionEntity implements TransactionEntity {
   const factory _TransactionEntity(
-      {required final String id,
+      {required final int id,
       required final String title,
       required final String description,
       required final double amount,
@@ -341,7 +341,7 @@ abstract class _TransactionEntity implements TransactionEntity {
       _$TransactionEntityImpl.fromJson;
 
   @override
-  String get id;
+  int get id;
   @override
   String get title;
   @override

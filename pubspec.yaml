@@ -38,6 +38,12 @@ dependencies:
   auto_injector: ^2.0.5
   json_annotation: ^4.9.0
   freezed_annotation: ^2.4.4
+  result_dart: ^2.0.0
+  sqflite: ^2.4.1
+  analyzer: ^6.11.0
+  drift: ^2.25.1
+  drift_flutter: ^0.2.4
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:
@@ -45,6 +51,7 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   json_serializable: ^6.0.0
   freezed: ^2.5.2
+  drift_dev: ^2.25.2
   build_runner: ^2.4.8
 
 # For information on the generic Dart part of this file, see the

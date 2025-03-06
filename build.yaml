@@ -1,0 +1,6 @@
+targets:
+  $default:
+    builders:
+      balancei_app|entity_generator:
+        generate_for:
+          - lib\domain\entities\transactions\transaction_entity.dart

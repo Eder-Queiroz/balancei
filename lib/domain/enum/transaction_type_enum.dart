@@ -1,9 +1,18 @@
 enum TransactionTypeEnum {
-  income(id: 1),
-  expense(id: 2),
-  balance(id: 3);
+  income(key: 'income'),
+  expense(key: 'expense'),
+  balance(key: 'balance');
 
-  final int id;
+  final String key;
 
-  const TransactionTypeEnum({required this.id});
+  const TransactionTypeEnum({required this.key});
+
+  static TransactionTypeEnum fromKey(String key) {
+    return values.firstWhere((element) => element.key == key,
+        orElse: () => throw InvalidTransactionType());
+  }
+}
+
+class InvalidTransactionType implements Exception {
+  InvalidTransactionType();
 }

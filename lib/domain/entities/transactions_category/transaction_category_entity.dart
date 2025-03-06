@@ -6,7 +6,7 @@ part 'transaction_category_entity.g.dart';
 @freezed
 class TransactionCategoryEntity with _$TransactionCategoryEntity {
   const factory TransactionCategoryEntity({
-    required String id,
+    required int id,
     required String description,
     required String icon,
     required int color,
