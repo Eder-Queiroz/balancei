@@ -1,8 +1,9 @@
 import 'package:balancei_app/data/datasource/dao/transaction_dao.dart';
 import 'package:balancei_app/data/datasource/database/app_database.dart';
 import 'package:balancei_app/data/mappers/transaction_category_mapper.dart';
+import 'package:balancei_app/domain/dtos/transfer.dart';
 import 'package:balancei_app/domain/entities/transactions/transaction_entity.dart';
-import 'package:balancei_app/domain/enum/transaction_type_enum.dart';
+import 'package:balancei_app/domain/enums/transaction_type_enum.dart';
 import 'package:drift/drift.dart';
 
 class TransactionMapper {
@@ -23,7 +24,7 @@ class TransactionMapper {
     );
   }
 
-  static TransactionsCompanion toDatabase(TransactionEntity entity) {
+  static TransactionsCompanion toDatabase(Transfer entity) {
     return TransactionsCompanion.insert(
       title: entity.title,
       description: entity.description,

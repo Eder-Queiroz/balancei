@@ -35,7 +35,6 @@ dependencies:
   go_router_builder: ^2.7.5
   build_verify: ^3.1.0
   intl: ^0.20.2
-  auto_injector: ^2.0.5
   json_annotation: ^4.9.0
   freezed_annotation: ^2.4.4
   result_dart: ^2.0.0
@@ -44,6 +43,8 @@ dependencies:
   drift: ^2.25.1
   drift_flutter: ^0.2.4
   path_provider: ^2.1.5
+  flutter_riverpod: ^2.6.1
+  lucid_validation: ^1.2.5
 
 dev_dependencies:
   flutter_test:
@@ -53,6 +54,8 @@ dev_dependencies:
   freezed: ^2.5.2
   drift_dev: ^2.25.2
   build_runner: ^2.4.8
+  custom_lint: ^0.7.0
+  riverpod_lint: ^2.6.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

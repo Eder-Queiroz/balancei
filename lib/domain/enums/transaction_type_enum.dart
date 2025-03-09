@@ -1,3 +1,5 @@
+import 'package:balancei_app/utils/exceptions/exception.dart';
+
 enum TransactionTypeEnum {
   income(key: 'income'),
   expense(key: 'expense'),
@@ -9,10 +11,10 @@ enum TransactionTypeEnum {
 
   static TransactionTypeEnum fromKey(String key) {
     return values.firstWhere((element) => element.key == key,
-        orElse: () => throw InvalidTransactionType());
+        orElse: () => throw InvalidTransactionType("Invalid transaction type"));
   }
 }
 
-class InvalidTransactionType implements Exception {
-  InvalidTransactionType();
+class InvalidTransactionType extends AppException {
+  InvalidTransactionType(super.message, [super.stackTrace]);
 }
