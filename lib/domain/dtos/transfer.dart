@@ -10,6 +10,7 @@ class Transfer {
   TransactionCategoryEntity category;
   bool isRecurring;
   bool isCompleted;
+  bool isIncoming;
   DateTime? recurrenceEndDate;
 
   Transfer({
@@ -21,6 +22,7 @@ class Transfer {
     required this.category,
     required this.isRecurring,
     required this.isCompleted,
+    this.isIncoming = false,
     this.recurrenceEndDate,
   });
 }

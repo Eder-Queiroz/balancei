@@ -11,7 +11,7 @@ _$TransactionCategoryEntityImpl _$$TransactionCategoryEntityImplFromJson(
     _$TransactionCategoryEntityImpl(
       id: (json['id'] as num).toInt(),
       description: json['description'] as String,
-      icon: json['icon'] as String,
+      icon: (json['icon'] as num).toInt(),
       color: (json['color'] as num).toInt(),
     );
 

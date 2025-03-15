@@ -28,9 +28,9 @@ class $TransactionCategoriesTableTable extends TransactionCategoriesTable
       type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _iconMeta = const VerificationMeta('icon');
   @override
-  late final GeneratedColumn<String> icon = GeneratedColumn<String>(
+  late final GeneratedColumn<int> icon = GeneratedColumn<int>(
       'icon', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      type: DriftSqlType.int, requiredDuringInsert: true);
   static const VerificationMeta _colorMeta = const VerificationMeta('color');
   @override
   late final GeneratedColumn<int> color = GeneratedColumn<int>(
@@ -87,7 +87,7 @@ class $TransactionCategoriesTableTable extends TransactionCategoriesTable
       description: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}description'])!,
       icon: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}icon'])!,
+          .read(DriftSqlType.int, data['${effectivePrefix}icon'])!,
       color: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}color'])!,
     );
@@ -103,7 +103,7 @@ class TransactionCategoriesTableData extends DataClass
     implements Insertable<TransactionCategoriesTableData> {
   final int id;
   final String description;
-  final String icon;
+  final int icon;
   final int color;
   const TransactionCategoriesTableData(
       {required this.id,
@@ -115,7 +115,7 @@ class TransactionCategoriesTableData extends DataClass
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['description'] = Variable<String>(description);
-    map['icon'] = Variable<String>(icon);
+    map['icon'] = Variable<int>(icon);
     map['color'] = Variable<int>(color);
     return map;
   }
@@ -135,7 +135,7 @@ class TransactionCategoriesTableData extends DataClass
     return TransactionCategoriesTableData(
       id: serializer.fromJson<int>(json['id']),
       description: serializer.fromJson<String>(json['description']),
-      icon: serializer.fromJson<String>(json['icon']),
+      icon: serializer.fromJson<int>(json['icon']),
       color: serializer.fromJson<int>(json['color']),
     );
   }
@@ -145,13 +145,13 @@ class TransactionCategoriesTableData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'description': serializer.toJson<String>(description),
-      'icon': serializer.toJson<String>(icon),
+      'icon': serializer.toJson<int>(icon),
       'color': serializer.toJson<int>(color),
     };
   }
 
   TransactionCategoriesTableData copyWith(
-          {int? id, String? description, String? icon, int? color}) =>
+          {int? id, String? description, int? icon, int? color}) =>
       TransactionCategoriesTableData(
         id: id ?? this.id,
         description: description ?? this.description,
@@ -196,7 +196,7 @@ class TransactionCategoriesTableCompanion
     extends UpdateCompanion<TransactionCategoriesTableData> {
   final Value<int> id;
   final Value<String> description;
-  final Value<String> icon;
+  final Value<int> icon;
   final Value<int> color;
   const TransactionCategoriesTableCompanion({
     this.id = const Value.absent(),
@@ -207,7 +207,7 @@ class TransactionCategoriesTableCompanion
   TransactionCategoriesTableCompanion.insert({
     this.id = const Value.absent(),
     required String description,
-    required String icon,
+    required int icon,
     required int color,
   })  : description = Value(description),
         icon = Value(icon),
@@ -215,7 +215,7 @@ class TransactionCategoriesTableCompanion
   static Insertable<TransactionCategoriesTableData> custom({
     Expression<int>? id,
     Expression<String>? description,
-    Expression<String>? icon,
+    Expression<int>? icon,
     Expression<int>? color,
   }) {
     return RawValuesInsertable({
@@ -229,7 +229,7 @@ class TransactionCategoriesTableCompanion
   TransactionCategoriesTableCompanion copyWith(
       {Value<int>? id,
       Value<String>? description,
-      Value<String>? icon,
+      Value<int>? icon,
       Value<int>? color}) {
     return TransactionCategoriesTableCompanion(
       id: id ?? this.id,
@@ -249,7 +249,7 @@ class TransactionCategoriesTableCompanion
       map['description'] = Variable<String>(description.value);
     }
     if (icon.present) {
-      map['icon'] = Variable<String>(icon.value);
+      map['icon'] = Variable<int>(icon.value);
     }
     if (color.present) {
       map['color'] = Variable<int>(color.value);
@@ -337,6 +337,16 @@ class $TransactionsTable extends Transactions
       requiredDuringInsert: true,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
           'CHECK ("is_completed" IN (0, 1))'));
+  static const VerificationMeta _isIncomingMeta =
+      const VerificationMeta('isIncoming');
+  @override
+  late final GeneratedColumn<bool> isIncoming = GeneratedColumn<bool>(
+      'is_incoming', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("is_incoming" IN (0, 1))'),
+      defaultValue: const Constant(false));
   static const VerificationMeta _recurrenceEndDateMeta =
       const VerificationMeta('recurrenceEndDate');
   @override
@@ -354,6 +364,7 @@ class $TransactionsTable extends Transactions
         categoryId,
         isRecurring,
         isCompleted,
+        isIncoming,
         recurrenceEndDate
       ];
   @override
@@ -425,6 +436,12 @@ class $TransactionsTable extends Transactions
     } else if (isInserting) {
       context.missing(_isCompletedMeta);
     }
+    if (data.containsKey('is_incoming')) {
+      context.handle(
+          _isIncomingMeta,
+          isIncoming.isAcceptableOrUnknown(
+              data['is_incoming']!, _isIncomingMeta));
+    }
     if (data.containsKey('recurrence_end_date')) {
       context.handle(
           _recurrenceEndDateMeta,
@@ -458,6 +475,8 @@ class $TransactionsTable extends Transactions
           .read(DriftSqlType.bool, data['${effectivePrefix}is_recurring'])!,
       isCompleted: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}is_completed'])!,
+      isIncoming: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_incoming'])!,
       recurrenceEndDate: attachedDatabase.typeMapping.read(
           DriftSqlType.dateTime, data['${effectivePrefix}recurrence_end_date']),
     );
@@ -479,6 +498,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
   final int categoryId;
   final bool isRecurring;
   final bool isCompleted;
+  final bool isIncoming;
   final DateTime? recurrenceEndDate;
   const Transaction(
       {required this.id,
@@ -490,6 +510,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
       required this.categoryId,
       required this.isRecurring,
       required this.isCompleted,
+      required this.isIncoming,
       this.recurrenceEndDate});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -503,6 +524,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
     map['category_id'] = Variable<int>(categoryId);
     map['is_recurring'] = Variable<bool>(isRecurring);
     map['is_completed'] = Variable<bool>(isCompleted);
+    map['is_incoming'] = Variable<bool>(isIncoming);
     if (!nullToAbsent || recurrenceEndDate != null) {
       map['recurrence_end_date'] = Variable<DateTime>(recurrenceEndDate);
     }
@@ -520,6 +542,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
       categoryId: Value(categoryId),
       isRecurring: Value(isRecurring),
       isCompleted: Value(isCompleted),
+      isIncoming: Value(isIncoming),
       recurrenceEndDate: recurrenceEndDate == null && nullToAbsent
           ? const Value.absent()
           : Value(recurrenceEndDate),
@@ -539,6 +562,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
       categoryId: serializer.fromJson<int>(json['categoryId']),
       isRecurring: serializer.fromJson<bool>(json['isRecurring']),
       isCompleted: serializer.fromJson<bool>(json['isCompleted']),
+      isIncoming: serializer.fromJson<bool>(json['isIncoming']),
       recurrenceEndDate:
           serializer.fromJson<DateTime?>(json['recurrenceEndDate']),
     );
@@ -556,6 +580,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
       'categoryId': serializer.toJson<int>(categoryId),
       'isRecurring': serializer.toJson<bool>(isRecurring),
       'isCompleted': serializer.toJson<bool>(isCompleted),
+      'isIncoming': serializer.toJson<bool>(isIncoming),
       'recurrenceEndDate': serializer.toJson<DateTime?>(recurrenceEndDate),
     };
   }
@@ -570,6 +595,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
           int? categoryId,
           bool? isRecurring,
           bool? isCompleted,
+          bool? isIncoming,
           Value<DateTime?> recurrenceEndDate = const Value.absent()}) =>
       Transaction(
         id: id ?? this.id,
@@ -581,6 +607,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
         categoryId: categoryId ?? this.categoryId,
         isRecurring: isRecurring ?? this.isRecurring,
         isCompleted: isCompleted ?? this.isCompleted,
+        isIncoming: isIncoming ?? this.isIncoming,
         recurrenceEndDate: recurrenceEndDate.present
             ? recurrenceEndDate.value
             : this.recurrenceEndDate,
@@ -600,6 +627,8 @@ class Transaction extends DataClass implements Insertable<Transaction> {
           data.isRecurring.present ? data.isRecurring.value : this.isRecurring,
       isCompleted:
           data.isCompleted.present ? data.isCompleted.value : this.isCompleted,
+      isIncoming:
+          data.isIncoming.present ? data.isIncoming.value : this.isIncoming,
       recurrenceEndDate: data.recurrenceEndDate.present
           ? data.recurrenceEndDate.value
           : this.recurrenceEndDate,
@@ -618,6 +647,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
           ..write('categoryId: $categoryId, ')
           ..write('isRecurring: $isRecurring, ')
           ..write('isCompleted: $isCompleted, ')
+          ..write('isIncoming: $isIncoming, ')
           ..write('recurrenceEndDate: $recurrenceEndDate')
           ..write(')'))
         .toString();
@@ -625,7 +655,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
 
   @override
   int get hashCode => Object.hash(id, title, description, amount, date, type,
-      categoryId, isRecurring, isCompleted, recurrenceEndDate);
+      categoryId, isRecurring, isCompleted, isIncoming, recurrenceEndDate);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -639,6 +669,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
           other.categoryId == this.categoryId &&
           other.isRecurring == this.isRecurring &&
           other.isCompleted == this.isCompleted &&
+          other.isIncoming == this.isIncoming &&
           other.recurrenceEndDate == this.recurrenceEndDate);
 }
 
@@ -652,6 +683,7 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
   final Value<int> categoryId;
   final Value<bool> isRecurring;
   final Value<bool> isCompleted;
+  final Value<bool> isIncoming;
   final Value<DateTime?> recurrenceEndDate;
   const TransactionsCompanion({
     this.id = const Value.absent(),
@@ -663,6 +695,7 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
     this.categoryId = const Value.absent(),
     this.isRecurring = const Value.absent(),
     this.isCompleted = const Value.absent(),
+    this.isIncoming = const Value.absent(),
     this.recurrenceEndDate = const Value.absent(),
   });
   TransactionsCompanion.insert({
@@ -675,6 +708,7 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
     required int categoryId,
     required bool isRecurring,
     required bool isCompleted,
+    this.isIncoming = const Value.absent(),
     this.recurrenceEndDate = const Value.absent(),
   })  : title = Value(title),
         description = Value(description),
@@ -694,6 +728,7 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
     Expression<int>? categoryId,
     Expression<bool>? isRecurring,
     Expression<bool>? isCompleted,
+    Expression<bool>? isIncoming,
     Expression<DateTime>? recurrenceEndDate,
   }) {
     return RawValuesInsertable({
@@ -706,6 +741,7 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
       if (categoryId != null) 'category_id': categoryId,
       if (isRecurring != null) 'is_recurring': isRecurring,
       if (isCompleted != null) 'is_completed': isCompleted,
+      if (isIncoming != null) 'is_incoming': isIncoming,
       if (recurrenceEndDate != null) 'recurrence_end_date': recurrenceEndDate,
     });
   }
@@ -720,6 +756,7 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
       Value<int>? categoryId,
       Value<bool>? isRecurring,
       Value<bool>? isCompleted,
+      Value<bool>? isIncoming,
       Value<DateTime?>? recurrenceEndDate}) {
     return TransactionsCompanion(
       id: id ?? this.id,
@@ -731,6 +768,7 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
       categoryId: categoryId ?? this.categoryId,
       isRecurring: isRecurring ?? this.isRecurring,
       isCompleted: isCompleted ?? this.isCompleted,
+      isIncoming: isIncoming ?? this.isIncoming,
       recurrenceEndDate: recurrenceEndDate ?? this.recurrenceEndDate,
     );
   }
@@ -765,6 +803,9 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
     if (isCompleted.present) {
       map['is_completed'] = Variable<bool>(isCompleted.value);
     }
+    if (isIncoming.present) {
+      map['is_incoming'] = Variable<bool>(isIncoming.value);
+    }
     if (recurrenceEndDate.present) {
       map['recurrence_end_date'] = Variable<DateTime>(recurrenceEndDate.value);
     }
@@ -783,6 +824,7 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
           ..write('categoryId: $categoryId, ')
           ..write('isRecurring: $isRecurring, ')
           ..write('isCompleted: $isCompleted, ')
+          ..write('isIncoming: $isIncoming, ')
           ..write('recurrenceEndDate: $recurrenceEndDate')
           ..write(')'))
         .toString();
@@ -811,14 +853,14 @@ typedef $$TransactionCategoriesTableTableCreateCompanionBuilder
     = TransactionCategoriesTableCompanion Function({
   Value<int> id,
   required String description,
-  required String icon,
+  required int icon,
   required int color,
 });
 typedef $$TransactionCategoriesTableTableUpdateCompanionBuilder
     = TransactionCategoriesTableCompanion Function({
   Value<int> id,
   Value<String> description,
-  Value<String> icon,
+  Value<int> icon,
   Value<int> color,
 });
 
@@ -860,7 +902,7 @@ class $$TransactionCategoriesTableTableFilterComposer
   ColumnFilters<String> get description => $composableBuilder(
       column: $table.description, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get icon => $composableBuilder(
+  ColumnFilters<int> get icon => $composableBuilder(
       column: $table.icon, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<int> get color => $composableBuilder(
@@ -903,7 +945,7 @@ class $$TransactionCategoriesTableTableOrderingComposer
   ColumnOrderings<String> get description => $composableBuilder(
       column: $table.description, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get icon => $composableBuilder(
+  ColumnOrderings<int> get icon => $composableBuilder(
       column: $table.icon, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<int> get color => $composableBuilder(
@@ -925,7 +967,7 @@ class $$TransactionCategoriesTableTableAnnotationComposer
   GeneratedColumn<String> get description => $composableBuilder(
       column: $table.description, builder: (column) => column);
 
-  GeneratedColumn<String> get icon =>
+  GeneratedColumn<int> get icon =>
       $composableBuilder(column: $table.icon, builder: (column) => column);
 
   GeneratedColumn<int> get color =>
@@ -985,7 +1027,7 @@ class $$TransactionCategoriesTableTableTableManager extends RootTableManager<
           updateCompanionCallback: ({
             Value<int> id = const Value.absent(),
             Value<String> description = const Value.absent(),
-            Value<String> icon = const Value.absent(),
+            Value<int> icon = const Value.absent(),
             Value<int> color = const Value.absent(),
           }) =>
               TransactionCategoriesTableCompanion(
@@ -997,7 +1039,7 @@ class $$TransactionCategoriesTableTableTableManager extends RootTableManager<
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
             required String description,
-            required String icon,
+            required int icon,
             required int color,
           }) =>
               TransactionCategoriesTableCompanion.insert(
@@ -1068,6 +1110,7 @@ typedef $$TransactionsTableCreateCompanionBuilder = TransactionsCompanion
   required int categoryId,
   required bool isRecurring,
   required bool isCompleted,
+  Value<bool> isIncoming,
   Value<DateTime?> recurrenceEndDate,
 });
 typedef $$TransactionsTableUpdateCompanionBuilder = TransactionsCompanion
@@ -1081,6 +1124,7 @@ typedef $$TransactionsTableUpdateCompanionBuilder = TransactionsCompanion
   Value<int> categoryId,
   Value<bool> isRecurring,
   Value<bool> isCompleted,
+  Value<bool> isIncoming,
   Value<DateTime?> recurrenceEndDate,
 });
 
@@ -1137,6 +1181,9 @@ class $$TransactionsTableFilterComposer
 
   ColumnFilters<bool> get isCompleted => $composableBuilder(
       column: $table.isCompleted, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get isIncoming => $composableBuilder(
+      column: $table.isIncoming, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<DateTime> get recurrenceEndDate => $composableBuilder(
       column: $table.recurrenceEndDate,
@@ -1197,6 +1244,9 @@ class $$TransactionsTableOrderingComposer
   ColumnOrderings<bool> get isCompleted => $composableBuilder(
       column: $table.isCompleted, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<bool> get isIncoming => $composableBuilder(
+      column: $table.isIncoming, builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<DateTime> get recurrenceEndDate => $composableBuilder(
       column: $table.recurrenceEndDate,
       builder: (column) => ColumnOrderings(column));
@@ -1256,6 +1306,9 @@ class $$TransactionsTableAnnotationComposer
   GeneratedColumn<bool> get isCompleted => $composableBuilder(
       column: $table.isCompleted, builder: (column) => column);
 
+  GeneratedColumn<bool> get isIncoming => $composableBuilder(
+      column: $table.isIncoming, builder: (column) => column);
+
   GeneratedColumn<DateTime> get recurrenceEndDate => $composableBuilder(
       column: $table.recurrenceEndDate, builder: (column) => column);
 
@@ -1313,6 +1366,7 @@ class $$TransactionsTableTableManager extends RootTableManager<
             Value<int> categoryId = const Value.absent(),
             Value<bool> isRecurring = const Value.absent(),
             Value<bool> isCompleted = const Value.absent(),
+            Value<bool> isIncoming = const Value.absent(),
             Value<DateTime?> recurrenceEndDate = const Value.absent(),
           }) =>
               TransactionsCompanion(
@@ -1325,6 +1379,7 @@ class $$TransactionsTableTableManager extends RootTableManager<
             categoryId: categoryId,
             isRecurring: isRecurring,
             isCompleted: isCompleted,
+            isIncoming: isIncoming,
             recurrenceEndDate: recurrenceEndDate,
           ),
           createCompanionCallback: ({
@@ -1337,6 +1392,7 @@ class $$TransactionsTableTableManager extends RootTableManager<
             required int categoryId,
             required bool isRecurring,
             required bool isCompleted,
+            Value<bool> isIncoming = const Value.absent(),
             Value<DateTime?> recurrenceEndDate = const Value.absent(),
           }) =>
               TransactionsCompanion.insert(
@@ -1349,6 +1405,7 @@ class $$TransactionsTableTableManager extends RootTableManager<
             categoryId: categoryId,
             isRecurring: isRecurring,
             isCompleted: isCompleted,
+            isIncoming: isIncoming,
             recurrenceEndDate: recurrenceEndDate,
           ),
           withReferenceMapper: (p0) => p0

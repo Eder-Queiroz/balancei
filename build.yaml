@@ -1,6 +1,7 @@
 targets:
   $default:
     builders:
-      balancei_app|entity_generator:
-        generate_for:
-          - lib\domain\entities\transactions\transaction_entity.dart
+      drift_dev:
+        options:
+          databases:
+            my_database: lib\data\datasource\database\app_database.dart

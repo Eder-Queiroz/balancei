@@ -20,6 +20,7 @@ class TransactionMapper {
       category: TransactionCategoryMapper.fromDatabase(category),
       isRecurring: transaction.isRecurring,
       isCompleted: transaction.isCompleted,
+      isIncoming: transaction.isIncoming,
       recurrenceEndDate: transaction.recurrenceEndDate,
     );
   }
@@ -34,6 +35,7 @@ class TransactionMapper {
       categoryId: entity.category.id,
       isRecurring: entity.isRecurring,
       isCompleted: entity.isCompleted,
+      isIncoming: Value(entity.isIncoming),
       recurrenceEndDate: Value(entity.recurrenceEndDate),
     );
   }

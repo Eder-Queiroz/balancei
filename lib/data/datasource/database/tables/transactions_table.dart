@@ -12,5 +12,6 @@ class Transactions extends Table {
       integer().references(TransactionCategoriesTable, #id)();
   BoolColumn get isRecurring => boolean()();
   BoolColumn get isCompleted => boolean()();
+  BoolColumn get isIncoming => boolean().withDefault(const Constant(false))();
   DateTimeColumn get recurrenceEndDate => dateTime().nullable()();
 }

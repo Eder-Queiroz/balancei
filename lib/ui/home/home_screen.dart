@@ -1,23 +1,36 @@
 import 'package:balancei_app/ui/home/components/transaction_card.dart';
+import 'package:balancei_app/ui/home/viewmodel/home_viewmodel.dart';
 import 'package:balancei_app/ui/utils/commom_spacing.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  late final homeViewModel = ref.read(homeViewModelProvider.notifier);
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      homeViewModel.fetchTransfers();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(homeViewModelProvider);
     final textTheme = Theme.of(context).textTheme;
     return CustomScrollView(
       slivers: <Widget>[
         SliverPadding(
           padding: EdgeInsets.only(
-            bottom: CommomSpacing.small,
+            bottom: CommonSpacing.small,
           ),
           sliver: SliverToBoxAdapter(
             child: Container(
@@ -25,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 210,
               alignment: Alignment.center,
               padding: EdgeInsets.symmetric(
-                horizontal: CommomSpacing.large,
+                horizontal: CommonSpacing.large,
               ),
               decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -67,9 +80,9 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Card(
               color: Colors.white,
               child: Padding(
-                padding: const EdgeInsets.all(CommomSpacing.medium),
+                padding: const EdgeInsets.all(CommonSpacing.medium),
                 child: Column(
-                  spacing: CommomSpacing.small,
+                  spacing: CommonSpacing.small,
                   children: [
                     Row(
                       children: [
@@ -147,60 +160,54 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-        SliverPadding(
-          padding: EdgeInsets.symmetric(
-            horizontal: CommomSpacing.large,
-            vertical: CommomSpacing.medium,
-          ),
-          sliver: SliverList.separated(
-            itemCount: buildTransactionList(textTheme).length,
-            separatorBuilder: (context, index) =>
-                const SizedBox(height: CommomSpacing.small),
-            itemBuilder: (context, index) =>
-                buildTransactionList(textTheme)[index],
-          ),
+        state.transactions.when(
+          data: (transaction) {
+            return SliverPadding(
+              padding: EdgeInsets.symmetric(
+                horizontal: CommonSpacing.large,
+                vertical: CommonSpacing.medium,
+              ),
+              sliver: SliverList.separated(
+                itemCount: transaction.length + 1,
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: CommonSpacing.small),
+                itemBuilder: (context, index) {
+                  if (index == 0) {
+                    return Text('transações recentes',
+                        style: textTheme.headlineMedium);
+                  }
+
+                  final t = transaction[index - 1];
+                  return TransactionCard(
+                    title: t.title,
+                    description: t.description,
+                    value: t.amount,
+                    date: t.date,
+                    color: t.category.color,
+                    icon: t.category.iconData,
+                    isIncoming: t.isIncoming,
+                  );
+                },
+              ),
+            );
+          },
+          error: (error, stackTrace) {
+            return SliverToBoxAdapter(
+              child: Center(
+                child: Text('Erro ao carregar transações'),
+              ),
+            );
+          },
+          loading: () {
+            return SliverToBoxAdapter(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          },
         ),
       ],
     );
-  }
-
-  List<Widget> buildTransactionList(TextTheme textTheme) {
-    return [
-      Text('transações recentes', style: textTheme.headlineMedium),
-      TransactionCard(
-        title: 'Inernet Residêncial',
-        description: 'Conta de internet.',
-        value: 100.00,
-        date: DateTime(2025, 01, 10),
-        color: 0xFF4F4CB0,
-        icon: Icons.language,
-      ),
-      TransactionCard(
-        title: 'Inernet Movel',
-        description: 'Conta de internet.',
-        value: 50.00,
-        date: DateTime(2025, 01, 10),
-        color: 0xFF4F4CB0,
-        icon: Icons.language,
-      ),
-      TransactionCard(
-        title: 'Cruchroll',
-        description: 'Streaming de anime.',
-        value: 20.00,
-        date: DateTime(2025, 01, 10),
-        color: 0xFFFF5F01,
-        icon: Icons.cast,
-      ),
-      TransactionCard(
-        title: 'Bolsa Faculdade',
-        description: 'Bolsa Iniciação Cien.',
-        value: 770.00,
-        date: DateTime(2025, 01, 10),
-        color: 0xFF00C48C,
-        icon: Icons.payment,
-        isIncoming: true,
-      ),
-    ];
   }
 }
 

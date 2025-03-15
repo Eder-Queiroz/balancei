@@ -28,7 +28,7 @@ class TransactionCard extends StatelessWidget {
       children: [
         Flexible(
           child: Row(
-            spacing: CommomSpacing.large,
+            spacing: CommonSpacing.large,
             children: [
               CircleAvatar(
                 backgroundColor: Color(color),
@@ -59,7 +59,7 @@ class TransactionCard extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(width: CommomSpacing.small),
+        const SizedBox(width: CommonSpacing.small),
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [

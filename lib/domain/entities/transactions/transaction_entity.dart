@@ -6,7 +6,7 @@ part 'transaction_entity.freezed.dart';
 part 'transaction_entity.g.dart';
 
 @freezed
-class TransactionEntity with _$TransactionEntity {
+sealed class TransactionEntity with _$TransactionEntity {
   const factory TransactionEntity({
     required int id,
     required String title,
@@ -17,6 +17,7 @@ class TransactionEntity with _$TransactionEntity {
     required TransactionCategoryEntity category,
     required bool isRecurring,
     required bool isCompleted,
+    @Default(false) bool isIncoming,
     DateTime? recurrenceEndDate,
   }) = _TransactionEntity;
 

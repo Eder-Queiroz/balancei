@@ -19,6 +19,7 @@ _$TransactionEntityImpl _$$TransactionEntityImplFromJson(
           json['category'] as Map<String, dynamic>),
       isRecurring: json['isRecurring'] as bool,
       isCompleted: json['isCompleted'] as bool,
+      isIncoming: json['isIncoming'] as bool? ?? false,
       recurrenceEndDate: json['recurrenceEndDate'] == null
           ? null
           : DateTime.parse(json['recurrenceEndDate'] as String),
@@ -36,6 +37,7 @@ Map<String, dynamic> _$$TransactionEntityImplToJson(
       'category': instance.category,
       'isRecurring': instance.isRecurring,
       'isCompleted': instance.isCompleted,
+      'isIncoming': instance.isIncoming,
       'recurrenceEndDate': instance.recurrenceEndDate?.toIso8601String(),
     };
 

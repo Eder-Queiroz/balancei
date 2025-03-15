@@ -23,7 +23,7 @@ TransactionCategoryEntity _$TransactionCategoryEntityFromJson(
 mixin _$TransactionCategoryEntity {
   int get id => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
-  String get icon => throw _privateConstructorUsedError;
+  int get icon => throw _privateConstructorUsedError;
   int get color => throw _privateConstructorUsedError;
 
   /// Serializes this TransactionCategoryEntity to a JSON map.
@@ -42,7 +42,7 @@ abstract class $TransactionCategoryEntityCopyWith<$Res> {
           $Res Function(TransactionCategoryEntity) then) =
       _$TransactionCategoryEntityCopyWithImpl<$Res, TransactionCategoryEntity>;
   @useResult
-  $Res call({int id, String description, String icon, int color});
+  $Res call({int id, String description, int icon, int color});
 }
 
 /// @nodoc
@@ -78,7 +78,7 @@ class _$TransactionCategoryEntityCopyWithImpl<$Res,
       icon: null == icon
           ? _value.icon
           : icon // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       color: null == color
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
@@ -96,7 +96,7 @@ abstract class _$$TransactionCategoryEntityImplCopyWith<$Res>
       __$$TransactionCategoryEntityImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String description, String icon, int color});
+  $Res call({int id, String description, int icon, int color});
 }
 
 /// @nodoc
@@ -131,7 +131,7 @@ class __$$TransactionCategoryEntityImplCopyWithImpl<$Res>
       icon: null == icon
           ? _value.icon
           : icon // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       color: null == color
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
@@ -142,12 +142,13 @@ class __$$TransactionCategoryEntityImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$TransactionCategoryEntityImpl implements _TransactionCategoryEntity {
+class _$TransactionCategoryEntityImpl extends _TransactionCategoryEntity {
   const _$TransactionCategoryEntityImpl(
       {required this.id,
       required this.description,
       required this.icon,
-      required this.color});
+      required this.color})
+      : super._();
 
   factory _$TransactionCategoryEntityImpl.fromJson(Map<String, dynamic> json) =>
       _$$TransactionCategoryEntityImplFromJson(json);
@@ -157,7 +158,7 @@ class _$TransactionCategoryEntityImpl implements _TransactionCategoryEntity {
   @override
   final String description;
   @override
-  final String icon;
+  final int icon;
   @override
   final int color;
 
@@ -199,12 +200,13 @@ class _$TransactionCategoryEntityImpl implements _TransactionCategoryEntity {
   }
 }
 
-abstract class _TransactionCategoryEntity implements TransactionCategoryEntity {
+abstract class _TransactionCategoryEntity extends TransactionCategoryEntity {
   const factory _TransactionCategoryEntity(
       {required final int id,
       required final String description,
-      required final String icon,
+      required final int icon,
       required final int color}) = _$TransactionCategoryEntityImpl;
+  const _TransactionCategoryEntity._() : super._();
 
   factory _TransactionCategoryEntity.fromJson(Map<String, dynamic> json) =
       _$TransactionCategoryEntityImpl.fromJson;
@@ -214,7 +216,7 @@ abstract class _TransactionCategoryEntity implements TransactionCategoryEntity {
   @override
   String get description;
   @override
-  String get icon;
+  int get icon;
   @override
   int get color;
 
