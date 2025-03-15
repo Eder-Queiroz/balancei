@@ -4,9 +4,10 @@ import 'package:balancei_app/ui/home/state/home_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final homeViewModelProvider =
-    NotifierProvider<HomeViewModel, HomeState>(() => HomeViewModel());
+    NotifierProvider.autoDispose<HomeViewModel, HomeState>(
+        () => HomeViewModel());
 
-class HomeViewModel extends Notifier<HomeState> {
+class HomeViewModel extends AutoDisposeNotifier<HomeState> {
   late final TransferRepository _transferRepository;
 
   @override
