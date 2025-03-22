@@ -17,13 +17,17 @@ class HomeViewModel extends AutoDisposeNotifier<HomeState> {
   }
 
   Future<void> fetchTransfers() async {
-    state = HomeState(transactions: AsyncValue.loading());
-    final result = await _transferRepository.getTransfers();
+    state = HomeState(summary: AsyncValue.loading());
+    final result = await _transferRepository.getFinancialSummary(
+      startDate: DateTime.now().subtract(
+        Duration(days: 6),
+      ),
+    );
 
     state = result.fold(
-      (success) => state = HomeState(transactions: AsyncValue.data(success)),
-      (failure) => state = HomeState(
-          transactions: AsyncValue.error(failure, StackTrace.current)),
+      (success) => state = HomeState(summary: AsyncValue.data(success)),
+      (failure) => state =
+          HomeState(summary: AsyncValue.error(failure, StackTrace.current)),
     );
   }
 }

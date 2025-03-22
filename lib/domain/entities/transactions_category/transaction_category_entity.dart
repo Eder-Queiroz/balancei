@@ -5,7 +5,7 @@ part 'transaction_category_entity.freezed.dart';
 part 'transaction_category_entity.g.dart';
 
 @freezed
-class TransactionCategoryEntity with _$TransactionCategoryEntity {
+sealed class TransactionCategoryEntity with _$TransactionCategoryEntity {
   const TransactionCategoryEntity._();
 
   const factory TransactionCategoryEntity({

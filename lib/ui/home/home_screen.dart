@@ -3,6 +3,7 @@ import 'package:balancei_app/ui/home/viewmodel/home_viewmodel.dart';
 import 'package:balancei_app/ui/utils/commom_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -72,96 +73,129 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
           ),
         ),
-        SliverPersistentHeader(
-          pinned: true,
-          delegate: _SliverHeaderDelegate(
-            minHeight: 120,
-            maxHeight: 120,
-            child: Card(
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(CommonSpacing.medium),
-                child: Column(
-                  spacing: CommonSpacing.small,
-                  children: [
-                    Row(
+        state.summary.when(
+          data: (value) {
+            final income = value.totalIncome;
+            final expense = value.totalExpense;
+            final balance = value.totalBalance;
+
+            return SliverPersistentHeader(
+              pinned: true,
+              delegate: _SliverHeaderDelegate(
+                minHeight: 120,
+                maxHeight: 120,
+                child: Card(
+                  color: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.all(CommonSpacing.medium),
+                    child: Column(
+                      spacing: CommonSpacing.small,
                       children: [
-                        Flexible(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Janeiro',
-                                style: textTheme.headlineSmall,
-                              ),
-                              Icon(
-                                Icons.keyboard_arrow_down,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Icon(
-                          Icons.visibility_off,
-                          color: Color(0xFF79747E),
-                          size: 18,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Column(
+                        Row(
                           children: [
-                            Text(
-                              'Saldo',
-                              style: textTheme.headlineSmall!.copyWith(
-                                color: Color(0xFF79747E),
+                            Flexible(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Janeiro',
+                                    style: textTheme.headlineSmall,
+                                  ),
+                                  Icon(
+                                    Icons.keyboard_arrow_down,
+                                  ),
+                                ],
                               ),
                             ),
-                            Text(
-                              'R\$ ******',
-                              style: textTheme.headlineSmall,
+                            Icon(
+                              Icons.visibility_off,
+                              color: Color(0xFF79747E),
+                              size: 18,
                             ),
                           ],
                         ),
-                        Column(
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text(
-                              'Receita',
-                              style: textTheme.headlineSmall!.copyWith(
-                                color: Color(0xFF79747E),
-                              ),
+                            Column(
+                              children: [
+                                Text(
+                                  'Saldo',
+                                  style: textTheme.headlineSmall!.copyWith(
+                                    color: Color(0xFF79747E),
+                                  ),
+                                ),
+                                Text(
+                                  NumberFormat.currency(
+                                    locale: 'pt_BR',
+                                    symbol: 'R\$',
+                                  ).format(balance),
+                                  style: textTheme.headlineSmall,
+                                ),
+                              ],
                             ),
-                            Text(
-                              'R\$ ******',
-                              style: textTheme.headlineSmall,
+                            Column(
+                              children: [
+                                Text(
+                                  'Receita',
+                                  style: textTheme.headlineSmall!.copyWith(
+                                    color: Color(0xFF79747E),
+                                  ),
+                                ),
+                                Text(
+                                  NumberFormat.currency(
+                                    locale: 'pt_BR',
+                                    symbol: 'R\$',
+                                  ).format(income),
+                                  style: textTheme.headlineSmall,
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Text(
-                              'Gastos',
-                              style: textTheme.headlineSmall!.copyWith(
-                                color: Color(0xFF79747E),
-                              ),
-                            ),
-                            Text(
-                              'R\$ ******',
-                              style: textTheme.headlineSmall,
-                            ),
+                            Column(
+                              children: [
+                                Text(
+                                  'Gastos',
+                                  style: textTheme.headlineSmall!.copyWith(
+                                    color: Color(0xFF79747E),
+                                  ),
+                                ),
+                                Text(
+                                  NumberFormat.currency(
+                                    locale: 'pt_BR',
+                                    symbol: 'R\$',
+                                  ).format(expense),
+                                  style: textTheme.headlineSmall,
+                                ),
+                              ],
+                            )
                           ],
                         )
                       ],
-                    )
-                  ],
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          },
+          error: (error, stackTrace) {
+            return SliverToBoxAdapter(
+              child: Center(
+                child: Text('Erro ao carregar dados'),
+              ),
+            );
+          },
+          loading: () {
+            return SliverToBoxAdapter(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          },
         ),
-        state.transactions.when(
-          data: (transaction) {
+        state.summary.when(
+          data: (value) {
+            final transaction = value.transactions;
+
             return SliverPadding(
               padding: EdgeInsets.symmetric(
                 horizontal: CommonSpacing.large,
@@ -194,7 +228,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           error: (error, stackTrace) {
             return SliverToBoxAdapter(
               child: Center(
-                child: Text('Erro ao carregar transações'),
+                child: Text('Erro ao carregar dados'),
               ),
             );
           },

@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$HomeState {
-  AsyncValue<List<TransactionEntity>> get transactions =>
+  AsyncValue<FinancialSummaryEntity> get summary =>
       throw _privateConstructorUsedError;
 
   /// Create a copy of HomeState
@@ -31,7 +31,7 @@ abstract class $HomeStateCopyWith<$Res> {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) then) =
       _$HomeStateCopyWithImpl<$Res, HomeState>;
   @useResult
-  $Res call({AsyncValue<List<TransactionEntity>> transactions});
+  $Res call({AsyncValue<FinancialSummaryEntity> summary});
 }
 
 /// @nodoc
@@ -49,13 +49,13 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? transactions = null,
+    Object? summary = null,
   }) {
     return _then(_value.copyWith(
-      transactions: null == transactions
-          ? _value.transactions
-          : transactions // ignore: cast_nullable_to_non_nullable
-              as AsyncValue<List<TransactionEntity>>,
+      summary: null == summary
+          ? _value.summary
+          : summary // ignore: cast_nullable_to_non_nullable
+              as AsyncValue<FinancialSummaryEntity>,
     ) as $Val);
   }
 }
@@ -68,7 +68,7 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       __$$HomeStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({AsyncValue<List<TransactionEntity>> transactions});
+  $Res call({AsyncValue<FinancialSummaryEntity> summary});
 }
 
 /// @nodoc
@@ -84,13 +84,13 @@ class __$$HomeStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? transactions = null,
+    Object? summary = null,
   }) {
     return _then(_$HomeStateImpl(
-      transactions: null == transactions
-          ? _value.transactions
-          : transactions // ignore: cast_nullable_to_non_nullable
-              as AsyncValue<List<TransactionEntity>>,
+      summary: null == summary
+          ? _value.summary
+          : summary // ignore: cast_nullable_to_non_nullable
+              as AsyncValue<FinancialSummaryEntity>,
     ));
   }
 }
@@ -98,15 +98,15 @@ class __$$HomeStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$HomeStateImpl implements _HomeState {
-  const _$HomeStateImpl({this.transactions = const AsyncValue.loading()});
+  const _$HomeStateImpl({this.summary = const AsyncValue.loading()});
 
   @override
   @JsonKey()
-  final AsyncValue<List<TransactionEntity>> transactions;
+  final AsyncValue<FinancialSummaryEntity> summary;
 
   @override
   String toString() {
-    return 'HomeState(transactions: $transactions)';
+    return 'HomeState(summary: $summary)';
   }
 
   @override
@@ -114,12 +114,11 @@ class _$HomeStateImpl implements _HomeState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$HomeStateImpl &&
-            (identical(other.transactions, transactions) ||
-                other.transactions == transactions));
+            (identical(other.summary, summary) || other.summary == summary));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, transactions);
+  int get hashCode => Object.hash(runtimeType, summary);
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
@@ -131,12 +130,11 @@ class _$HomeStateImpl implements _HomeState {
 }
 
 abstract class _HomeState implements HomeState {
-  const factory _HomeState(
-          {final AsyncValue<List<TransactionEntity>> transactions}) =
+  const factory _HomeState({final AsyncValue<FinancialSummaryEntity> summary}) =
       _$HomeStateImpl;
 
   @override
-  AsyncValue<List<TransactionEntity>> get transactions;
+  AsyncValue<FinancialSummaryEntity> get summary;
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.

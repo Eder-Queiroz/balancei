@@ -21,7 +21,9 @@ class TransactionDao extends DatabaseAccessor<AppDatabase>
     with _$TransactionDaoMixin {
   TransactionDao(super.db);
 
-  AsyncResult<List<TransactionEntity>> getAllTransactions() async {
+  AsyncResult<List<TransactionEntity>> getAllTransactions({
+    DateTime? startDate,
+  }) async {
     try {
       final query = select(transactions).join([
         innerJoin(
@@ -29,6 +31,10 @@ class TransactionDao extends DatabaseAccessor<AppDatabase>
           transactionCategoriesTable.id.equalsExp(transactions.categoryId),
         ),
       ]);
+
+      if (startDate != null) {
+        query.where(transactions.date.isBiggerOrEqualValue(startDate));
+      }
 
       final result = await query.map((row) {
         return TransactionWithCategory(

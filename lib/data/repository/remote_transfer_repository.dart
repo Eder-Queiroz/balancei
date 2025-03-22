@@ -1,6 +1,8 @@
 import 'package:balancei_app/data/datasource/dao/transaction_dao.dart';
+import 'package:balancei_app/data/mappers/financial_summary_mapper.dart';
 import 'package:balancei_app/data/repository/transfer_repository.dart';
 import 'package:balancei_app/domain/dtos/transfer.dart';
+import 'package:balancei_app/domain/entities/financial_summary_entity/financial_summary_entity.dart';
 import 'package:balancei_app/domain/entities/transactions/transaction_entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:result_dart/result_dart.dart';
@@ -29,8 +31,8 @@ class RemoteTransferRepository implements TransferRepository {
   }
 
   @override
-  AsyncResult<List<TransactionEntity>> getTransfers() {
-    return _transactionDao.getAllTransactions();
+  AsyncResult<List<TransactionEntity>> getTransfers({DateTime? startDate}) {
+    return _transactionDao.getAllTransactions(startDate: startDate);
   }
 
   @override
@@ -44,5 +46,13 @@ class RemoteTransferRepository implements TransferRepository {
   @override
   AsyncResult<Unit> deleteTransfer(int id) {
     return _transactionDao.deleteTransaction(id);
+  }
+
+  @override
+  AsyncResult<FinancialSummaryEntity> getFinancialSummary(
+      {required DateTime startDate}) {
+    return _transactionDao
+        .getAllTransactions(startDate: startDate)
+        .map(FinancialSummaryMapper.fromTransactions);
   }
 }
