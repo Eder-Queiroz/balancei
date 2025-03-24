@@ -4,6 +4,7 @@ import 'package:balancei_app/data/datasource/database/tables/transactions_table.
 import 'package:balancei_app/data/mappers/transaction_mapper.dart';
 import 'package:balancei_app/data/utils/exceptions/dao_exception.dart';
 import 'package:balancei_app/domain/dtos/transfer.dart';
+import 'package:balancei_app/domain/entities/date_filter/date_filter_entity.dart';
 import 'package:balancei_app/domain/entities/transactions/transaction_entity.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,7 +23,7 @@ class TransactionDao extends DatabaseAccessor<AppDatabase>
   TransactionDao(super.db);
 
   AsyncResult<List<TransactionEntity>> getAllTransactions({
-    DateTime? startDate,
+    DateFilterEntity? dateFilter,
   }) async {
     try {
       final query = select(transactions).join([
@@ -32,8 +33,10 @@ class TransactionDao extends DatabaseAccessor<AppDatabase>
         ),
       ]);
 
-      if (startDate != null) {
-        query.where(transactions.date.isBiggerOrEqualValue(startDate));
+      if (dateFilter != null) {
+        query
+          ..where(transactions.date.isBiggerOrEqualValue(dateFilter.startDate))
+          ..where(transactions.date.isSmallerOrEqualValue(dateFilter.endDate));
       }
 
       final result = await query.map((row) {

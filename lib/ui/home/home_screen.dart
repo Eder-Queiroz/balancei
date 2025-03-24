@@ -1,9 +1,11 @@
 import 'package:balancei_app/ui/home/components/transaction_card.dart';
 import 'package:balancei_app/ui/home/viewmodel/home_viewmodel.dart';
 import 'package:balancei_app/ui/utils/commom_spacing.dart';
+import 'package:balancei_app/ui/utils/extensions/build_context_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:result_dart/result_dart.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -94,17 +96,34 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         Row(
                           children: [
                             Flexible(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Janeiro',
-                                    style: textTheme.headlineSmall,
-                                  ),
-                                  Icon(
-                                    Icons.keyboard_arrow_down,
-                                  ),
-                                ],
+                              child: GestureDetector(
+                                onTap: () async {
+                                  final startDate =
+                                      state.selectedDateFilter.startDate;
+
+                                  final pickedDate = await context
+                                      .showMonthPicker(startDate: startDate)
+                                      .fold(
+                                        (success) => success,
+                                        (error) => startDate,
+                                      );
+
+                                  homeViewModel.selectDate(pickedDate);
+                                  await homeViewModel.fetchTransfers();
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      DateFormat.MMMM('pt_BR').format(
+                                          state.selectedDateFilter.startDate),
+                                      style: textTheme.headlineSmall,
+                                    ),
+                                    Icon(
+                                      Icons.keyboard_arrow_down,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             Icon(

@@ -1,5 +1,6 @@
 import 'package:balancei_app/data/repository/remote_transfer_repository.dart';
 import 'package:balancei_app/data/repository/transfer_repository.dart';
+import 'package:balancei_app/domain/entities/date_filter/date_filter_entity.dart';
 import 'package:balancei_app/ui/home/state/home_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,21 +14,26 @@ class HomeViewModel extends AutoDisposeNotifier<HomeState> {
   @override
   HomeState build() {
     _transferRepository = ref.read(transferRepositoryProvider);
-    return HomeState();
+    return HomeState.initial();
   }
 
   Future<void> fetchTransfers() async {
-    state = HomeState(summary: AsyncValue.loading());
+    state = state.copyWith(summary: AsyncValue.loading());
     final result = await _transferRepository.getFinancialSummary(
-      startDate: DateTime.now().subtract(
-        Duration(days: 6),
-      ),
+      dateFilter: state.selectedDateFilter,
     );
 
     state = result.fold(
-      (success) => state = HomeState(summary: AsyncValue.data(success)),
-      (failure) => state =
-          HomeState(summary: AsyncValue.error(failure, StackTrace.current)),
+      (success) => state = state.copyWith(summary: AsyncValue.data(success)),
+      (failure) => state = state.copyWith(
+        summary: AsyncValue.error(failure, StackTrace.current),
+      ),
+    );
+  }
+
+  void selectDate(DateTime date) {
+    state = state.copyWith(
+      selectedDateFilter: DateFilterEntity.forMonth(date: date),
     );
   }
 }
