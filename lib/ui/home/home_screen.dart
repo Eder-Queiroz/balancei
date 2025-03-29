@@ -1,4 +1,5 @@
 import 'package:balancei_app/ui/home/components/transaction_card.dart';
+import 'package:balancei_app/ui/home/components/visibility_button.dart';
 import 'package:balancei_app/ui/home/viewmodel/home_viewmodel.dart';
 import 'package:balancei_app/ui/utils/commom_spacing.dart';
 import 'package:balancei_app/ui/utils/extensions/build_context_extension.dart';
@@ -94,6 +95,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       spacing: CommonSpacing.small,
                       children: [
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Flexible(
                               child: GestureDetector(
@@ -126,10 +129,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 ),
                               ),
                             ),
-                            Icon(
-                              Icons.visibility_off,
-                              color: Color(0xFF79747E),
-                              size: 18,
+                            VisibilityButton(
+                              isVisible: state.isVisibleValues,
+                              onPressed: () {
+                                homeViewModel.toggleVisibleValues();
+                              },
                             ),
                           ],
                         ),
@@ -145,10 +149,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   ),
                                 ),
                                 Text(
-                                  NumberFormat.currency(
-                                    locale: 'pt_BR',
-                                    symbol: 'R\$',
-                                  ).format(balance),
+                                  homeViewModel.formattedValue(balance),
                                   style: textTheme.headlineSmall,
                                 ),
                               ],
@@ -162,10 +163,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   ),
                                 ),
                                 Text(
-                                  NumberFormat.currency(
-                                    locale: 'pt_BR',
-                                    symbol: 'R\$',
-                                  ).format(income),
+                                  homeViewModel.formattedValue(income),
                                   style: textTheme.headlineSmall,
                                 ),
                               ],
@@ -179,10 +177,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   ),
                                 ),
                                 Text(
-                                  NumberFormat.currency(
-                                    locale: 'pt_BR',
-                                    symbol: 'R\$',
-                                  ).format(expense),
+                                  homeViewModel.formattedValue(expense),
                                   style: textTheme.headlineSmall,
                                 ),
                               ],
@@ -234,7 +229,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   return TransactionCard(
                     title: t.title,
                     description: t.description,
-                    value: t.amount,
+                    value: homeViewModel.formattedValue(t.amount),
                     date: t.date,
                     color: t.category.color,
                     icon: t.category.iconData,

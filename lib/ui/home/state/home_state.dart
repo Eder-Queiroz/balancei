@@ -12,6 +12,7 @@ sealed class HomeState with _$HomeState {
   const factory HomeState({
     @Default(AsyncValue.loading()) AsyncValue<FinancialSummaryEntity> summary,
     required DateFilterEntity selectedDateFilter,
+    @Default(false) bool isVisibleValues,
   }) = _HomeState;
 
   factory HomeState.initial() => HomeState(

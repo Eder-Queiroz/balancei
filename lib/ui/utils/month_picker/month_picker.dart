@@ -49,45 +49,43 @@ class _MonthPickerState extends ConsumerState<MonthPicker> {
             ],
           ),
         ),
-        Expanded(
-          child: GridView.count(
-            crossAxisCount: 3,
-            childAspectRatio: 2,
-            mainAxisSpacing: CommonSpacing.medium,
-            padding: EdgeInsets.all(CommonSpacing.small),
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            children: List.generate(
-              monthsInYear,
-              (index) {
-                final date = DateTime(year, index + 1);
+        GridView.count(
+          crossAxisCount: 3,
+          childAspectRatio: 2,
+          mainAxisSpacing: CommonSpacing.medium,
+          padding: EdgeInsets.all(CommonSpacing.small),
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          children: List.generate(
+            monthsInYear,
+            (index) {
+              final date = DateTime(year, index + 1);
 
-                return GestureDetector(
-                  onTap: () {
-                    viewModel.selectDate(date);
-                    context.pop(date);
-                  },
-                  child: Card(
-                    elevation: 2,
-                    color: date == selectedDate
-                        ? theme.primaryColor
-                        : theme.colorScheme.secondary,
-                    child: Center(
-                      child: Text(
-                        DateFormat.MMMM('pt_BR').format(date),
-                        style: theme.textTheme.headlineMedium!.copyWith(
-                          color: date == selectedDate
-                              ? theme.colorScheme.secondary
-                              : theme.colorScheme.primary,
-                        ),
+              return GestureDetector(
+                onTap: () {
+                  viewModel.selectDate(date);
+                  context.pop(date);
+                },
+                child: Card(
+                  elevation: 2,
+                  color: date == selectedDate
+                      ? theme.primaryColor
+                      : theme.colorScheme.secondary,
+                  child: Center(
+                    child: Text(
+                      DateFormat.MMMM('pt_BR').format(date),
+                      style: theme.textTheme.headlineMedium!.copyWith(
+                        color: date == selectedDate
+                            ? theme.colorScheme.secondary
+                            : theme.colorScheme.primary,
                       ),
                     ),
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
-        )
+        ),
       ],
     );
   }

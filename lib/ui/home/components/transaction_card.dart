@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 class TransactionCard extends StatelessWidget {
   final String title;
   final String description;
-  final double value;
+  final String value;
   final DateTime date;
   final IconData icon;
   final int color;
@@ -64,8 +64,7 @@ class TransactionCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$')
-                  .format(value),
+              value,
               style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                     color: isIncoming ? Color(0xFF00C48C) : null,
                   ),

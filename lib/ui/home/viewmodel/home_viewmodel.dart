@@ -2,6 +2,7 @@ import 'package:balancei_app/data/repository/remote_transfer_repository.dart';
 import 'package:balancei_app/data/repository/transfer_repository.dart';
 import 'package:balancei_app/domain/entities/date_filter/date_filter_entity.dart';
 import 'package:balancei_app/ui/home/state/home_state.dart';
+import 'package:balancei_app/ui/utils/extensions/double_extension.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final homeViewModelProvider =
@@ -35,5 +36,15 @@ class HomeViewModel extends AutoDisposeNotifier<HomeState> {
     state = state.copyWith(
       selectedDateFilter: DateFilterEntity.forMonth(date: date),
     );
+  }
+
+  void toggleVisibleValues() {
+    state = state.copyWith(isVisibleValues: !state.isVisibleValues);
+  }
+
+  String formattedValue(double value) {
+    final isVisible = state.isVisibleValues;
+
+    return isVisible ? value.toBRLCurrency() : ("\u25cf" * 4);
   }
 }

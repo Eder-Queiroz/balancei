@@ -19,6 +19,7 @@ mixin _$HomeState {
   AsyncValue<FinancialSummaryEntity> get summary =>
       throw _privateConstructorUsedError;
   DateFilterEntity get selectedDateFilter => throw _privateConstructorUsedError;
+  bool get isVisibleValues => throw _privateConstructorUsedError;
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
@@ -34,7 +35,8 @@ abstract class $HomeStateCopyWith<$Res> {
   @useResult
   $Res call(
       {AsyncValue<FinancialSummaryEntity> summary,
-      DateFilterEntity selectedDateFilter});
+      DateFilterEntity selectedDateFilter,
+      bool isVisibleValues});
 
   $DateFilterEntityCopyWith<$Res> get selectedDateFilter;
 }
@@ -56,6 +58,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
   $Res call({
     Object? summary = null,
     Object? selectedDateFilter = null,
+    Object? isVisibleValues = null,
   }) {
     return _then(_value.copyWith(
       summary: null == summary
@@ -66,6 +69,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.selectedDateFilter
           : selectedDateFilter // ignore: cast_nullable_to_non_nullable
               as DateFilterEntity,
+      isVisibleValues: null == isVisibleValues
+          ? _value.isVisibleValues
+          : isVisibleValues // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -90,7 +97,8 @@ abstract class _$$HomeStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {AsyncValue<FinancialSummaryEntity> summary,
-      DateFilterEntity selectedDateFilter});
+      DateFilterEntity selectedDateFilter,
+      bool isVisibleValues});
 
   @override
   $DateFilterEntityCopyWith<$Res> get selectedDateFilter;
@@ -111,6 +119,7 @@ class __$$HomeStateImplCopyWithImpl<$Res>
   $Res call({
     Object? summary = null,
     Object? selectedDateFilter = null,
+    Object? isVisibleValues = null,
   }) {
     return _then(_$HomeStateImpl(
       summary: null == summary
@@ -121,6 +130,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value.selectedDateFilter
           : selectedDateFilter // ignore: cast_nullable_to_non_nullable
               as DateFilterEntity,
+      isVisibleValues: null == isVisibleValues
+          ? _value.isVisibleValues
+          : isVisibleValues // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -130,7 +143,8 @@ class __$$HomeStateImplCopyWithImpl<$Res>
 class _$HomeStateImpl extends _HomeState {
   const _$HomeStateImpl(
       {this.summary = const AsyncValue.loading(),
-      required this.selectedDateFilter})
+      required this.selectedDateFilter,
+      this.isVisibleValues = false})
       : super._();
 
   @override
@@ -138,10 +152,13 @@ class _$HomeStateImpl extends _HomeState {
   final AsyncValue<FinancialSummaryEntity> summary;
   @override
   final DateFilterEntity selectedDateFilter;
+  @override
+  @JsonKey()
+  final bool isVisibleValues;
 
   @override
   String toString() {
-    return 'HomeState(summary: $summary, selectedDateFilter: $selectedDateFilter)';
+    return 'HomeState(summary: $summary, selectedDateFilter: $selectedDateFilter, isVisibleValues: $isVisibleValues)';
   }
 
   @override
@@ -151,11 +168,14 @@ class _$HomeStateImpl extends _HomeState {
             other is _$HomeStateImpl &&
             (identical(other.summary, summary) || other.summary == summary) &&
             (identical(other.selectedDateFilter, selectedDateFilter) ||
-                other.selectedDateFilter == selectedDateFilter));
+                other.selectedDateFilter == selectedDateFilter) &&
+            (identical(other.isVisibleValues, isVisibleValues) ||
+                other.isVisibleValues == isVisibleValues));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, summary, selectedDateFilter);
+  int get hashCode =>
+      Object.hash(runtimeType, summary, selectedDateFilter, isVisibleValues);
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
@@ -169,13 +189,16 @@ class _$HomeStateImpl extends _HomeState {
 abstract class _HomeState extends HomeState {
   const factory _HomeState(
       {final AsyncValue<FinancialSummaryEntity> summary,
-      required final DateFilterEntity selectedDateFilter}) = _$HomeStateImpl;
+      required final DateFilterEntity selectedDateFilter,
+      final bool isVisibleValues}) = _$HomeStateImpl;
   const _HomeState._() : super._();
 
   @override
   AsyncValue<FinancialSummaryEntity> get summary;
   @override
   DateFilterEntity get selectedDateFilter;
+  @override
+  bool get isVisibleValues;
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
