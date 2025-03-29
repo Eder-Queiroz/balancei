@@ -19,12 +19,12 @@ class MonthPickerViewModel
 
   void prevYear() {
     final year = state.year - 1;
-    state = state.copyWith(year: year);
+    state = state.copyWith(year: year, isForward: true);
   }
 
   void nextYear() {
     final year = state.year + 1;
-    state = state.copyWith(year: year);
+    state = state.copyWith(year: year, isForward: false);
   }
 
   void selectDate(DateTime date) {

@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$MonthPickerState {
   int get year => throw _privateConstructorUsedError;
   DateTime get selectedDate => throw _privateConstructorUsedError;
+  bool get isForward => throw _privateConstructorUsedError;
 
   /// Create a copy of MonthPickerState
   /// with the given fields replaced by the non-null parameter values.
@@ -32,7 +33,7 @@ abstract class $MonthPickerStateCopyWith<$Res> {
           MonthPickerState value, $Res Function(MonthPickerState) then) =
       _$MonthPickerStateCopyWithImpl<$Res, MonthPickerState>;
   @useResult
-  $Res call({int year, DateTime selectedDate});
+  $Res call({int year, DateTime selectedDate, bool isForward});
 }
 
 /// @nodoc
@@ -52,6 +53,7 @@ class _$MonthPickerStateCopyWithImpl<$Res, $Val extends MonthPickerState>
   $Res call({
     Object? year = null,
     Object? selectedDate = null,
+    Object? isForward = null,
   }) {
     return _then(_value.copyWith(
       year: null == year
@@ -62,6 +64,10 @@ class _$MonthPickerStateCopyWithImpl<$Res, $Val extends MonthPickerState>
           ? _value.selectedDate
           : selectedDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      isForward: null == isForward
+          ? _value.isForward
+          : isForward // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -74,7 +80,7 @@ abstract class _$$MonthPickerStateImplCopyWith<$Res>
       __$$MonthPickerStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int year, DateTime selectedDate});
+  $Res call({int year, DateTime selectedDate, bool isForward});
 }
 
 /// @nodoc
@@ -92,6 +98,7 @@ class __$$MonthPickerStateImplCopyWithImpl<$Res>
   $Res call({
     Object? year = null,
     Object? selectedDate = null,
+    Object? isForward = null,
   }) {
     return _then(_$MonthPickerStateImpl(
       year: null == year
@@ -102,6 +109,10 @@ class __$$MonthPickerStateImplCopyWithImpl<$Res>
           ? _value.selectedDate
           : selectedDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      isForward: null == isForward
+          ? _value.isForward
+          : isForward // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -109,17 +120,21 @@ class __$$MonthPickerStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$MonthPickerStateImpl extends _MonthPickerState {
-  const _$MonthPickerStateImpl({required this.year, required this.selectedDate})
+  const _$MonthPickerStateImpl(
+      {required this.year, required this.selectedDate, this.isForward = false})
       : super._();
 
   @override
   final int year;
   @override
   final DateTime selectedDate;
+  @override
+  @JsonKey()
+  final bool isForward;
 
   @override
   String toString() {
-    return 'MonthPickerState(year: $year, selectedDate: $selectedDate)';
+    return 'MonthPickerState(year: $year, selectedDate: $selectedDate, isForward: $isForward)';
   }
 
   @override
@@ -129,11 +144,13 @@ class _$MonthPickerStateImpl extends _MonthPickerState {
             other is _$MonthPickerStateImpl &&
             (identical(other.year, year) || other.year == year) &&
             (identical(other.selectedDate, selectedDate) ||
-                other.selectedDate == selectedDate));
+                other.selectedDate == selectedDate) &&
+            (identical(other.isForward, isForward) ||
+                other.isForward == isForward));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, year, selectedDate);
+  int get hashCode => Object.hash(runtimeType, year, selectedDate, isForward);
 
   /// Create a copy of MonthPickerState
   /// with the given fields replaced by the non-null parameter values.
@@ -148,13 +165,16 @@ class _$MonthPickerStateImpl extends _MonthPickerState {
 abstract class _MonthPickerState extends MonthPickerState {
   const factory _MonthPickerState(
       {required final int year,
-      required final DateTime selectedDate}) = _$MonthPickerStateImpl;
+      required final DateTime selectedDate,
+      final bool isForward}) = _$MonthPickerStateImpl;
   const _MonthPickerState._() : super._();
 
   @override
   int get year;
   @override
   DateTime get selectedDate;
+  @override
+  bool get isForward;
 
   /// Create a copy of MonthPickerState
   /// with the given fields replaced by the non-null parameter values.

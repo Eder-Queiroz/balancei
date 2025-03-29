@@ -9,6 +9,7 @@ class MonthPickerState with _$MonthPickerState {
   const factory MonthPickerState({
     required int year,
     required DateTime selectedDate,
+    @Default(false) bool isForward,
   }) = _MonthPickerState;
 
   factory MonthPickerState.initial(DateTime startedDate) => MonthPickerState(

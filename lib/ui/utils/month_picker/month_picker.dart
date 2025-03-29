@@ -27,6 +27,7 @@ class _MonthPickerState extends ConsumerState<MonthPicker> {
     final state = ref.watch(provider);
     final year = state.year;
     final selectedDate = state.selectedDate;
+    final isForward = state.isForward;
     return Wrap(
       children: [
         Padding(
@@ -49,43 +50,58 @@ class _MonthPickerState extends ConsumerState<MonthPicker> {
             ],
           ),
         ),
-        GridView.count(
-          crossAxisCount: 3,
-          childAspectRatio: 2,
-          mainAxisSpacing: CommonSpacing.medium,
-          padding: EdgeInsets.all(CommonSpacing.small),
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          children: List.generate(
-            monthsInYear,
-            (index) {
-              final date = DateTime(year, index + 1);
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          transitionBuilder: (child, animation) {
+            final offsetAnimation = Tween<Offset>(
+              begin: Offset(isForward ? -1 : 1, 0),
+              end: Offset.zero,
+            ).animate(animation);
 
-              return GestureDetector(
-                onTap: () {
-                  viewModel.selectDate(date);
-                  context.pop(date);
-                },
-                child: Card(
-                  elevation: 2,
-                  color: date == selectedDate
-                      ? theme.primaryColor
-                      : theme.colorScheme.secondary,
-                  child: Center(
-                    child: Text(
-                      DateFormat.MMMM('pt_BR').format(date),
-                      style: theme.textTheme.headlineMedium!.copyWith(
-                        color: date == selectedDate
-                            ? theme.colorScheme.secondary
-                            : theme.colorScheme.primary,
+            return SlideTransition(
+              position: offsetAnimation,
+              child: child,
+            );
+          },
+          child: GridView.count(
+            key: ValueKey<int>(year),
+            crossAxisCount: 3,
+            childAspectRatio: 2,
+            mainAxisSpacing: CommonSpacing.medium,
+            padding: EdgeInsets.all(CommonSpacing.small),
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            children: List.generate(
+              monthsInYear,
+              (index) {
+                final date = DateTime(year, index + 1);
+
+                return GestureDetector(
+                  onTap: () {
+                    viewModel.selectDate(date);
+                    context.pop(date);
+                  },
+                  child: Card(
+                    elevation: 2,
+                    color: date == selectedDate
+                        ? theme.primaryColor
+                        : theme.colorScheme.secondary,
+                    child: Center(
+                      child: Text(
+                        DateFormat.MMMM('pt_BR').format(date),
+                        style: theme.textTheme.headlineMedium!.copyWith(
+                          color: date == selectedDate
+                              ? theme.colorScheme.secondary
+                              : theme.colorScheme.primary,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-        ),
+        )
       ],
     );
   }
