@@ -1,7 +1,7 @@
 import 'package:balancei_app/ui/home/components/transaction_card.dart';
 import 'package:balancei_app/ui/home/components/visibility_button.dart';
 import 'package:balancei_app/ui/home/viewmodel/home_viewmodel.dart';
-import 'package:balancei_app/ui/utils/commom_spacing.dart';
+import 'package:balancei_app/ui/utils/common_spacing.dart';
 import 'package:balancei_app/ui/utils/extensions/build_context_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
