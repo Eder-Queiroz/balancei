@@ -39,3 +39,7 @@ Além disso, o projeto também é uma vitrine técnica para estudar e aplicar:
 
 🔨 **Em desenvolvimento ativo**  
 Funcionalidades básicas de controle financeiro estão sendo implementadas. Em breve o projeto será disponibilizado como código aberto para contribuições.
+
+## 📌 Licença
+
+Este projeto está licenciado sob a [MIT License](./LICENSE).
