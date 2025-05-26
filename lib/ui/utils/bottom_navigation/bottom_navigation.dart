@@ -1,3 +1,5 @@
+import 'package:balancei_app/router/incoming/add_icoming_router.dart';
+import 'package:balancei_app/router/routers.dart';
 import 'package:balancei_app/ui/utils/bottom_navigation/viewmodel/speed_dial_viewmodel.dart';
 import 'package:balancei_app/ui/utils/common_radius.dart';
 import 'package:balancei_app/ui/utils/common_spacing.dart';
@@ -7,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 enum BottomNavigationItem {
-  home(value: 0, location: '/'),
+  home(value: 0, location: '/home'),
   dashboard(value: 1, location: '/dashboard');
 
   final int value;
@@ -152,7 +154,10 @@ class _BottomNavigationState extends ConsumerState<BottomNavigation> {
                   _buildAdditionalButton(
                     icon: Icons.trending_up,
                     label: "Receita",
-                    onPressed: viewModel.toggleAdditionalButtons,
+                    onPressed: () {
+                      IncomingRouter().push(context);
+                      viewModel.toggleAdditionalButtons();
+                    },
                   ),
                   const SizedBox(width: CommonSpacing.extraLarge),
                   _buildAdditionalButton(

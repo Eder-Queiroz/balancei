@@ -1,3 +1,4 @@
+import 'package:balancei_app/router/incoming/add_icoming_router.dart';
 import 'package:balancei_app/ui/dashboard/dashboard_screen.dart';
 import 'package:balancei_app/ui/home/home_screen.dart';
 import 'package:balancei_app/ui/utils/bottom_navigation/bottom_navigation.dart';
@@ -10,8 +11,10 @@ final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>();
 
 @TypedShellRoute<BottomNavigationShellRoute>(
   routes: <TypedRoute<RouteData>>[
-    TypedGoRoute<HomeRoute>(path: '/'),
-    TypedGoRoute<DashboardRoute>(path: '/dashboard'),
+    TypedGoRoute<HomeRoute>(path: '/home'),
+    TypedGoRoute<DashboardRoute>(
+      path: '/dashboard',
+    ),
   ],
 )
 class BottomNavigationShellRoute extends ShellRouteData {
@@ -25,6 +28,12 @@ class BottomNavigationShellRoute extends ShellRouteData {
   }
 }
 
+@TypedGoRoute<HomeRoute>(
+  path: '/home',
+  routes: <TypedRoute<RouteData>>[
+    TypedGoRoute<IncomingRouter>(path: 'add-incoming'),
+  ],
+)
 class HomeRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) => const HomeScreen();

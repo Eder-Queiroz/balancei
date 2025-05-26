@@ -28,6 +28,27 @@ class MyApp extends StatelessWidget {
           primary: const Color(0xFF65558F),
           secondary: const Color(0xFFD0BCFF),
         ),
+        inputDecorationTheme: InputDecorationTheme(
+          labelStyle: TextStyle(
+            fontSize: 16,
+            fontFamily: 'Roboto',
+            color: Colors.black,
+          ),
+          hintStyle: TextStyle(
+            fontSize: 14,
+            fontFamily: 'Roboto',
+            color: Colors.grey,
+          ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Color(0xFFD9D9D9)),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Color(0xFF65558F)),
+          ),
+          errorBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.red),
+          ),
+        ),
         textTheme: TextTheme(
           bodySmall: TextStyle(
             fontSize: 14,
