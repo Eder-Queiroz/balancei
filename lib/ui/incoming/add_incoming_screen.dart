@@ -3,6 +3,7 @@ import 'package:balancei_app/domain/valdiations/add_incoming_validator.dart';
 import 'package:balancei_app/ui/incoming/viewmodel/add_incoming_viewmodel.dart';
 import 'package:balancei_app/ui/utils/common_radius.dart';
 import 'package:balancei_app/ui/utils/common_spacing.dart';
+import 'package:balancei_app/ui/utils/fields/category_field.dart';
 import 'package:balancei_app/ui/utils/fields/switch_form_field.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
@@ -89,6 +90,7 @@ class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
                       validator: validator.byField(state, 'description'),
                       keyboardType: TextInputType.text,
                     ),
+                    CategoryField(),
                     SwitchFormField(
                       labelText: 'Ganho recorrente',
                       value: state.isRecurring ?? false,
