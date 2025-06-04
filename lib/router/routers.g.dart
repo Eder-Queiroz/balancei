@@ -73,6 +73,10 @@ RouteBase get $homeRoute => GoRouteData.$route(
           path: 'add-incoming',
           factory: $IncomingRouterExtension._fromState,
         ),
+        GoRouteData.$route(
+          path: 'create-category',
+          factory: $CreateCategoryRouterExtension._fromState,
+        ),
       ],
     );
 
@@ -81,6 +85,24 @@ extension $IncomingRouterExtension on IncomingRouter {
 
   String get location => GoRouteData.$location(
         '/home/add-incoming',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $CreateCategoryRouterExtension on CreateCategoryRouter {
+  static CreateCategoryRouter _fromState(GoRouterState state) =>
+      CreateCategoryRouter();
+
+  String get location => GoRouteData.$location(
+        '/home/create-category',
       );
 
   void go(BuildContext context) => context.go(location);

@@ -1,3 +1,4 @@
+import 'package:balancei_app/router/category/create_category_router.dart';
 import 'package:balancei_app/router/incoming/add_icoming_router.dart';
 import 'package:balancei_app/ui/dashboard/dashboard_screen.dart';
 import 'package:balancei_app/ui/home/home_screen.dart';
@@ -31,7 +32,8 @@ class BottomNavigationShellRoute extends ShellRouteData {
 @TypedGoRoute<HomeRoute>(
   path: '/home',
   routes: <TypedRoute<RouteData>>[
-    TypedGoRoute<IncomingRouter>(path: 'add-incoming'),
+    incomingRoute,
+    createCategoryRoute,
   ],
 )
 class HomeRoute extends GoRouteData {

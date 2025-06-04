@@ -90,7 +90,21 @@ class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
                       validator: validator.byField(state, 'description'),
                       keyboardType: TextInputType.text,
                     ),
-                    CategoryField(),
+                    CategoryField(
+                      data: [
+                        CategoryFieldData(
+                          name: 'Alimentação',
+                          color: Colors.green,
+                          icon: Icons.fastfood,
+                          isSelected: true,
+                        ),
+                        CategoryFieldData(
+                          name: 'Transporte',
+                          color: Colors.blue,
+                          icon: Icons.directions_car,
+                        ),
+                      ],
+                    ),
                     SwitchFormField(
                       labelText: 'Ganho recorrente',
                       value: state.isRecurring ?? false,
