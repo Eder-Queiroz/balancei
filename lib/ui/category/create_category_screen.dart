@@ -1,3 +1,4 @@
+import 'package:balancei_app/ui/utils/common_radius.dart';
 import 'package:balancei_app/ui/utils/common_spacing.dart';
 import 'package:balancei_app/ui/utils/fields/color_picker.dart';
 import 'package:balancei_app/ui/utils/fields/icon_picker.dart';
@@ -26,22 +27,50 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
             horizontal: CommonSpacing.large,
             vertical: CommonSpacing.extraSmall,
           ),
-          child: Form(
-            child: Column(
-              spacing: CommonSpacing.small,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Descrição da categoria',
-                    hintText: 'Ex: Alimentação',
-                  ),
-                  onChanged: (value) {},
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Form(
+                child: Column(
+                  spacing: CommonSpacing.small,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Descrição da categoria',
+                        hintText: 'Ex: Alimentação',
+                      ),
+                      onChanged: (value) {},
+                    ),
+                    ColorPicker(),
+                    IconPicker(),
+                  ],
                 ),
-                ColorPicker(),
-                IconPicker(),
-              ],
-            ),
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(CommonRadius.extraLarge),
+                    ),
+                    padding: const EdgeInsets.all(CommonSpacing.small),
+                    elevation: 4,
+                    disabledBackgroundColor:
+                        Theme.of(context).primaryColor.withValues(alpha: 0.5),
+                  ),
+                  onPressed: null,
+                  child: Text(
+                    'Criar',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: Colors.white,
+                        ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

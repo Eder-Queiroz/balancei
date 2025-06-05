@@ -36,7 +36,7 @@ class CategoryField extends ConsumerWidget {
       ),
     );
 
-    return showModalBottomSheet<void>(
+    await showModalBottomSheet<void>(
       context: context,
       builder: (context) {
         return SizedBox(
@@ -44,46 +44,50 @@ class CategoryField extends ConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.all(CommonSpacing.large),
             child: ListView.separated(
-                itemCount: categories.length,
-                separatorBuilder: (context, index) => const Divider(
-                      thickness: 1,
-                      color: Colors.grey,
-                    ),
-                itemBuilder: (context, index) {
-                  final category = categories[index];
+              itemCount: categories.length,
+              separatorBuilder: (context, index) => const Divider(
+                thickness: 1,
+                color: Colors.grey,
+              ),
+              itemBuilder: (context, index) {
+                final category = categories[index];
 
-                  if (index == categories.length - 1) {
-                    return ListTile(
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 0,
-                      ),
-                      leading: Icon(category.icon, color: category.color),
-                      title: Text(category.name),
-                      onTap: () {
-                        CreateCategoryRouter().push(context);
-                      },
-                    );
-                  }
-
+                if (index == categories.length - 1) {
                   return ListTile(
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 0,
                     ),
                     leading: Icon(category.icon, color: category.color),
                     title: Text(category.name),
-                    trailing: category.isSelected
-                        ? const Icon(Icons.check_circle, color: Colors.green)
-                        : const Icon(Icons.circle_outlined, color: Colors.grey),
                     onTap: () {
-                      // Handle selection logic here
-                      Navigator.pop(context, category);
+                      CreateCategoryRouter().push(context);
                     },
                   );
-                }),
+                }
+
+                return ListTile(
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 0,
+                  ),
+                  leading: Icon(category.icon, color: category.color),
+                  title: Text(category.name),
+                  trailing: category.isSelected
+                      ? const Icon(Icons.check_circle, color: Colors.green)
+                      : const Icon(Icons.circle_outlined, color: Colors.grey),
+                  onTap: () {
+                    // Handle selection logic here
+                    Navigator.pop(context, category);
+                  },
+                );
+              },
+            ),
           ),
         );
       },
     );
+
+    categories.removeLast();
+    return;
   }
 
   Widget buildBadge(String text, Color color, IconData icon) {
