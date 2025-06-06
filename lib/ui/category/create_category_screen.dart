@@ -1,6 +1,6 @@
 import 'package:balancei_app/ui/utils/common_radius.dart';
 import 'package:balancei_app/ui/utils/common_spacing.dart';
-import 'package:balancei_app/ui/utils/fields/color_picker.dart';
+import 'package:balancei_app/ui/utils/fields/color_picker/color_picker.dart';
 import 'package:balancei_app/ui/utils/fields/icon_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -42,7 +42,9 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
                       ),
                       onChanged: (value) {},
                     ),
-                    ColorPicker(),
+                    ColorPicker(
+                      onColorSelected: (color) {},
+                    ),
                     IconPicker(),
                   ],
                 ),
