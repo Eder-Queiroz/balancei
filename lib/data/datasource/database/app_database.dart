@@ -1,7 +1,12 @@
+import 'package:balancei_app/data/datasource/dao/available_color_dao.dart';
+import 'package:balancei_app/data/datasource/dao/available_icon_dao.dart';
 import 'package:balancei_app/data/datasource/dao/transaction_category_dao.dart';
 import 'package:balancei_app/data/datasource/dao/transaction_dao.dart';
+import 'package:balancei_app/data/datasource/database/tables/available_colors_table.dart';
+import 'package:balancei_app/data/datasource/database/tables/available_icons_table.dart';
 import 'package:balancei_app/data/datasource/database/tables/transaction_categories_table.dart';
 import 'package:balancei_app/data/datasource/database/tables/transactions_table.dart';
+import 'package:balancei_app/data/utils/available_icons_table_helpers.dart';
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,9 +25,13 @@ final appDatabaseProvider = Provider<AppDatabase>((ref) {
 @DriftDatabase(tables: [
   Transactions,
   TransactionCategoriesTable,
+  AvailableColorsTable,
+  AvailableIconsTable,
 ], daos: [
   TransactionDao,
   TransactionCategoryDao,
+  AvailableColorDao,
+  AvailableIconDao,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
@@ -45,6 +54,8 @@ class AppDatabase extends _$AppDatabase {
       await m.createAll();
       await _populateCategories();
       await _populateTransactions();
+      await _populateAvailableColors();
+      await _populateAvailableIcons();
     });
   }
 
@@ -98,6 +109,49 @@ class AppDatabase extends _$AppDatabase {
             isIncoming: const Value(true),
             recurrenceEndDate: const Value.absent(),
           ),
+        ],
+      );
+    });
+  }
+
+  Future<void> _populateAvailableColors() async {
+    await batch((batch) {
+      batch.insertAll(
+        availableColorsTable,
+        [
+          AvailableColorsTableCompanion.insert(hexCode: 'AF3DFF'),
+          AvailableColorsTableCompanion.insert(hexCode: '2CC7E6'),
+          AvailableColorsTableCompanion.insert(hexCode: 'FF3B94'),
+          AvailableColorsTableCompanion.insert(hexCode: 'F7B500'),
+          AvailableColorsTableCompanion.insert(hexCode: '00E676'),
+          AvailableColorsTableCompanion.insert(hexCode: '00BFAE'),
+          AvailableColorsTableCompanion.insert(hexCode: 'FF8345'),
+          AvailableColorsTableCompanion.insert(hexCode: 'FF5555'),
+          AvailableColorsTableCompanion.insert(hexCode: '23FFAA'),
+          AvailableColorsTableCompanion.insert(hexCode: 'FFE158'),
+          AvailableColorsTableCompanion.insert(hexCode: '8AFFC1'),
+          AvailableColorsTableCompanion.insert(hexCode: '2DFFB8'),
+          AvailableColorsTableCompanion.insert(hexCode: 'B388FF'),
+          AvailableColorsTableCompanion.insert(hexCode: 'FFA7C2'),
+          AvailableColorsTableCompanion.insert(hexCode: 'FFCC80'),
+          AvailableColorsTableCompanion.insert(hexCode: 'AEEA00'),
+          AvailableColorsTableCompanion.insert(hexCode: 'FFD600'),
+          AvailableColorsTableCompanion.insert(hexCode: '7C4DFF'),
+          AvailableColorsTableCompanion.insert(hexCode: '448AFF'),
+          AvailableColorsTableCompanion.insert(hexCode: '69F0AE'),
+        ],
+      );
+    });
+  }
+
+  Future<void> _populateAvailableIcons() async {
+    await batch((batch) {
+      batch.insertAll(
+        availableIconsTable,
+        [
+          ...AvailableIconsTableHelpers.convertIconsToHexCodes().map((code) {
+            return AvailableIconsTableCompanion.insert(iconCode: code);
+          }),
         ],
       );
     });

@@ -3,8 +3,8 @@ import 'package:balancei_app/domain/valdiations/create_category_validator.dart';
 import 'package:balancei_app/ui/category/viewmodel/create_category_viewmodel.dart';
 import 'package:balancei_app/ui/utils/common_radius.dart';
 import 'package:balancei_app/ui/utils/common_spacing.dart';
-import 'package:balancei_app/ui/utils/fields/color_picker/color_picker.dart';
-import 'package:balancei_app/ui/utils/fields/icon_picker/icon_picker.dart';
+import 'package:balancei_app/ui/utils/fields/picker/color_picker/color_picker.dart';
+import 'package:balancei_app/ui/utils/fields/picker/icon_picker/icon_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -64,19 +64,21 @@ class _CreateCategoryScreenState extends ConsumerState<CreateCategoryScreen> {
                       },
                     ),
                     ColorPicker(
-                      onColorSelected: (color) {
+                      onValueSelected: (color) {
                         WidgetsBinding.instance.addPostFrameCallback((_) {
                           viewModel.color = color;
                         });
                       },
+                      initialValue: dto.color ?? 0xff79747E,
                     ),
                     IconPicker(
-                      selectedColor: dto.color ?? 0xff79747E,
-                      onIconSelected: (icon) {
+                      onValueSelected: (icon) {
                         WidgetsBinding.instance.addPostFrameCallback((_) {
                           viewModel.iconCodePoint = icon;
                         });
                       },
+                      initialValue: dto.iconCodePoint ?? 0xe3b0,
+                      selectedColor: dto.color ?? 0xff79747E,
                     ),
                   ],
                 ),

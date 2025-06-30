@@ -831,22 +831,407 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
   }
 }
 
+class $AvailableColorsTableTable extends AvailableColorsTable
+    with TableInfo<$AvailableColorsTableTable, AvailableColorsTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $AvailableColorsTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _hexCodeMeta =
+      const VerificationMeta('hexCode');
+  @override
+  late final GeneratedColumn<String> hexCode = GeneratedColumn<String>(
+      'hex_code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, hexCode];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'available_colors_table';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<AvailableColorsTableData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('hex_code')) {
+      context.handle(_hexCodeMeta,
+          hexCode.isAcceptableOrUnknown(data['hex_code']!, _hexCodeMeta));
+    } else if (isInserting) {
+      context.missing(_hexCodeMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  AvailableColorsTableData map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return AvailableColorsTableData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      hexCode: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}hex_code'])!,
+    );
+  }
+
+  @override
+  $AvailableColorsTableTable createAlias(String alias) {
+    return $AvailableColorsTableTable(attachedDatabase, alias);
+  }
+}
+
+class AvailableColorsTableData extends DataClass
+    implements Insertable<AvailableColorsTableData> {
+  final int id;
+  final String hexCode;
+  const AvailableColorsTableData({required this.id, required this.hexCode});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['hex_code'] = Variable<String>(hexCode);
+    return map;
+  }
+
+  AvailableColorsTableCompanion toCompanion(bool nullToAbsent) {
+    return AvailableColorsTableCompanion(
+      id: Value(id),
+      hexCode: Value(hexCode),
+    );
+  }
+
+  factory AvailableColorsTableData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AvailableColorsTableData(
+      id: serializer.fromJson<int>(json['id']),
+      hexCode: serializer.fromJson<String>(json['hexCode']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'hexCode': serializer.toJson<String>(hexCode),
+    };
+  }
+
+  AvailableColorsTableData copyWith({int? id, String? hexCode}) =>
+      AvailableColorsTableData(
+        id: id ?? this.id,
+        hexCode: hexCode ?? this.hexCode,
+      );
+  AvailableColorsTableData copyWithCompanion(
+      AvailableColorsTableCompanion data) {
+    return AvailableColorsTableData(
+      id: data.id.present ? data.id.value : this.id,
+      hexCode: data.hexCode.present ? data.hexCode.value : this.hexCode,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AvailableColorsTableData(')
+          ..write('id: $id, ')
+          ..write('hexCode: $hexCode')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, hexCode);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AvailableColorsTableData &&
+          other.id == this.id &&
+          other.hexCode == this.hexCode);
+}
+
+class AvailableColorsTableCompanion
+    extends UpdateCompanion<AvailableColorsTableData> {
+  final Value<int> id;
+  final Value<String> hexCode;
+  const AvailableColorsTableCompanion({
+    this.id = const Value.absent(),
+    this.hexCode = const Value.absent(),
+  });
+  AvailableColorsTableCompanion.insert({
+    this.id = const Value.absent(),
+    required String hexCode,
+  }) : hexCode = Value(hexCode);
+  static Insertable<AvailableColorsTableData> custom({
+    Expression<int>? id,
+    Expression<String>? hexCode,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (hexCode != null) 'hex_code': hexCode,
+    });
+  }
+
+  AvailableColorsTableCompanion copyWith(
+      {Value<int>? id, Value<String>? hexCode}) {
+    return AvailableColorsTableCompanion(
+      id: id ?? this.id,
+      hexCode: hexCode ?? this.hexCode,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (hexCode.present) {
+      map['hex_code'] = Variable<String>(hexCode.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AvailableColorsTableCompanion(')
+          ..write('id: $id, ')
+          ..write('hexCode: $hexCode')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $AvailableIconsTableTable extends AvailableIconsTable
+    with TableInfo<$AvailableIconsTableTable, AvailableIconsTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $AvailableIconsTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _iconCodeMeta =
+      const VerificationMeta('iconCode');
+  @override
+  late final GeneratedColumn<String> iconCode = GeneratedColumn<String>(
+      'icon_code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, iconCode];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'available_icons_table';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<AvailableIconsTableData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('icon_code')) {
+      context.handle(_iconCodeMeta,
+          iconCode.isAcceptableOrUnknown(data['icon_code']!, _iconCodeMeta));
+    } else if (isInserting) {
+      context.missing(_iconCodeMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  AvailableIconsTableData map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return AvailableIconsTableData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      iconCode: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}icon_code'])!,
+    );
+  }
+
+  @override
+  $AvailableIconsTableTable createAlias(String alias) {
+    return $AvailableIconsTableTable(attachedDatabase, alias);
+  }
+}
+
+class AvailableIconsTableData extends DataClass
+    implements Insertable<AvailableIconsTableData> {
+  final int id;
+  final String iconCode;
+  const AvailableIconsTableData({required this.id, required this.iconCode});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['icon_code'] = Variable<String>(iconCode);
+    return map;
+  }
+
+  AvailableIconsTableCompanion toCompanion(bool nullToAbsent) {
+    return AvailableIconsTableCompanion(
+      id: Value(id),
+      iconCode: Value(iconCode),
+    );
+  }
+
+  factory AvailableIconsTableData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AvailableIconsTableData(
+      id: serializer.fromJson<int>(json['id']),
+      iconCode: serializer.fromJson<String>(json['iconCode']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'iconCode': serializer.toJson<String>(iconCode),
+    };
+  }
+
+  AvailableIconsTableData copyWith({int? id, String? iconCode}) =>
+      AvailableIconsTableData(
+        id: id ?? this.id,
+        iconCode: iconCode ?? this.iconCode,
+      );
+  AvailableIconsTableData copyWithCompanion(AvailableIconsTableCompanion data) {
+    return AvailableIconsTableData(
+      id: data.id.present ? data.id.value : this.id,
+      iconCode: data.iconCode.present ? data.iconCode.value : this.iconCode,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AvailableIconsTableData(')
+          ..write('id: $id, ')
+          ..write('iconCode: $iconCode')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, iconCode);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AvailableIconsTableData &&
+          other.id == this.id &&
+          other.iconCode == this.iconCode);
+}
+
+class AvailableIconsTableCompanion
+    extends UpdateCompanion<AvailableIconsTableData> {
+  final Value<int> id;
+  final Value<String> iconCode;
+  const AvailableIconsTableCompanion({
+    this.id = const Value.absent(),
+    this.iconCode = const Value.absent(),
+  });
+  AvailableIconsTableCompanion.insert({
+    this.id = const Value.absent(),
+    required String iconCode,
+  }) : iconCode = Value(iconCode);
+  static Insertable<AvailableIconsTableData> custom({
+    Expression<int>? id,
+    Expression<String>? iconCode,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (iconCode != null) 'icon_code': iconCode,
+    });
+  }
+
+  AvailableIconsTableCompanion copyWith(
+      {Value<int>? id, Value<String>? iconCode}) {
+    return AvailableIconsTableCompanion(
+      id: id ?? this.id,
+      iconCode: iconCode ?? this.iconCode,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (iconCode.present) {
+      map['icon_code'] = Variable<String>(iconCode.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AvailableIconsTableCompanion(')
+          ..write('id: $id, ')
+          ..write('iconCode: $iconCode')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $TransactionCategoriesTableTable transactionCategoriesTable =
       $TransactionCategoriesTableTable(this);
   late final $TransactionsTable transactions = $TransactionsTable(this);
+  late final $AvailableColorsTableTable availableColorsTable =
+      $AvailableColorsTableTable(this);
+  late final $AvailableIconsTableTable availableIconsTable =
+      $AvailableIconsTableTable(this);
   late final TransactionDao transactionDao =
       TransactionDao(this as AppDatabase);
   late final TransactionCategoryDao transactionCategoryDao =
       TransactionCategoryDao(this as AppDatabase);
+  late final AvailableColorDao availableColorDao =
+      AvailableColorDao(this as AppDatabase);
+  late final AvailableIconDao availableIconDao =
+      AvailableIconDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [transactionCategoriesTable, transactions];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+        transactionCategoriesTable,
+        transactions,
+        availableColorsTable,
+        availableIconsTable
+      ];
 }
 
 typedef $$TransactionCategoriesTableTableCreateCompanionBuilder
@@ -1464,6 +1849,261 @@ typedef $$TransactionsTableProcessedTableManager = ProcessedTableManager<
     (Transaction, $$TransactionsTableReferences),
     Transaction,
     PrefetchHooks Function({bool categoryId})>;
+typedef $$AvailableColorsTableTableCreateCompanionBuilder
+    = AvailableColorsTableCompanion Function({
+  Value<int> id,
+  required String hexCode,
+});
+typedef $$AvailableColorsTableTableUpdateCompanionBuilder
+    = AvailableColorsTableCompanion Function({
+  Value<int> id,
+  Value<String> hexCode,
+});
+
+class $$AvailableColorsTableTableFilterComposer
+    extends Composer<_$AppDatabase, $AvailableColorsTableTable> {
+  $$AvailableColorsTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get hexCode => $composableBuilder(
+      column: $table.hexCode, builder: (column) => ColumnFilters(column));
+}
+
+class $$AvailableColorsTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $AvailableColorsTableTable> {
+  $$AvailableColorsTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get hexCode => $composableBuilder(
+      column: $table.hexCode, builder: (column) => ColumnOrderings(column));
+}
+
+class $$AvailableColorsTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $AvailableColorsTableTable> {
+  $$AvailableColorsTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get hexCode =>
+      $composableBuilder(column: $table.hexCode, builder: (column) => column);
+}
+
+class $$AvailableColorsTableTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $AvailableColorsTableTable,
+    AvailableColorsTableData,
+    $$AvailableColorsTableTableFilterComposer,
+    $$AvailableColorsTableTableOrderingComposer,
+    $$AvailableColorsTableTableAnnotationComposer,
+    $$AvailableColorsTableTableCreateCompanionBuilder,
+    $$AvailableColorsTableTableUpdateCompanionBuilder,
+    (
+      AvailableColorsTableData,
+      BaseReferences<_$AppDatabase, $AvailableColorsTableTable,
+          AvailableColorsTableData>
+    ),
+    AvailableColorsTableData,
+    PrefetchHooks Function()> {
+  $$AvailableColorsTableTableTableManager(
+      _$AppDatabase db, $AvailableColorsTableTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$AvailableColorsTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$AvailableColorsTableTableOrderingComposer(
+                  $db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$AvailableColorsTableTableAnnotationComposer(
+                  $db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> hexCode = const Value.absent(),
+          }) =>
+              AvailableColorsTableCompanion(
+            id: id,
+            hexCode: hexCode,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String hexCode,
+          }) =>
+              AvailableColorsTableCompanion.insert(
+            id: id,
+            hexCode: hexCode,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$AvailableColorsTableTableProcessedTableManager
+    = ProcessedTableManager<
+        _$AppDatabase,
+        $AvailableColorsTableTable,
+        AvailableColorsTableData,
+        $$AvailableColorsTableTableFilterComposer,
+        $$AvailableColorsTableTableOrderingComposer,
+        $$AvailableColorsTableTableAnnotationComposer,
+        $$AvailableColorsTableTableCreateCompanionBuilder,
+        $$AvailableColorsTableTableUpdateCompanionBuilder,
+        (
+          AvailableColorsTableData,
+          BaseReferences<_$AppDatabase, $AvailableColorsTableTable,
+              AvailableColorsTableData>
+        ),
+        AvailableColorsTableData,
+        PrefetchHooks Function()>;
+typedef $$AvailableIconsTableTableCreateCompanionBuilder
+    = AvailableIconsTableCompanion Function({
+  Value<int> id,
+  required String iconCode,
+});
+typedef $$AvailableIconsTableTableUpdateCompanionBuilder
+    = AvailableIconsTableCompanion Function({
+  Value<int> id,
+  Value<String> iconCode,
+});
+
+class $$AvailableIconsTableTableFilterComposer
+    extends Composer<_$AppDatabase, $AvailableIconsTableTable> {
+  $$AvailableIconsTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get iconCode => $composableBuilder(
+      column: $table.iconCode, builder: (column) => ColumnFilters(column));
+}
+
+class $$AvailableIconsTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $AvailableIconsTableTable> {
+  $$AvailableIconsTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get iconCode => $composableBuilder(
+      column: $table.iconCode, builder: (column) => ColumnOrderings(column));
+}
+
+class $$AvailableIconsTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $AvailableIconsTableTable> {
+  $$AvailableIconsTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get iconCode =>
+      $composableBuilder(column: $table.iconCode, builder: (column) => column);
+}
+
+class $$AvailableIconsTableTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $AvailableIconsTableTable,
+    AvailableIconsTableData,
+    $$AvailableIconsTableTableFilterComposer,
+    $$AvailableIconsTableTableOrderingComposer,
+    $$AvailableIconsTableTableAnnotationComposer,
+    $$AvailableIconsTableTableCreateCompanionBuilder,
+    $$AvailableIconsTableTableUpdateCompanionBuilder,
+    (
+      AvailableIconsTableData,
+      BaseReferences<_$AppDatabase, $AvailableIconsTableTable,
+          AvailableIconsTableData>
+    ),
+    AvailableIconsTableData,
+    PrefetchHooks Function()> {
+  $$AvailableIconsTableTableTableManager(
+      _$AppDatabase db, $AvailableIconsTableTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$AvailableIconsTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$AvailableIconsTableTableOrderingComposer(
+                  $db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$AvailableIconsTableTableAnnotationComposer(
+                  $db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> iconCode = const Value.absent(),
+          }) =>
+              AvailableIconsTableCompanion(
+            id: id,
+            iconCode: iconCode,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String iconCode,
+          }) =>
+              AvailableIconsTableCompanion.insert(
+            id: id,
+            iconCode: iconCode,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$AvailableIconsTableTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $AvailableIconsTableTable,
+    AvailableIconsTableData,
+    $$AvailableIconsTableTableFilterComposer,
+    $$AvailableIconsTableTableOrderingComposer,
+    $$AvailableIconsTableTableAnnotationComposer,
+    $$AvailableIconsTableTableCreateCompanionBuilder,
+    $$AvailableIconsTableTableUpdateCompanionBuilder,
+    (
+      AvailableIconsTableData,
+      BaseReferences<_$AppDatabase, $AvailableIconsTableTable,
+          AvailableIconsTableData>
+    ),
+    AvailableIconsTableData,
+    PrefetchHooks Function()>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -1474,4 +2114,8 @@ class $AppDatabaseManager {
               _db, _db.transactionCategoriesTable);
   $$TransactionsTableTableManager get transactions =>
       $$TransactionsTableTableManager(_db, _db.transactions);
+  $$AvailableColorsTableTableTableManager get availableColorsTable =>
+      $$AvailableColorsTableTableTableManager(_db, _db.availableColorsTable);
+  $$AvailableIconsTableTableTableManager get availableIconsTable =>
+      $$AvailableIconsTableTableTableManager(_db, _db.availableIconsTable);
 }
