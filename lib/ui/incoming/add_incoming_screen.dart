@@ -1,5 +1,6 @@
 import 'package:balancei_app/domain/dtos/add_incoming.dart';
 import 'package:balancei_app/domain/valdiations/add_incoming_validator.dart';
+import 'package:balancei_app/router/routers.dart';
 import 'package:balancei_app/ui/incoming/viewmodel/add_incoming_viewmodel.dart';
 import 'package:balancei_app/ui/utils/common_radius.dart';
 import 'package:balancei_app/ui/utils/common_spacing.dart';
@@ -30,6 +31,14 @@ class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
 
   bool isValid(AddIncomingDTO dto) {
     return validator.validate(dto).isValid;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      viewModel.fetchCategories();
+    });
   }
 
   @override
@@ -68,7 +77,7 @@ class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
                         viewModel.value = doubleValue;
                       },
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: validator.byField(state, 'value'),
+                      validator: validator.byField(state.dto, 'value'),
                       keyboardType: TextInputType.number,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
@@ -77,7 +86,7 @@ class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
                     ),
                     SwitchFormField(
                       labelText: 'Recebido',
-                      value: state.received ?? false,
+                      value: state.dto.received ?? false,
                       onChanged: (value) => viewModel.received = value,
                     ),
                     TextFormField(
@@ -87,32 +96,30 @@ class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
                       ),
                       onChanged: (value) => viewModel.description = value,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: validator.byField(state, 'description'),
+                      validator: validator.byField(state.dto, 'description'),
                       keyboardType: TextInputType.text,
                     ),
-                    CategoryField(
-                      data: [
-                        CategoryFieldData(
-                          name: 'Alimentação',
-                          color: Colors.green,
-                          icon: Icons.fastfood,
-                          isSelected: true,
-                        ),
-                        CategoryFieldData(
-                          name: 'Transporte',
-                          color: Colors.blue,
-                          icon: Icons.directions_car,
-                        ),
-                      ],
+                    state.categories.when(
+                      data: (categories) {
+                        return CategoryField(
+                          data: _mapCategoriesToFieldData(
+                              categories, state.dto.categoryId),
+                        );
+                      },
+                      loading: () => const SizedBox.shrink(),
+                      error: (error, stackTrace) {
+                        HomeRoute().push(context);
+                        return SizedBox.shrink();
+                      },
                     ),
                     SwitchFormField(
                       labelText: 'Ganho recorrente',
-                      value: state.isRecurring ?? false,
+                      value: state.dto.isRecurring ?? false,
                       onChanged: (value) => viewModel.isRecurring = value,
                     ),
                     SwitchFormField(
                       labelText: 'Repetir',
-                      value: state.repeat ?? false,
+                      value: state.dto.repeat ?? false,
                       onChanged: (value) => viewModel.repeat = value,
                     ),
                   ],
@@ -132,7 +139,7 @@ class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
                     disabledBackgroundColor:
                         Theme.of(context).primaryColor.withValues(alpha: 0.5),
                   ),
-                  onPressed: isValid(state) ? () {} : null,
+                  onPressed: isValid(state.dto) ? () {} : null,
                   child: Text(
                     'Cadastrar',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -146,5 +153,22 @@ class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
         ),
       ),
     );
+  }
+
+  List<CategoryFieldData> _mapCategoriesToFieldData(
+      List<dynamic> categories, int? selectedCategoryId) {
+    return categories
+        .map((category) => CategoryFieldData(
+            name: category.description,
+            color: Color(category.colorHex),
+            icon: IconData(
+              category.iconCodePoint,
+              fontFamily: 'MaterialIcons',
+            ),
+            isSelected: selectedCategoryId == category.id,
+            onTap: () {
+              viewModel.category = category.id;
+            }))
+        .toList();
   }
 }

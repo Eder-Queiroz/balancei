@@ -11,12 +11,14 @@ class CategoryFieldData {
   final Color color;
   final IconData icon;
   final bool isSelected;
+  final VoidCallback onTap;
 
   const CategoryFieldData({
     required this.name,
     required this.color,
     required this.icon,
     this.isSelected = false,
+    required this.onTap,
   });
 }
 
@@ -33,6 +35,7 @@ class CategoryField extends ConsumerWidget {
         color: Colors.grey,
         icon: Icons.add_circle_outline,
         isSelected: false,
+        onTap: () {},
       ),
     );
 
@@ -75,7 +78,7 @@ class CategoryField extends ConsumerWidget {
                       ? const Icon(Icons.check_circle, color: Colors.green)
                       : const Icon(Icons.circle_outlined, color: Colors.grey),
                   onTap: () {
-                    // Handle selection logic here
+                    category.onTap();
                     Navigator.pop(context, category);
                   },
                 );

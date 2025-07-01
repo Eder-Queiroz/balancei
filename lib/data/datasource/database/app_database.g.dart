@@ -1204,6 +1204,274 @@ class AvailableIconsTableCompanion
   }
 }
 
+class $CategoriesTableTable extends CategoriesTable
+    with TableInfo<$CategoriesTableTable, CategoriesTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $CategoriesTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+      'description', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _iconIdMeta = const VerificationMeta('iconId');
+  @override
+  late final GeneratedColumn<int> iconId = GeneratedColumn<int>(
+      'icon_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES available_icons_table (id)'));
+  static const VerificationMeta _colorIdMeta =
+      const VerificationMeta('colorId');
+  @override
+  late final GeneratedColumn<int> colorId = GeneratedColumn<int>(
+      'color_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES available_colors_table (id)'));
+  @override
+  List<GeneratedColumn> get $columns => [id, description, iconId, colorId];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'categories_table';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<CategoriesTableData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description']!, _descriptionMeta));
+    } else if (isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    if (data.containsKey('icon_id')) {
+      context.handle(_iconIdMeta,
+          iconId.isAcceptableOrUnknown(data['icon_id']!, _iconIdMeta));
+    } else if (isInserting) {
+      context.missing(_iconIdMeta);
+    }
+    if (data.containsKey('color_id')) {
+      context.handle(_colorIdMeta,
+          colorId.isAcceptableOrUnknown(data['color_id']!, _colorIdMeta));
+    } else if (isInserting) {
+      context.missing(_colorIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  CategoriesTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return CategoriesTableData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      description: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}description'])!,
+      iconId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}icon_id'])!,
+      colorId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}color_id'])!,
+    );
+  }
+
+  @override
+  $CategoriesTableTable createAlias(String alias) {
+    return $CategoriesTableTable(attachedDatabase, alias);
+  }
+}
+
+class CategoriesTableData extends DataClass
+    implements Insertable<CategoriesTableData> {
+  final int id;
+  final String description;
+  final int iconId;
+  final int colorId;
+  const CategoriesTableData(
+      {required this.id,
+      required this.description,
+      required this.iconId,
+      required this.colorId});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['description'] = Variable<String>(description);
+    map['icon_id'] = Variable<int>(iconId);
+    map['color_id'] = Variable<int>(colorId);
+    return map;
+  }
+
+  CategoriesTableCompanion toCompanion(bool nullToAbsent) {
+    return CategoriesTableCompanion(
+      id: Value(id),
+      description: Value(description),
+      iconId: Value(iconId),
+      colorId: Value(colorId),
+    );
+  }
+
+  factory CategoriesTableData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return CategoriesTableData(
+      id: serializer.fromJson<int>(json['id']),
+      description: serializer.fromJson<String>(json['description']),
+      iconId: serializer.fromJson<int>(json['iconId']),
+      colorId: serializer.fromJson<int>(json['colorId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'description': serializer.toJson<String>(description),
+      'iconId': serializer.toJson<int>(iconId),
+      'colorId': serializer.toJson<int>(colorId),
+    };
+  }
+
+  CategoriesTableData copyWith(
+          {int? id, String? description, int? iconId, int? colorId}) =>
+      CategoriesTableData(
+        id: id ?? this.id,
+        description: description ?? this.description,
+        iconId: iconId ?? this.iconId,
+        colorId: colorId ?? this.colorId,
+      );
+  CategoriesTableData copyWithCompanion(CategoriesTableCompanion data) {
+    return CategoriesTableData(
+      id: data.id.present ? data.id.value : this.id,
+      description:
+          data.description.present ? data.description.value : this.description,
+      iconId: data.iconId.present ? data.iconId.value : this.iconId,
+      colorId: data.colorId.present ? data.colorId.value : this.colorId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CategoriesTableData(')
+          ..write('id: $id, ')
+          ..write('description: $description, ')
+          ..write('iconId: $iconId, ')
+          ..write('colorId: $colorId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, description, iconId, colorId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is CategoriesTableData &&
+          other.id == this.id &&
+          other.description == this.description &&
+          other.iconId == this.iconId &&
+          other.colorId == this.colorId);
+}
+
+class CategoriesTableCompanion extends UpdateCompanion<CategoriesTableData> {
+  final Value<int> id;
+  final Value<String> description;
+  final Value<int> iconId;
+  final Value<int> colorId;
+  const CategoriesTableCompanion({
+    this.id = const Value.absent(),
+    this.description = const Value.absent(),
+    this.iconId = const Value.absent(),
+    this.colorId = const Value.absent(),
+  });
+  CategoriesTableCompanion.insert({
+    this.id = const Value.absent(),
+    required String description,
+    required int iconId,
+    required int colorId,
+  })  : description = Value(description),
+        iconId = Value(iconId),
+        colorId = Value(colorId);
+  static Insertable<CategoriesTableData> custom({
+    Expression<int>? id,
+    Expression<String>? description,
+    Expression<int>? iconId,
+    Expression<int>? colorId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (description != null) 'description': description,
+      if (iconId != null) 'icon_id': iconId,
+      if (colorId != null) 'color_id': colorId,
+    });
+  }
+
+  CategoriesTableCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? description,
+      Value<int>? iconId,
+      Value<int>? colorId}) {
+    return CategoriesTableCompanion(
+      id: id ?? this.id,
+      description: description ?? this.description,
+      iconId: iconId ?? this.iconId,
+      colorId: colorId ?? this.colorId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (iconId.present) {
+      map['icon_id'] = Variable<int>(iconId.value);
+    }
+    if (colorId.present) {
+      map['color_id'] = Variable<int>(colorId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CategoriesTableCompanion(')
+          ..write('id: $id, ')
+          ..write('description: $description, ')
+          ..write('iconId: $iconId, ')
+          ..write('colorId: $colorId')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -1214,6 +1482,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $AvailableColorsTableTable(this);
   late final $AvailableIconsTableTable availableIconsTable =
       $AvailableIconsTableTable(this);
+  late final $CategoriesTableTable categoriesTable =
+      $CategoriesTableTable(this);
   late final TransactionDao transactionDao =
       TransactionDao(this as AppDatabase);
   late final TransactionCategoryDao transactionCategoryDao =
@@ -1222,6 +1492,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       AvailableColorDao(this as AppDatabase);
   late final AvailableIconDao availableIconDao =
       AvailableIconDao(this as AppDatabase);
+  late final CategoryDao categoryDao = CategoryDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1230,7 +1501,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         transactionCategoriesTable,
         transactions,
         availableColorsTable,
-        availableIconsTable
+        availableIconsTable,
+        categoriesTable
       ];
 }
 
@@ -1860,6 +2132,29 @@ typedef $$AvailableColorsTableTableUpdateCompanionBuilder
   Value<String> hexCode,
 });
 
+final class $$AvailableColorsTableTableReferences extends BaseReferences<
+    _$AppDatabase, $AvailableColorsTableTable, AvailableColorsTableData> {
+  $$AvailableColorsTableTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<$CategoriesTableTable, List<CategoriesTableData>>
+      _categoriesTableRefsTable(_$AppDatabase db) =>
+          MultiTypedResultKey.fromTable(db.categoriesTable,
+              aliasName: $_aliasNameGenerator(
+                  db.availableColorsTable.id, db.categoriesTable.colorId));
+
+  $$CategoriesTableTableProcessedTableManager get categoriesTableRefs {
+    final manager =
+        $$CategoriesTableTableTableManager($_db, $_db.categoriesTable)
+            .filter((f) => f.colorId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache =
+        $_typedResult.readTableOrNull(_categoriesTableRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+}
+
 class $$AvailableColorsTableTableFilterComposer
     extends Composer<_$AppDatabase, $AvailableColorsTableTable> {
   $$AvailableColorsTableTableFilterComposer({
@@ -1874,6 +2169,27 @@ class $$AvailableColorsTableTableFilterComposer
 
   ColumnFilters<String> get hexCode => $composableBuilder(
       column: $table.hexCode, builder: (column) => ColumnFilters(column));
+
+  Expression<bool> categoriesTableRefs(
+      Expression<bool> Function($$CategoriesTableTableFilterComposer f) f) {
+    final $$CategoriesTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.categoriesTable,
+        getReferencedColumn: (t) => t.colorId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$CategoriesTableTableFilterComposer(
+              $db: $db,
+              $table: $db.categoriesTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
 }
 
 class $$AvailableColorsTableTableOrderingComposer
@@ -1906,6 +2222,27 @@ class $$AvailableColorsTableTableAnnotationComposer
 
   GeneratedColumn<String> get hexCode =>
       $composableBuilder(column: $table.hexCode, builder: (column) => column);
+
+  Expression<T> categoriesTableRefs<T extends Object>(
+      Expression<T> Function($$CategoriesTableTableAnnotationComposer a) f) {
+    final $$CategoriesTableTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.categoriesTable,
+        getReferencedColumn: (t) => t.colorId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$CategoriesTableTableAnnotationComposer(
+              $db: $db,
+              $table: $db.categoriesTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
 }
 
 class $$AvailableColorsTableTableTableManager extends RootTableManager<
@@ -1917,13 +2254,9 @@ class $$AvailableColorsTableTableTableManager extends RootTableManager<
     $$AvailableColorsTableTableAnnotationComposer,
     $$AvailableColorsTableTableCreateCompanionBuilder,
     $$AvailableColorsTableTableUpdateCompanionBuilder,
-    (
-      AvailableColorsTableData,
-      BaseReferences<_$AppDatabase, $AvailableColorsTableTable,
-          AvailableColorsTableData>
-    ),
+    (AvailableColorsTableData, $$AvailableColorsTableTableReferences),
     AvailableColorsTableData,
-    PrefetchHooks Function()> {
+    PrefetchHooks Function({bool categoriesTableRefs})> {
   $$AvailableColorsTableTableTableManager(
       _$AppDatabase db, $AvailableColorsTableTable table)
       : super(TableManagerState(
@@ -1954,9 +2287,37 @@ class $$AvailableColorsTableTableTableManager extends RootTableManager<
             hexCode: hexCode,
           ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map((e) => (
+                    e.readTable(table),
+                    $$AvailableColorsTableTableReferences(db, table, e)
+                  ))
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: ({categoriesTableRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (categoriesTableRefs) db.categoriesTable
+              ],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (categoriesTableRefs)
+                    await $_getPrefetchedData<AvailableColorsTableData,
+                            $AvailableColorsTableTable, CategoriesTableData>(
+                        currentTable: table,
+                        referencedTable: $$AvailableColorsTableTableReferences
+                            ._categoriesTableRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$AvailableColorsTableTableReferences(db, table, p0)
+                                .categoriesTableRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.colorId == item.id),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
         ));
 }
 
@@ -1970,13 +2331,9 @@ typedef $$AvailableColorsTableTableProcessedTableManager
         $$AvailableColorsTableTableAnnotationComposer,
         $$AvailableColorsTableTableCreateCompanionBuilder,
         $$AvailableColorsTableTableUpdateCompanionBuilder,
-        (
-          AvailableColorsTableData,
-          BaseReferences<_$AppDatabase, $AvailableColorsTableTable,
-              AvailableColorsTableData>
-        ),
+        (AvailableColorsTableData, $$AvailableColorsTableTableReferences),
         AvailableColorsTableData,
-        PrefetchHooks Function()>;
+        PrefetchHooks Function({bool categoriesTableRefs})>;
 typedef $$AvailableIconsTableTableCreateCompanionBuilder
     = AvailableIconsTableCompanion Function({
   Value<int> id,
@@ -1987,6 +2344,29 @@ typedef $$AvailableIconsTableTableUpdateCompanionBuilder
   Value<int> id,
   Value<String> iconCode,
 });
+
+final class $$AvailableIconsTableTableReferences extends BaseReferences<
+    _$AppDatabase, $AvailableIconsTableTable, AvailableIconsTableData> {
+  $$AvailableIconsTableTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<$CategoriesTableTable, List<CategoriesTableData>>
+      _categoriesTableRefsTable(_$AppDatabase db) =>
+          MultiTypedResultKey.fromTable(db.categoriesTable,
+              aliasName: $_aliasNameGenerator(
+                  db.availableIconsTable.id, db.categoriesTable.iconId));
+
+  $$CategoriesTableTableProcessedTableManager get categoriesTableRefs {
+    final manager =
+        $$CategoriesTableTableTableManager($_db, $_db.categoriesTable)
+            .filter((f) => f.iconId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache =
+        $_typedResult.readTableOrNull(_categoriesTableRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+}
 
 class $$AvailableIconsTableTableFilterComposer
     extends Composer<_$AppDatabase, $AvailableIconsTableTable> {
@@ -2002,6 +2382,27 @@ class $$AvailableIconsTableTableFilterComposer
 
   ColumnFilters<String> get iconCode => $composableBuilder(
       column: $table.iconCode, builder: (column) => ColumnFilters(column));
+
+  Expression<bool> categoriesTableRefs(
+      Expression<bool> Function($$CategoriesTableTableFilterComposer f) f) {
+    final $$CategoriesTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.categoriesTable,
+        getReferencedColumn: (t) => t.iconId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$CategoriesTableTableFilterComposer(
+              $db: $db,
+              $table: $db.categoriesTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
 }
 
 class $$AvailableIconsTableTableOrderingComposer
@@ -2034,6 +2435,27 @@ class $$AvailableIconsTableTableAnnotationComposer
 
   GeneratedColumn<String> get iconCode =>
       $composableBuilder(column: $table.iconCode, builder: (column) => column);
+
+  Expression<T> categoriesTableRefs<T extends Object>(
+      Expression<T> Function($$CategoriesTableTableAnnotationComposer a) f) {
+    final $$CategoriesTableTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.categoriesTable,
+        getReferencedColumn: (t) => t.iconId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$CategoriesTableTableAnnotationComposer(
+              $db: $db,
+              $table: $db.categoriesTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
 }
 
 class $$AvailableIconsTableTableTableManager extends RootTableManager<
@@ -2045,13 +2467,9 @@ class $$AvailableIconsTableTableTableManager extends RootTableManager<
     $$AvailableIconsTableTableAnnotationComposer,
     $$AvailableIconsTableTableCreateCompanionBuilder,
     $$AvailableIconsTableTableUpdateCompanionBuilder,
-    (
-      AvailableIconsTableData,
-      BaseReferences<_$AppDatabase, $AvailableIconsTableTable,
-          AvailableIconsTableData>
-    ),
+    (AvailableIconsTableData, $$AvailableIconsTableTableReferences),
     AvailableIconsTableData,
-    PrefetchHooks Function()> {
+    PrefetchHooks Function({bool categoriesTableRefs})> {
   $$AvailableIconsTableTableTableManager(
       _$AppDatabase db, $AvailableIconsTableTable table)
       : super(TableManagerState(
@@ -2082,9 +2500,37 @@ class $$AvailableIconsTableTableTableManager extends RootTableManager<
             iconCode: iconCode,
           ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map((e) => (
+                    e.readTable(table),
+                    $$AvailableIconsTableTableReferences(db, table, e)
+                  ))
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: ({categoriesTableRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (categoriesTableRefs) db.categoriesTable
+              ],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (categoriesTableRefs)
+                    await $_getPrefetchedData<AvailableIconsTableData,
+                            $AvailableIconsTableTable, CategoriesTableData>(
+                        currentTable: table,
+                        referencedTable: $$AvailableIconsTableTableReferences
+                            ._categoriesTableRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$AvailableIconsTableTableReferences(db, table, p0)
+                                .categoriesTableRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.iconId == item.id),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
         ));
 }
 
@@ -2097,13 +2543,347 @@ typedef $$AvailableIconsTableTableProcessedTableManager = ProcessedTableManager<
     $$AvailableIconsTableTableAnnotationComposer,
     $$AvailableIconsTableTableCreateCompanionBuilder,
     $$AvailableIconsTableTableUpdateCompanionBuilder,
-    (
-      AvailableIconsTableData,
-      BaseReferences<_$AppDatabase, $AvailableIconsTableTable,
-          AvailableIconsTableData>
-    ),
+    (AvailableIconsTableData, $$AvailableIconsTableTableReferences),
     AvailableIconsTableData,
-    PrefetchHooks Function()>;
+    PrefetchHooks Function({bool categoriesTableRefs})>;
+typedef $$CategoriesTableTableCreateCompanionBuilder = CategoriesTableCompanion
+    Function({
+  Value<int> id,
+  required String description,
+  required int iconId,
+  required int colorId,
+});
+typedef $$CategoriesTableTableUpdateCompanionBuilder = CategoriesTableCompanion
+    Function({
+  Value<int> id,
+  Value<String> description,
+  Value<int> iconId,
+  Value<int> colorId,
+});
+
+final class $$CategoriesTableTableReferences extends BaseReferences<
+    _$AppDatabase, $CategoriesTableTable, CategoriesTableData> {
+  $$CategoriesTableTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static $AvailableIconsTableTable _iconIdTable(_$AppDatabase db) =>
+      db.availableIconsTable.createAlias($_aliasNameGenerator(
+          db.categoriesTable.iconId, db.availableIconsTable.id));
+
+  $$AvailableIconsTableTableProcessedTableManager get iconId {
+    final $_column = $_itemColumn<int>('icon_id')!;
+
+    final manager =
+        $$AvailableIconsTableTableTableManager($_db, $_db.availableIconsTable)
+            .filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_iconIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static $AvailableColorsTableTable _colorIdTable(_$AppDatabase db) =>
+      db.availableColorsTable.createAlias($_aliasNameGenerator(
+          db.categoriesTable.colorId, db.availableColorsTable.id));
+
+  $$AvailableColorsTableTableProcessedTableManager get colorId {
+    final $_column = $_itemColumn<int>('color_id')!;
+
+    final manager =
+        $$AvailableColorsTableTableTableManager($_db, $_db.availableColorsTable)
+            .filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_colorIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$CategoriesTableTableFilterComposer
+    extends Composer<_$AppDatabase, $CategoriesTableTable> {
+  $$CategoriesTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => ColumnFilters(column));
+
+  $$AvailableIconsTableTableFilterComposer get iconId {
+    final $$AvailableIconsTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.iconId,
+        referencedTable: $db.availableIconsTable,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$AvailableIconsTableTableFilterComposer(
+              $db: $db,
+              $table: $db.availableIconsTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$AvailableColorsTableTableFilterComposer get colorId {
+    final $$AvailableColorsTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.colorId,
+        referencedTable: $db.availableColorsTable,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$AvailableColorsTableTableFilterComposer(
+              $db: $db,
+              $table: $db.availableColorsTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$CategoriesTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $CategoriesTableTable> {
+  $$CategoriesTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => ColumnOrderings(column));
+
+  $$AvailableIconsTableTableOrderingComposer get iconId {
+    final $$AvailableIconsTableTableOrderingComposer composer =
+        $composerBuilder(
+            composer: this,
+            getCurrentColumn: (t) => t.iconId,
+            referencedTable: $db.availableIconsTable,
+            getReferencedColumn: (t) => t.id,
+            builder: (joinBuilder,
+                    {$addJoinBuilderToRootComposer,
+                    $removeJoinBuilderFromRootComposer}) =>
+                $$AvailableIconsTableTableOrderingComposer(
+                  $db: $db,
+                  $table: $db.availableIconsTable,
+                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                  joinBuilder: joinBuilder,
+                  $removeJoinBuilderFromRootComposer:
+                      $removeJoinBuilderFromRootComposer,
+                ));
+    return composer;
+  }
+
+  $$AvailableColorsTableTableOrderingComposer get colorId {
+    final $$AvailableColorsTableTableOrderingComposer composer =
+        $composerBuilder(
+            composer: this,
+            getCurrentColumn: (t) => t.colorId,
+            referencedTable: $db.availableColorsTable,
+            getReferencedColumn: (t) => t.id,
+            builder: (joinBuilder,
+                    {$addJoinBuilderToRootComposer,
+                    $removeJoinBuilderFromRootComposer}) =>
+                $$AvailableColorsTableTableOrderingComposer(
+                  $db: $db,
+                  $table: $db.availableColorsTable,
+                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                  joinBuilder: joinBuilder,
+                  $removeJoinBuilderFromRootComposer:
+                      $removeJoinBuilderFromRootComposer,
+                ));
+    return composer;
+  }
+}
+
+class $$CategoriesTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $CategoriesTableTable> {
+  $$CategoriesTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => column);
+
+  $$AvailableIconsTableTableAnnotationComposer get iconId {
+    final $$AvailableIconsTableTableAnnotationComposer composer =
+        $composerBuilder(
+            composer: this,
+            getCurrentColumn: (t) => t.iconId,
+            referencedTable: $db.availableIconsTable,
+            getReferencedColumn: (t) => t.id,
+            builder: (joinBuilder,
+                    {$addJoinBuilderToRootComposer,
+                    $removeJoinBuilderFromRootComposer}) =>
+                $$AvailableIconsTableTableAnnotationComposer(
+                  $db: $db,
+                  $table: $db.availableIconsTable,
+                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                  joinBuilder: joinBuilder,
+                  $removeJoinBuilderFromRootComposer:
+                      $removeJoinBuilderFromRootComposer,
+                ));
+    return composer;
+  }
+
+  $$AvailableColorsTableTableAnnotationComposer get colorId {
+    final $$AvailableColorsTableTableAnnotationComposer composer =
+        $composerBuilder(
+            composer: this,
+            getCurrentColumn: (t) => t.colorId,
+            referencedTable: $db.availableColorsTable,
+            getReferencedColumn: (t) => t.id,
+            builder: (joinBuilder,
+                    {$addJoinBuilderToRootComposer,
+                    $removeJoinBuilderFromRootComposer}) =>
+                $$AvailableColorsTableTableAnnotationComposer(
+                  $db: $db,
+                  $table: $db.availableColorsTable,
+                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                  joinBuilder: joinBuilder,
+                  $removeJoinBuilderFromRootComposer:
+                      $removeJoinBuilderFromRootComposer,
+                ));
+    return composer;
+  }
+}
+
+class $$CategoriesTableTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $CategoriesTableTable,
+    CategoriesTableData,
+    $$CategoriesTableTableFilterComposer,
+    $$CategoriesTableTableOrderingComposer,
+    $$CategoriesTableTableAnnotationComposer,
+    $$CategoriesTableTableCreateCompanionBuilder,
+    $$CategoriesTableTableUpdateCompanionBuilder,
+    (CategoriesTableData, $$CategoriesTableTableReferences),
+    CategoriesTableData,
+    PrefetchHooks Function({bool iconId, bool colorId})> {
+  $$CategoriesTableTableTableManager(
+      _$AppDatabase db, $CategoriesTableTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$CategoriesTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$CategoriesTableTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$CategoriesTableTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> description = const Value.absent(),
+            Value<int> iconId = const Value.absent(),
+            Value<int> colorId = const Value.absent(),
+          }) =>
+              CategoriesTableCompanion(
+            id: id,
+            description: description,
+            iconId: iconId,
+            colorId: colorId,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String description,
+            required int iconId,
+            required int colorId,
+          }) =>
+              CategoriesTableCompanion.insert(
+            id: id,
+            description: description,
+            iconId: iconId,
+            colorId: colorId,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$CategoriesTableTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: ({iconId = false, colorId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (iconId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.iconId,
+                    referencedTable:
+                        $$CategoriesTableTableReferences._iconIdTable(db),
+                    referencedColumn:
+                        $$CategoriesTableTableReferences._iconIdTable(db).id,
+                  ) as T;
+                }
+                if (colorId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.colorId,
+                    referencedTable:
+                        $$CategoriesTableTableReferences._colorIdTable(db),
+                    referencedColumn:
+                        $$CategoriesTableTableReferences._colorIdTable(db).id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$CategoriesTableTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $CategoriesTableTable,
+    CategoriesTableData,
+    $$CategoriesTableTableFilterComposer,
+    $$CategoriesTableTableOrderingComposer,
+    $$CategoriesTableTableAnnotationComposer,
+    $$CategoriesTableTableCreateCompanionBuilder,
+    $$CategoriesTableTableUpdateCompanionBuilder,
+    (CategoriesTableData, $$CategoriesTableTableReferences),
+    CategoriesTableData,
+    PrefetchHooks Function({bool iconId, bool colorId})>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -2118,4 +2898,6 @@ class $AppDatabaseManager {
       $$AvailableColorsTableTableTableManager(_db, _db.availableColorsTable);
   $$AvailableIconsTableTableTableManager get availableIconsTable =>
       $$AvailableIconsTableTableTableManager(_db, _db.availableIconsTable);
+  $$CategoriesTableTableTableManager get categoriesTable =>
+      $$CategoriesTableTableTableManager(_db, _db.categoriesTable);
 }

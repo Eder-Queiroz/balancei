@@ -1,9 +1,11 @@
 import 'package:balancei_app/data/datasource/dao/available_color_dao.dart';
 import 'package:balancei_app/data/datasource/dao/available_icon_dao.dart';
+import 'package:balancei_app/data/datasource/dao/category_dao.dart';
 import 'package:balancei_app/data/datasource/dao/transaction_category_dao.dart';
 import 'package:balancei_app/data/datasource/dao/transaction_dao.dart';
 import 'package:balancei_app/data/datasource/database/tables/available_colors_table.dart';
 import 'package:balancei_app/data/datasource/database/tables/available_icons_table.dart';
+import 'package:balancei_app/data/datasource/database/tables/categories_table.dart';
 import 'package:balancei_app/data/datasource/database/tables/transaction_categories_table.dart';
 import 'package:balancei_app/data/datasource/database/tables/transactions_table.dart';
 import 'package:balancei_app/data/utils/available_icons_table_helpers.dart';
@@ -27,11 +29,13 @@ final appDatabaseProvider = Provider<AppDatabase>((ref) {
   TransactionCategoriesTable,
   AvailableColorsTable,
   AvailableIconsTable,
+  CategoriesTable,
 ], daos: [
   TransactionDao,
   TransactionCategoryDao,
   AvailableColorDao,
   AvailableIconDao,
+  CategoryDao,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
@@ -56,6 +60,7 @@ class AppDatabase extends _$AppDatabase {
       await _populateTransactions();
       await _populateAvailableColors();
       await _populateAvailableIcons();
+      await _populateCorrectCategories();
     });
   }
 
@@ -152,6 +157,26 @@ class AppDatabase extends _$AppDatabase {
           ...AvailableIconsTableHelpers.convertIconsToHexCodes().map((code) {
             return AvailableIconsTableCompanion.insert(iconCode: code);
           }),
+        ],
+      );
+    });
+  }
+
+  Future<void> _populateCorrectCategories() async {
+    await batch((batch) {
+      batch.insertAll(
+        categoriesTable,
+        [
+          CategoriesTableCompanion.insert(
+            description: 'Alimentação',
+            colorId: 2,
+            iconId: 1,
+          ),
+          CategoriesTableCompanion.insert(
+            description: 'Salário',
+            colorId: 3,
+            iconId: 2,
+          ),
         ],
       );
     });
