@@ -2,6 +2,7 @@ import 'package:balancei_app/data/datasource/database/app_database.dart';
 import 'package:balancei_app/data/datasource/database/tables/categories_table.dart';
 import 'package:balancei_app/data/mappers/category_mapper.dart';
 import 'package:balancei_app/data/utils/exceptions/dao_exception.dart';
+import 'package:balancei_app/domain/dtos/create_category.dart';
 import 'package:balancei_app/domain/entities/category/category_entity.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,6 +44,23 @@ class CategoryDao extends DatabaseAccessor<AppDatabase>
       return Success(mappedCategories);
     } catch (e, s) {
       return Failure(DaoException("[getAllCategories] $e", s));
+    }
+  }
+
+  AsyncResult<Unit> insertCategory(CreateCategoryDTO dto) async {
+    try {
+      final category = CategoriesTableCompanion(
+        description: Value(dto.description!),
+        iconId: Value(dto.icon!.id),
+        colorId: Value(dto.color!.id),
+      );
+
+      return transaction(() async {
+        await into(categoriesTable).insert(category);
+        return const Success(unit);
+      });
+    } catch (e, s) {
+      return Failure(DaoException("[insertCategory] $e", s));
     }
   }
 }

@@ -2,7 +2,6 @@ import 'package:balancei_app/data/datasource/dao/available_color_dao.dart';
 import 'package:balancei_app/data/datasource/dao/available_icon_dao.dart';
 import 'package:balancei_app/data/mappers/base_picker_mapper.dart';
 import 'package:balancei_app/data/repository/picker/picker_repository.dart';
-import 'package:balancei_app/data/utils/exceptions/picker_exception.dart';
 import 'package:balancei_app/domain/entities/picker/base_picker_entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:result_dart/result_dart.dart';
@@ -27,26 +26,20 @@ class RemotePickerRepository implements PickerRepository {
         _availableIconDao = availableIconDao;
 
   @override
-  AsyncResult<BasePickerEntity> getAvailableColors() async {
-    return _availableColorDao
-        .getAllAvailableColors()
-        .map(BasePickerMapper.mapColors)
-        .catchError((e, s) {
-      return Failure<BasePickerEntity, Exception>(
-        PickerException("Error fetching available colors: $e", s),
-      );
-    });
+  AsyncResult<List<BasePickerEntity>> getAvailableColors() async {
+    return _availableColorDao.getAllAvailableColors().flatMap(
+          (colors) => Success(
+            colors.map(BasePickerMapper.fromColorsDatabase).toList(),
+          ),
+        );
   }
 
   @override
-  AsyncResult<BasePickerEntity> getAvailableIcons() async {
-    return _availableIconDao
-        .getAllAvailableIcons()
-        .map(BasePickerMapper.mapIcons)
-        .catchError((e, s) {
-      return Failure<BasePickerEntity, Exception>(
-        PickerException("Error fetching available icons: $e", s),
-      );
-    });
+  AsyncResult<List<BasePickerEntity>> getAvailableIcons() async {
+    return _availableIconDao.getAllAvailableIcons().flatMap(
+          (icons) => Success(
+            icons.map(BasePickerMapper.mapIcons).toList(),
+          ),
+        );
   }
 }

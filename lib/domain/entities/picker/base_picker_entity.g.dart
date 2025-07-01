@@ -9,13 +9,13 @@ part of 'base_picker_entity.dart';
 _$BasePickerEntityImpl _$$BasePickerEntityImplFromJson(
         Map<String, dynamic> json) =>
     _$BasePickerEntityImpl(
-      items: (json['items'] as List<dynamic>)
-          .map((e) => (e as num).toInt())
-          .toList(),
+      id: (json['id'] as num).toInt(),
+      value: (json['value'] as num).toInt(),
     );
 
 Map<String, dynamic> _$$BasePickerEntityImplToJson(
         _$BasePickerEntityImpl instance) =>
     <String, dynamic>{
-      'items': instance.items,
+      'id': instance.id,
+      'value': instance.value,
     };

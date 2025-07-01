@@ -17,10 +17,10 @@ class AvailableIconDao extends DatabaseAccessor<AppDatabase>
     with _$AvailableIconDaoMixin {
   AvailableIconDao(super.db);
 
-  AsyncResult<List<String>> getAllAvailableIcons() async {
+  AsyncResult<List<AvailableIconsTableData>> getAllAvailableIcons() async {
     try {
       final result = await select(availableIconsTable).get();
-      return Success(result.map((icon) => icon.iconCode).toList());
+      return Success(result);
     } catch (e, s) {
       return Failure(DaoException("[getAllAvailableIcons] $e", s));
     }

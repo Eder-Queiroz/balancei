@@ -1,5 +1,6 @@
 import 'package:balancei_app/data/repository/picker/picker_repository.dart';
 import 'package:balancei_app/data/repository/picker/remote_picker_repository.dart';
+import 'package:balancei_app/domain/entities/picker/base_picker_entity.dart';
 import 'package:balancei_app/ui/utils/fields/picker/base_picker_state.dart';
 import 'package:balancei_app/ui/utils/fields/picker/base_picker_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,25 +17,22 @@ class IconPickerViewModel extends BasePickerViewModel {
   BasePickerModelState build() {
     _pickerRepository = ref.read(pickerRepositoryProvider);
 
-    return BasePickerModelState(
-      availableItems: AsyncLoading(),
-      selectedItem: 0,
-    );
+    return BasePickerModelState();
   }
 
   @override
-  bool isCurrentlySelected(int value) {
+  bool isCurrentlySelected(BasePickerEntity value) {
     return state.selectedItem == value;
   }
 
   @override
-  void updateSelectedValue(int value) {
+  void updateSelectedValue(BasePickerEntity value) {
     state = state.copyWith(selectedItem: value);
   }
 
   @override
-  void removeValue(int value) {
-    final items = List<int>.from(state.lastItems);
+  void removeValue(BasePickerEntity value) {
+    final items = List<BasePickerEntity>.from(state.lastItems);
 
     if (items.contains(value)) {
       items.remove(value);
@@ -47,24 +45,25 @@ class IconPickerViewModel extends BasePickerViewModel {
   }
 
   @override
-  void addFirstValue(int value) {
-    final items = List<int>.from(state.lastItems)..insert(0, value);
+  void addFirstValue(BasePickerEntity value) {
+    final items = List<BasePickerEntity>.from(state.lastItems)
+      ..insert(0, value);
     state = state.copyWith(lastItems: items);
   }
 
   @override
   Future<void> fetchAvailableItems({
-    Function(int value)? onStartedValue,
+    Function(BasePickerEntity value)? onStartedValue,
   }) async {
     final result = await _pickerRepository.getAvailableIcons();
     state = result.fold(
       (success) {
-        final startedValue = success.items.first;
+        final startedValue = success.first;
         onStartedValue?.call(startedValue);
         return state.copyWith(
-          items: AsyncData(success.items),
+          items: AsyncData(success),
           selectedItem: startedValue,
-          lastItems: success.items.sublist(0, 3),
+          lastItems: success.sublist(0, 3),
         );
       },
       (failure) => state.copyWith(

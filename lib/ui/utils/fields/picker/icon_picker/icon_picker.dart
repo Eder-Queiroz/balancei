@@ -1,3 +1,4 @@
+import 'package:balancei_app/domain/entities/picker/base_picker_entity.dart';
 import 'package:balancei_app/ui/utils/common_spacing.dart';
 import 'package:balancei_app/ui/utils/fields/picker/base_picker.dart';
 import 'package:balancei_app/ui/utils/fields/picker/icon_picker/icon_picker_view_model.dart';
@@ -39,19 +40,19 @@ class _IconPickerState extends BasePickerState<IconPicker> {
   }
 
   @override
-  void selectValue(int value) {
+  void selectValue(BasePickerEntity value) {
     viewModel.selectItem(value);
   }
 
   @override
-  List<int> getSelectedValues(WidgetRef ref) {
+  List<BasePickerEntity> getSelectedValues(WidgetRef ref) {
     return ref
         .watch(iconPickerViewModelProvider.select((state) => state.lastItems));
   }
 
   @override
   Widget buildValueItem({
-    required int item,
+    required BasePickerEntity item,
     required bool isSelected,
     required VoidCallback onTap,
   }) {
@@ -65,7 +66,7 @@ class _IconPickerState extends BasePickerState<IconPicker> {
           shape: BoxShape.circle,
         ),
         child: Icon(
-          IconData(item, fontFamily: 'MaterialIcons'),
+          IconData(item.value, fontFamily: 'MaterialIcons'),
           color: Colors.white,
           size: 16,
         ),
@@ -101,7 +102,7 @@ class _IconPickerState extends BasePickerState<IconPicker> {
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
-                  IconData(icons[index], fontFamily: 'MaterialIcons'),
+                  IconData(icons[index].value, fontFamily: 'MaterialIcons'),
                   color: Colors.white,
                   size: 24,
                 ),

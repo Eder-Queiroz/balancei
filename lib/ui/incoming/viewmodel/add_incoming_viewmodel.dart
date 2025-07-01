@@ -1,6 +1,5 @@
 import 'package:balancei_app/data/repository/category/category_repository.dart';
 import 'package:balancei_app/data/repository/category/remote_category_repository.dart';
-import 'package:balancei_app/domain/entities/category/category_entity.dart';
 import 'package:balancei_app/ui/incoming/state/add_icoming_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

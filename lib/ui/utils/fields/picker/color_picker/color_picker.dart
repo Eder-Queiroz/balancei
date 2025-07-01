@@ -1,3 +1,4 @@
+import 'package:balancei_app/domain/entities/picker/base_picker_entity.dart';
 import 'package:balancei_app/ui/utils/common_spacing.dart';
 import 'package:balancei_app/ui/utils/fields/picker/base_picker.dart';
 import 'package:balancei_app/ui/utils/fields/picker/color_picker/color_picker_view_model.dart';
@@ -35,19 +36,19 @@ class _ColorPickerState extends BasePickerState<ColorPicker> {
   }
 
   @override
-  List<int> getSelectedValues(WidgetRef ref) {
+  List<BasePickerEntity> getSelectedValues(WidgetRef ref) {
     return ref
         .watch(colorPickerViewModelProvider.select((state) => state.lastItems));
   }
 
   @override
-  void selectValue(int value) {
+  void selectValue(BasePickerEntity value) {
     viewModel.selectItem(value);
   }
 
   @override
   Widget buildValueItem({
-    required int item,
+    required BasePickerEntity item,
     required bool isSelected,
     required VoidCallback onTap,
   }) {
@@ -57,7 +58,7 @@ class _ColorPickerState extends BasePickerState<ColorPicker> {
         width: 24,
         height: 24,
         decoration: BoxDecoration(
-          color: Color(item),
+          color: Color(item.value),
           shape: BoxShape.circle,
         ),
         child: isSelected
@@ -95,7 +96,7 @@ class _ColorPickerState extends BasePickerState<ColorPicker> {
                 width: 42,
                 height: 42,
                 decoration: BoxDecoration(
-                  color: Color(colors[index]),
+                  color: Color(colors[index].value),
                   shape: BoxShape.circle,
                 ),
               ),

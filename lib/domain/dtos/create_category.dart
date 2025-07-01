@@ -1,23 +1,25 @@
+import 'package:balancei_app/domain/entities/picker/base_picker_entity.dart';
+
 class CreateCategoryDTO {
   final String? description;
-  final int? color;
-  final int? iconCodePoint;
+  final BasePickerEntity? color;
+  final BasePickerEntity? icon;
 
   CreateCategoryDTO({
     required this.description,
     required this.color,
-    required this.iconCodePoint,
+    required this.icon,
   });
 
   CreateCategoryDTO copyWith({
     String? description,
-    int? color,
-    int? iconCodePoint,
+    BasePickerEntity? color,
+    BasePickerEntity? icon,
   }) {
     return CreateCategoryDTO(
       description: description ?? this.description,
       color: color ?? this.color,
-      iconCodePoint: iconCodePoint ?? this.iconCodePoint,
+      icon: icon ?? this.icon,
     );
   }
 }

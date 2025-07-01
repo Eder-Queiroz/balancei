@@ -7,6 +7,8 @@ import 'package:balancei_app/ui/utils/fields/picker/color_picker/color_picker.da
 import 'package:balancei_app/ui/utils/fields/picker/icon_picker/icon_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:result_dart/result_dart.dart';
 
 class CreateCategoryScreen extends ConsumerStatefulWidget {
   const CreateCategoryScreen({super.key});
@@ -69,16 +71,16 @@ class _CreateCategoryScreenState extends ConsumerState<CreateCategoryScreen> {
                           viewModel.color = color;
                         });
                       },
-                      initialValue: dto.color ?? 0xff79747E,
+                      initialValue: dto.color?.value ?? 0xff79747E,
                     ),
                     IconPicker(
                       onValueSelected: (icon) {
                         WidgetsBinding.instance.addPostFrameCallback((_) {
-                          viewModel.iconCodePoint = icon;
+                          viewModel.icon = icon;
                         });
                       },
-                      initialValue: dto.iconCodePoint ?? 0xe3b0,
-                      selectedColor: dto.color ?? 0xff79747E,
+                      initialValue: dto.icon?.value ?? 0xe3b0,
+                      selectedColor: dto.color?.value ?? 0xff79747E,
                     ),
                   ],
                 ),
@@ -97,7 +99,30 @@ class _CreateCategoryScreenState extends ConsumerState<CreateCategoryScreen> {
                     disabledBackgroundColor:
                         Theme.of(context).primaryColor.withValues(alpha: 0.5),
                   ),
-                  onPressed: isValid(dto) ? () {} : null,
+                  onPressed: isValid(dto)
+                      ? () async {
+                          await viewModel.createCategory().fold((_) {
+                            context.pop();
+                          }, (error) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: const Text('Erro ao criar categoria'),
+                                duration: const Duration(milliseconds: 1500),
+                                width: 280.0, // Width of the SnackBar.
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: CommonSpacing.extraSmall,
+                                ),
+                                behavior: SnackBarBehavior.floating,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    CommonRadius.large.x,
+                                  ),
+                                ),
+                              ),
+                            );
+                          });
+                        }
+                      : null,
                   child: Text(
                     'Criar',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(

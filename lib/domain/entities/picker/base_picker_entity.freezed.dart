@@ -20,7 +20,8 @@ BasePickerEntity _$BasePickerEntityFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$BasePickerEntity {
-  List<int> get items => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
+  int get value => throw _privateConstructorUsedError;
 
   /// Serializes this BasePickerEntity to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -38,7 +39,7 @@ abstract class $BasePickerEntityCopyWith<$Res> {
           BasePickerEntity value, $Res Function(BasePickerEntity) then) =
       _$BasePickerEntityCopyWithImpl<$Res, BasePickerEntity>;
   @useResult
-  $Res call({List<int> items});
+  $Res call({int id, int value});
 }
 
 /// @nodoc
@@ -56,13 +57,18 @@ class _$BasePickerEntityCopyWithImpl<$Res, $Val extends BasePickerEntity>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? items = null,
+    Object? id = null,
+    Object? value = null,
   }) {
     return _then(_value.copyWith(
-      items: null == items
-          ? _value.items
-          : items // ignore: cast_nullable_to_non_nullable
-              as List<int>,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      value: null == value
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -75,7 +81,7 @@ abstract class _$$BasePickerEntityImplCopyWith<$Res>
       __$$BasePickerEntityImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<int> items});
+  $Res call({int id, int value});
 }
 
 /// @nodoc
@@ -91,13 +97,18 @@ class __$$BasePickerEntityImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? items = null,
+    Object? id = null,
+    Object? value = null,
   }) {
     return _then(_$BasePickerEntityImpl(
-      items: null == items
-          ? _value._items
-          : items // ignore: cast_nullable_to_non_nullable
-              as List<int>,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      value: null == value
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -105,23 +116,19 @@ class __$$BasePickerEntityImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$BasePickerEntityImpl implements _BasePickerEntity {
-  const _$BasePickerEntityImpl({required final List<int> items})
-      : _items = items;
+  const _$BasePickerEntityImpl({required this.id, required this.value});
 
   factory _$BasePickerEntityImpl.fromJson(Map<String, dynamic> json) =>
       _$$BasePickerEntityImplFromJson(json);
 
-  final List<int> _items;
   @override
-  List<int> get items {
-    if (_items is EqualUnmodifiableListView) return _items;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_items);
-  }
+  final int id;
+  @override
+  final int value;
 
   @override
   String toString() {
-    return 'BasePickerEntity(items: $items)';
+    return 'BasePickerEntity(id: $id, value: $value)';
   }
 
   @override
@@ -129,13 +136,13 @@ class _$BasePickerEntityImpl implements _BasePickerEntity {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$BasePickerEntityImpl &&
-            const DeepCollectionEquality().equals(other._items, _items));
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_items));
+  int get hashCode => Object.hash(runtimeType, id, value);
 
   /// Create a copy of BasePickerEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -155,14 +162,17 @@ class _$BasePickerEntityImpl implements _BasePickerEntity {
 }
 
 abstract class _BasePickerEntity implements BasePickerEntity {
-  const factory _BasePickerEntity({required final List<int> items}) =
-      _$BasePickerEntityImpl;
+  const factory _BasePickerEntity(
+      {required final int id,
+      required final int value}) = _$BasePickerEntityImpl;
 
   factory _BasePickerEntity.fromJson(Map<String, dynamic> json) =
       _$BasePickerEntityImpl.fromJson;
 
   @override
-  List<int> get items;
+  int get id;
+  @override
+  int get value;
 
   /// Create a copy of BasePickerEntity
   /// with the given fields replaced by the non-null parameter values.

@@ -1,10 +1,11 @@
+import 'package:balancei_app/domain/entities/picker/base_picker_entity.dart';
 import 'package:balancei_app/ui/utils/common_radius.dart';
 import 'package:balancei_app/ui/utils/common_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 abstract class BasePicker extends ConsumerStatefulWidget {
-  final Function(int value) onValueSelected;
+  final Function(BasePickerEntity value) onValueSelected;
   final int initialValue;
   final String label;
 
@@ -21,14 +22,14 @@ abstract class BasePickerState<T extends BasePicker> extends ConsumerState<T> {
   bool isAvailableValuesLoading(WidgetRef ref);
 
   @protected
-  List<int> getSelectedValues(WidgetRef ref);
+  List<BasePickerEntity> getSelectedValues(WidgetRef ref);
 
   @protected
-  void selectValue(int value);
+  void selectValue(BasePickerEntity value);
 
   @protected
   Widget buildValueItem({
-    required int item,
+    required BasePickerEntity item,
     required bool isSelected,
     required VoidCallback onTap,
   });

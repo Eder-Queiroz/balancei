@@ -6,7 +6,8 @@ part 'base_picker_entity.g.dart';
 @freezed
 sealed class BasePickerEntity with _$BasePickerEntity {
   const factory BasePickerEntity({
-    required List<int> items,
+    required int id,
+    required int value,
   }) = _BasePickerEntity;
 
   factory BasePickerEntity.fromJson(Map<String, dynamic> json) =>

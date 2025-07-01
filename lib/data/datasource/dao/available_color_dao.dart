@@ -17,10 +17,10 @@ class AvailableColorDao extends DatabaseAccessor<AppDatabase>
     with _$AvailableColorDaoMixin {
   AvailableColorDao(super.db);
 
-  AsyncResult<List<String>> getAllAvailableColors() async {
+  AsyncResult<List<AvailableColorsTableData>> getAllAvailableColors() async {
     try {
       final result = await select(availableColorsTable).get();
-      return Success(result.map((color) => color.hexCode).toList());
+      return Success(result);
     } catch (e, s) {
       return Failure(DaoException("[getAllAvailableColors] $e", s));
     }

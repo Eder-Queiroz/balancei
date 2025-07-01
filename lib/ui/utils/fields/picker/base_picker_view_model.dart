@@ -1,3 +1,4 @@
+import 'package:balancei_app/domain/entities/picker/base_picker_entity.dart';
 import 'package:balancei_app/ui/utils/fields/picker/base_picker_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -6,7 +7,7 @@ abstract class BasePickerViewModel<T extends BasePickerModelState>
   @override
   T build();
 
-  void selectItem(int value) {
+  void selectItem(BasePickerEntity value) {
     if (isCurrentlySelected(value)) {
       return;
     }
@@ -16,15 +17,15 @@ abstract class BasePickerViewModel<T extends BasePickerModelState>
     addFirstValue(value);
   }
 
-  bool isCurrentlySelected(int value);
+  bool isCurrentlySelected(BasePickerEntity value);
 
-  void updateSelectedValue(int value);
+  void updateSelectedValue(BasePickerEntity value);
 
-  void removeValue(int value);
+  void removeValue(BasePickerEntity value);
 
-  void addFirstValue(int value);
+  void addFirstValue(BasePickerEntity value);
 
   Future<void> fetchAvailableItems({
-    Function(int value)? onStartedValue,
+    Function(BasePickerEntity value)? onStartedValue,
   });
 }
