@@ -4,6 +4,7 @@ import 'package:balancei_app/ui/utils/common_radius.dart';
 import 'package:balancei_app/ui/utils/common_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 @immutable
 class CategoryFieldData {
@@ -62,8 +63,9 @@ class CategoryField extends ConsumerWidget {
                     ),
                     leading: Icon(category.icon, color: category.color),
                     title: Text(category.name),
-                    onTap: () {
+                    onTap: () async {
                       CreateCategoryRouter().push(context);
+                      context.pop();
                     },
                   );
                 }

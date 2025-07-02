@@ -36,9 +36,6 @@ class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      viewModel.fetchCategories();
-    });
   }
 
   @override

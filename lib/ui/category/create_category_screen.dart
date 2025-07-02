@@ -1,5 +1,6 @@
 import 'package:balancei_app/domain/dtos/create_category.dart';
 import 'package:balancei_app/domain/valdiations/create_category_validator.dart';
+import 'package:balancei_app/providers/categories_notifier.dart';
 import 'package:balancei_app/ui/category/viewmodel/create_category_viewmodel.dart';
 import 'package:balancei_app/ui/utils/common_radius.dart';
 import 'package:balancei_app/ui/utils/common_spacing.dart';
@@ -19,7 +20,8 @@ class CreateCategoryScreen extends ConsumerStatefulWidget {
 }
 
 class _CreateCategoryScreenState extends ConsumerState<CreateCategoryScreen> {
-  late final viewModel = ref.watch(createCategoryViewModelProvider.notifier);
+  late final viewModel = ref.read(createCategoryViewModelProvider.notifier);
+  late final categoriesNotifier = ref.read(categoriesNotifierProvider.notifier);
 
   final descriptionController = TextEditingController();
   final validator = CreateCategoryValidator();
@@ -102,6 +104,7 @@ class _CreateCategoryScreenState extends ConsumerState<CreateCategoryScreen> {
                   onPressed: isValid(dto)
                       ? () async {
                           await viewModel.createCategory().fold((_) {
+                            categoriesNotifier.fetchCategories();
                             context.pop();
                           }, (error) {
                             ScaffoldMessenger.of(context).showSnackBar(
