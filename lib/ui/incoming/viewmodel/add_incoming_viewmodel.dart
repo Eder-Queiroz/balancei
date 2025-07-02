@@ -1,5 +1,3 @@
-import 'package:balancei_app/data/repository/category/category_repository.dart';
-import 'package:balancei_app/data/repository/category/remote_category_repository.dart';
 import 'package:balancei_app/providers/categories_notifier.dart';
 import 'package:balancei_app/ui/incoming/state/add_icoming_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,11 +8,8 @@ final addIncomingViewModelProvider =
 );
 
 class AddIncomingViewModel extends AutoDisposeNotifier<AddIcomingState> {
-  late final CategoryRepository _categoryRepository;
   @override
   AddIcomingState build() {
-    _categoryRepository = ref.watch(categoryRepositoryProvider);
-
     ref.listen(categoriesNotifierProvider, (previous, next) {
       next.whenData((categories) {
         if (categories.isNotEmpty && state.dto.categoryId == null) {
