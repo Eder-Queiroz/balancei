@@ -8,7 +8,7 @@ class FinancialSummaryMapper {
         transactions.fold(
       (totalIncome: 0.0, totalExpense: 0.0),
       (previousValue, element) {
-        if (element.isIncoming) {
+        if (element.isIncome) {
           return (
             totalIncome: previousValue.totalIncome + element.amount,
             totalExpense: previousValue.totalExpense

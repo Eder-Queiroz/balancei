@@ -1,5 +1,5 @@
 import 'package:balancei_app/data/datasource/database/app_database.dart';
-import 'package:balancei_app/data/datasource/database/tables/transaction_categories_table.dart';
+import 'package:balancei_app/data/datasource/database/tables/categories_table.dart';
 import 'package:balancei_app/data/datasource/database/tables/transactions_table.dart';
 import 'package:balancei_app/data/mappers/transaction_mapper.dart';
 import 'package:balancei_app/data/utils/exceptions/dao_exception.dart';
@@ -17,7 +17,7 @@ final transactionDaoProvider = Provider<TransactionDao>((ref) {
   return database.transactionDao;
 });
 
-@DriftAccessor(tables: [Transactions, TransactionCategoriesTable])
+@DriftAccessor(tables: [Transactions, CategoriesTable])
 class TransactionDao extends DatabaseAccessor<AppDatabase>
     with _$TransactionDaoMixin {
   TransactionDao(super.db);
@@ -28,8 +28,16 @@ class TransactionDao extends DatabaseAccessor<AppDatabase>
     try {
       final query = select(transactions).join([
         innerJoin(
-          transactionCategoriesTable,
-          transactionCategoriesTable.id.equalsExp(transactions.categoryId),
+          categoriesTable,
+          categoriesTable.id.equalsExp(transactions.categoryId),
+        ),
+        innerJoin(
+          availableIconsTable,
+          availableIconsTable.id.equalsExp(categoriesTable.iconId),
+        ),
+        innerJoin(
+          availableColorsTable,
+          availableColorsTable.id.equalsExp(categoriesTable.colorId),
         ),
       ]);
 
@@ -40,13 +48,15 @@ class TransactionDao extends DatabaseAccessor<AppDatabase>
       }
 
       final result = await query.map((row) {
-        return TransactionWithCategory(
+        return TransactionMapper.fromDatabase(
           transaction: row.readTable(transactions),
-          category: row.readTable(transactionCategoriesTable),
+          category: row.readTable(categoriesTable),
+          icon: row.readTable(availableIconsTable),
+          color: row.readTable(availableColorsTable),
         );
       }).get();
 
-      return Success(result.map(TransactionMapper.fromDatabase).toList());
+      return Success(result);
     } catch (e, s) {
       return Failure(DaoException("[getAllTransactions] $e", s));
     }
@@ -56,26 +66,36 @@ class TransactionDao extends DatabaseAccessor<AppDatabase>
     try {
       final query = select(transactions).join([
         innerJoin(
-          transactionCategoriesTable,
-          transactionCategoriesTable.id.equalsExp(transactions.categoryId),
+          categoriesTable,
+          categoriesTable.id.equalsExp(transactions.categoryId),
+        ),
+        innerJoin(
+          availableIconsTable,
+          availableIconsTable.id.equalsExp(categoriesTable.iconId),
+        ),
+        innerJoin(
+          availableColorsTable,
+          availableColorsTable.id.equalsExp(categoriesTable.colorId),
         ),
       ])
         ..where(transactions.id.equals(id));
 
       final result = await query
-          .map((row) => TransactionWithCategory(
+          .map((row) => TransactionMapper.fromDatabase(
                 transaction: row.readTable(transactions),
-                category: row.readTable(transactionCategoriesTable),
+                category: row.readTable(categoriesTable),
+                icon: row.readTable(availableIconsTable),
+                color: row.readTable(availableColorsTable),
               ))
           .getSingle();
 
-      return Success(TransactionMapper.fromDatabase(result));
+      return Success(result);
     } catch (e, s) {
       return Failure(DaoException("[getTransactionById] $e", s));
     }
   }
 
-  AsyncResult<Unit> createTransaction(Transfer dto) async {
+  AsyncResult<Unit> createTransaction(TransferDTO dto) async {
     try {
       await into(transactions).insert(TransactionMapper.toDatabase(dto));
       return Success(unit);
@@ -84,7 +104,7 @@ class TransactionDao extends DatabaseAccessor<AppDatabase>
     }
   }
 
-  AsyncResult<Unit> updateTransaction(int id, Transfer dto) async {
+  AsyncResult<Unit> updateTransaction(int id, TransferDTO dto) async {
     try {
       await (update(transactions)
             ..where((transaction) => transaction.id.equals(id)))
@@ -105,14 +125,4 @@ class TransactionDao extends DatabaseAccessor<AppDatabase>
       return Failure(DaoException("[deleteTransaction] $e", s));
     }
   }
-}
-
-class TransactionWithCategory {
-  final Transaction transaction;
-  final TransactionCategoriesTableData category;
-
-  TransactionWithCategory({
-    required this.transaction,
-    required this.category,
-  });
 }

@@ -2,14 +2,13 @@ import 'package:balancei_app/domain/dtos/create_category.dart';
 import 'package:balancei_app/domain/valdiations/create_category_validator.dart';
 import 'package:balancei_app/providers/categories_notifier.dart';
 import 'package:balancei_app/ui/category/viewmodel/create_category_viewmodel.dart';
-import 'package:balancei_app/ui/utils/common_radius.dart';
+import 'package:balancei_app/ui/utils/buttons/loading_button.dart';
 import 'package:balancei_app/ui/utils/common_spacing.dart';
 import 'package:balancei_app/ui/utils/fields/picker/color_picker/color_picker.dart';
 import 'package:balancei_app/ui/utils/fields/picker/icon_picker/icon_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:result_dart/result_dart.dart';
 
 class CreateCategoryScreen extends ConsumerStatefulWidget {
   const CreateCategoryScreen({super.key});
@@ -87,53 +86,16 @@ class _CreateCategoryScreenState extends ConsumerState<CreateCategoryScreen> {
                   ],
                 ),
               ),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(CommonRadius.extraLarge),
-                    ),
-                    padding: const EdgeInsets.all(CommonSpacing.small),
-                    elevation: 4,
-                    disabledBackgroundColor:
-                        Theme.of(context).primaryColor.withValues(alpha: 0.5),
-                  ),
-                  onPressed: isValid(dto)
-                      ? () async {
-                          await viewModel.createCategory().fold((_) {
-                            categoriesNotifier.fetchCategories();
-                            context.pop();
-                          }, (error) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: const Text('Erro ao criar categoria'),
-                                duration: const Duration(milliseconds: 1500),
-                                width: 280.0, // Width of the SnackBar.
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: CommonSpacing.extraSmall,
-                                ),
-                                behavior: SnackBarBehavior.floating,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                    CommonRadius.large.x,
-                                  ),
-                                ),
-                              ),
-                            );
-                          });
-                        }
-                      : null,
-                  child: Text(
-                    'Criar',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: Colors.white,
-                        ),
-                  ),
-                ),
-              ),
+              LoadingButton(
+                label: 'Criar',
+                enabled: isValid(dto),
+                onPressed: viewModel.createCategory,
+                errorMessage: 'Erro ao criar categoria',
+                onSuccess: () {
+                  categoriesNotifier.fetchCategories();
+                  context.pop();
+                },
+              )
             ],
           ),
         ),

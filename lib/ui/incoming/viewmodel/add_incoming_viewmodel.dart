@@ -1,6 +1,12 @@
+import 'package:balancei_app/data/repository/remote_transfer_repository.dart';
+import 'package:balancei_app/data/repository/transfer_repository.dart';
+import 'package:balancei_app/domain/dtos/transfer.dart';
+import 'package:balancei_app/domain/entities/category/category_entity.dart';
+import 'package:balancei_app/domain/enums/transaction_type_enum.dart';
 import 'package:balancei_app/providers/categories_notifier.dart';
 import 'package:balancei_app/ui/incoming/state/add_icoming_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:result_dart/result_dart.dart';
 
 final addIncomingViewModelProvider =
     NotifierProvider.autoDispose<AddIncomingViewModel, AddIcomingState>(
@@ -8,51 +14,70 @@ final addIncomingViewModelProvider =
 );
 
 class AddIncomingViewModel extends AutoDisposeNotifier<AddIcomingState> {
+  late final TransferRepository _transferRepository;
   @override
   AddIcomingState build() {
+    _transferRepository = ref.read(transferRepositoryProvider);
+
     ref.listen(categoriesNotifierProvider, (previous, next) {
       next.whenData((categories) {
-        if (categories.isNotEmpty && state.dto.categoryId == null) {
-          category = categories.first.id;
+        if (categories.isNotEmpty && state.dto.category?.id == null) {
+          category = categories.first;
         }
         state = state.copyWith(categories: next);
       });
     });
 
-    return AddIcomingState();
+    return AddIcomingState(
+      dto: TransferDTO(
+        type: TransactionTypeEnum.income,
+        date: DateTime.now(),
+      ),
+      categories: const AsyncLoading(),
+    );
   }
 
   Future<void> fetchCategories() async {
     ref.read(categoriesNotifierProvider.notifier).fetchCategories();
   }
 
-  set value(double? value) {
-    final updatedDto = state.dto.copyWith(value: value);
-    state = state.copyWith(dto: updatedDto);
+  AsyncResult<Unit> addIncoming() {
+    return _transferRepository.addTransfer(state.dto);
   }
 
-  set received(bool? value) {
-    final updatedDto = state.dto.copyWith(received: value);
-    state = state.copyWith(dto: updatedDto);
+  set title(String? value) {
+    state = state.copyWith(dto: state.dto.copyWith(title: value));
   }
 
   set description(String? value) {
-    final updatedDto = state.dto.copyWith(description: value);
-    state = state.copyWith(dto: updatedDto);
+    state = state.copyWith(dto: state.dto.copyWith(description: value));
   }
 
-  set isRecurring(bool? value) {
-    final updatedDto = state.dto.copyWith(isRecurring: value);
-    state = state.copyWith(dto: updatedDto);
+  set amount(double? value) {
+    state = state.copyWith(dto: state.dto.copyWith(amount: value));
   }
 
-  set repeat(bool? value) {
-    final updatedDto = state.dto.copyWith(repeat: value);
-    state = state.copyWith(dto: updatedDto);
+  set date(DateTime? value) {
+    state = state.copyWith(dto: state.dto.copyWith(date: value));
   }
 
-  set category(int? value) {
-    final updatedDto = state.dto.copyWith(categoryId: value);
-    state = state.copyWith(dto: updatedDto);
+  set type(int? value) {
+    state = state.copyWith(dto: state.dto.copyWith(type: value));
+  }
+
+  set category(CategoryEntity? value) {
+    state = state.copyWith(dto: state.dto.copyWith(category: value));
+  }
+
+  set isRecurring(bool value) {
+    state = state.copyWith(dto: state.dto.copyWith(isRecurring: value));
+  }
+
+  set isCompleted(bool value) {
+    state = state.copyWith(dto: state.dto.copyWith(isCompleted: value));
+  }
+
+  set recurrenceEndDate(DateTime? value) {
+    state = state.copyWith(dto: state.dto.copyWith(recurrenceEndDate: value));
   }
 }

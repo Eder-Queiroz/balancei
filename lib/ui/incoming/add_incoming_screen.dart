@@ -1,8 +1,9 @@
-import 'package:balancei_app/domain/dtos/add_incoming.dart';
-import 'package:balancei_app/domain/valdiations/add_incoming_validator.dart';
+import 'package:balancei_app/domain/dtos/transfer.dart';
+import 'package:balancei_app/domain/entities/category/category_entity.dart';
+import 'package:balancei_app/domain/valdiations/transfer_validator.dart';
 import 'package:balancei_app/router/routers.dart';
 import 'package:balancei_app/ui/incoming/viewmodel/add_incoming_viewmodel.dart';
-import 'package:balancei_app/ui/utils/common_radius.dart';
+import 'package:balancei_app/ui/utils/buttons/loading_button.dart';
 import 'package:balancei_app/ui/utils/common_spacing.dart';
 import 'package:balancei_app/ui/utils/fields/category_field.dart';
 import 'package:balancei_app/ui/utils/fields/switch_form_field.dart';
@@ -10,6 +11,7 @@ import 'package:currency_text_input_formatter/currency_text_input_formatter.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class AddIncomingScreen extends ConsumerStatefulWidget {
   const AddIncomingScreen({super.key});
@@ -27,9 +29,9 @@ class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
     symbol: 'R\$ ',
   );
 
-  final validator = AddIncomingValidator();
+  final validator = TransferValidator();
 
-  bool isValid(AddIncomingDTO dto) {
+  bool isValid(TransferDTO dto) {
     return validator.validate(dto).isValid;
   }
 
@@ -65,16 +67,26 @@ class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
                   children: [
                     TextFormField(
                       decoration: InputDecoration(
+                        labelText: 'Titulo',
+                        hintText: 'Ex: Salário, Freelance, etc.',
+                      ),
+                      onChanged: (value) => viewModel.title = value,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: validator.byField(state.dto, 'title'),
+                      keyboardType: TextInputType.text,
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(
                         labelText: 'Valor da receita',
                         hintText: 'R\$ 0,00',
                       ),
                       onChanged: (_) {
                         final doubleValue =
                             currencyFormatter.getUnformattedValue().toDouble();
-                        viewModel.value = doubleValue;
+                        viewModel.amount = doubleValue;
                       },
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: validator.byField(state.dto, 'value'),
+                      validator: validator.byField(state.dto, 'amount'),
                       keyboardType: TextInputType.number,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
@@ -83,13 +95,13 @@ class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
                     ),
                     SwitchFormField(
                       labelText: 'Recebido',
-                      value: state.dto.received ?? false,
-                      onChanged: (value) => viewModel.received = value,
+                      value: state.dto.isCompleted,
+                      onChanged: (value) => viewModel.isCompleted = value,
                     ),
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Descrição',
-                        hintText: 'Ex: Salário, Freelance, etc.',
+                        hintText: 'Ex: Pagamento de freelance mensal',
                       ),
                       onChanged: (value) => viewModel.description = value,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -100,7 +112,7 @@ class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
                       data: (categories) {
                         return CategoryField(
                           data: _mapCategoriesToFieldData(
-                              categories, state.dto.categoryId),
+                              categories, state.dto.category?.id),
                         );
                       },
                       loading: () => const SizedBox.shrink(),
@@ -111,39 +123,20 @@ class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
                     ),
                     SwitchFormField(
                       labelText: 'Ganho recorrente',
-                      value: state.dto.isRecurring ?? false,
+                      value: state.dto.isRecurring,
                       onChanged: (value) => viewModel.isRecurring = value,
-                    ),
-                    SwitchFormField(
-                      labelText: 'Repetir',
-                      value: state.dto.repeat ?? false,
-                      onChanged: (value) => viewModel.repeat = value,
                     ),
                   ],
                 ),
               ),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(CommonRadius.extraLarge),
-                    ),
-                    padding: const EdgeInsets.all(CommonSpacing.small),
-                    elevation: 4,
-                    disabledBackgroundColor:
-                        Theme.of(context).primaryColor.withValues(alpha: 0.5),
-                  ),
-                  onPressed: isValid(state.dto) ? () {} : null,
-                  child: Text(
-                    'Cadastrar',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: Colors.white,
-                        ),
-                  ),
-                ),
+              LoadingButton(
+                label: 'Cadastrar',
+                enabled: isValid(state.dto),
+                onPressed: viewModel.addIncoming,
+                errorMessage: 'Erro ao cadastrar receita',
+                onSuccess: () {
+                  context.pop();
+                },
               ),
             ],
           ),
@@ -153,7 +146,7 @@ class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
   }
 
   List<CategoryFieldData> _mapCategoriesToFieldData(
-      List<dynamic> categories, int? selectedCategoryId) {
+      List<CategoryEntity> categories, int? selectedCategoryId) {
     return categories
         .map((category) => CategoryFieldData(
             name: category.description,
@@ -164,7 +157,7 @@ class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
             ),
             isSelected: selectedCategoryId == category.id,
             onTap: () {
-              viewModel.category = category.id;
+              viewModel.category = category;
             }))
         .toList();
   }

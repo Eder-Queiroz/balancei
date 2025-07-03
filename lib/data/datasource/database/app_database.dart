@@ -1,12 +1,10 @@
 import 'package:balancei_app/data/datasource/dao/available_color_dao.dart';
 import 'package:balancei_app/data/datasource/dao/available_icon_dao.dart';
 import 'package:balancei_app/data/datasource/dao/category_dao.dart';
-import 'package:balancei_app/data/datasource/dao/transaction_category_dao.dart';
 import 'package:balancei_app/data/datasource/dao/transaction_dao.dart';
 import 'package:balancei_app/data/datasource/database/tables/available_colors_table.dart';
 import 'package:balancei_app/data/datasource/database/tables/available_icons_table.dart';
 import 'package:balancei_app/data/datasource/database/tables/categories_table.dart';
-import 'package:balancei_app/data/datasource/database/tables/transaction_categories_table.dart';
 import 'package:balancei_app/data/datasource/database/tables/transactions_table.dart';
 import 'package:balancei_app/data/utils/available_icons_table_helpers.dart';
 import 'package:drift/drift.dart';
@@ -26,13 +24,11 @@ final appDatabaseProvider = Provider<AppDatabase>((ref) {
 
 @DriftDatabase(tables: [
   Transactions,
-  TransactionCategoriesTable,
   AvailableColorsTable,
   AvailableIconsTable,
   CategoriesTable,
 ], daos: [
   TransactionDao,
-  TransactionCategoryDao,
   AvailableColorDao,
   AvailableIconDao,
   CategoryDao,
@@ -60,27 +56,7 @@ class AppDatabase extends _$AppDatabase {
       await _populateTransactions();
       await _populateAvailableColors();
       await _populateAvailableIcons();
-      await _populateCorrectCategories();
-    });
-  }
-
-  Future<void> _populateCategories() async {
-    await batch((batch) {
-      batch.insertAll(
-        transactionCategoriesTable,
-        [
-          TransactionCategoriesTableCompanion.insert(
-            description: 'Alimentação',
-            icon: 0xe532,
-            color: 0xFF813531,
-          ),
-          TransactionCategoriesTableCompanion.insert(
-            description: 'Salário',
-            icon: 0xe482,
-            color: 0xFF64B06C,
-          ),
-        ],
-      );
+      await _populateCategories();
     });
   }
 
@@ -111,7 +87,6 @@ class AppDatabase extends _$AppDatabase {
             categoryId: 2,
             isRecurring: true,
             isCompleted: true,
-            isIncoming: const Value(true),
             recurrenceEndDate: const Value.absent(),
           ),
         ],
@@ -162,7 +137,7 @@ class AppDatabase extends _$AppDatabase {
     });
   }
 
-  Future<void> _populateCorrectCategories() async {
+  Future<void> _populateCategories() async {
     await batch((batch) {
       batch.insertAll(
         categoriesTable,

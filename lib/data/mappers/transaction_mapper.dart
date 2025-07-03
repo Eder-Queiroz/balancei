@@ -1,15 +1,17 @@
-import 'package:balancei_app/data/datasource/dao/transaction_dao.dart';
 import 'package:balancei_app/data/datasource/database/app_database.dart';
-import 'package:balancei_app/data/mappers/transaction_category_mapper.dart';
+import 'package:balancei_app/data/mappers/category_mapper.dart';
 import 'package:balancei_app/domain/dtos/transfer.dart';
 import 'package:balancei_app/domain/entities/transactions/transaction_entity.dart';
 import 'package:balancei_app/domain/enums/transaction_type_enum.dart';
 import 'package:drift/drift.dart';
 
 class TransactionMapper {
-  static TransactionEntity fromDatabase(TransactionWithCategory data) {
-    final transaction = data.transaction;
-    final category = data.category;
+  static TransactionEntity fromDatabase({
+    required Transaction transaction,
+    required CategoriesTableData category,
+    required AvailableIconsTableData icon,
+    required AvailableColorsTableData color,
+  }) {
     return TransactionEntity(
       id: transaction.id,
       title: transaction.title,
@@ -17,25 +19,27 @@ class TransactionMapper {
       amount: transaction.amount,
       date: transaction.date,
       type: TransactionTypeEnum.fromKey(transaction.type),
-      category: TransactionCategoryMapper.fromDatabase(category),
+      category: CategoryMapper.fromDatabase(
+        category: category,
+        icon: icon,
+        color: color,
+      ),
       isRecurring: transaction.isRecurring,
       isCompleted: transaction.isCompleted,
-      isIncoming: transaction.isIncoming,
       recurrenceEndDate: transaction.recurrenceEndDate,
     );
   }
 
-  static TransactionsCompanion toDatabase(Transfer entity) {
-    return TransactionsCompanion.insert(
-      title: entity.title,
-      description: entity.description,
-      amount: entity.amount,
-      date: entity.date,
-      type: entity.type.key,
-      categoryId: entity.category.id,
-      isRecurring: entity.isRecurring,
-      isCompleted: entity.isCompleted,
-      isIncoming: Value(entity.isIncoming),
+  static TransactionsCompanion toDatabase(TransferDTO entity) {
+    return TransactionsCompanion(
+      title: Value(entity.title!),
+      description: Value(entity.description!),
+      amount: Value(entity.amount!),
+      date: Value(entity.date!),
+      type: Value(entity.type!.key),
+      categoryId: Value(entity.category!.id),
+      isRecurring: Value(entity.isRecurring),
+      isCompleted: Value(entity.isCompleted),
       recurrenceEndDate: Value(entity.recurrenceEndDate),
     );
   }

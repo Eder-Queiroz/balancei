@@ -26,10 +26,9 @@ mixin _$TransactionEntity {
   double get amount => throw _privateConstructorUsedError;
   DateTime get date => throw _privateConstructorUsedError;
   TransactionTypeEnum get type => throw _privateConstructorUsedError;
-  TransactionCategoryEntity get category => throw _privateConstructorUsedError;
+  CategoryEntity get category => throw _privateConstructorUsedError;
   bool get isRecurring => throw _privateConstructorUsedError;
   bool get isCompleted => throw _privateConstructorUsedError;
-  bool get isIncoming => throw _privateConstructorUsedError;
   DateTime? get recurrenceEndDate => throw _privateConstructorUsedError;
 
   /// Serializes this TransactionEntity to a JSON map.
@@ -55,13 +54,12 @@ abstract class $TransactionEntityCopyWith<$Res> {
       double amount,
       DateTime date,
       TransactionTypeEnum type,
-      TransactionCategoryEntity category,
+      CategoryEntity category,
       bool isRecurring,
       bool isCompleted,
-      bool isIncoming,
       DateTime? recurrenceEndDate});
 
-  $TransactionCategoryEntityCopyWith<$Res> get category;
+  $CategoryEntityCopyWith<$Res> get category;
 }
 
 /// @nodoc
@@ -88,7 +86,6 @@ class _$TransactionEntityCopyWithImpl<$Res, $Val extends TransactionEntity>
     Object? category = null,
     Object? isRecurring = null,
     Object? isCompleted = null,
-    Object? isIncoming = null,
     Object? recurrenceEndDate = freezed,
   }) {
     return _then(_value.copyWith(
@@ -119,7 +116,7 @@ class _$TransactionEntityCopyWithImpl<$Res, $Val extends TransactionEntity>
       category: null == category
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
-              as TransactionCategoryEntity,
+              as CategoryEntity,
       isRecurring: null == isRecurring
           ? _value.isRecurring
           : isRecurring // ignore: cast_nullable_to_non_nullable
@@ -127,10 +124,6 @@ class _$TransactionEntityCopyWithImpl<$Res, $Val extends TransactionEntity>
       isCompleted: null == isCompleted
           ? _value.isCompleted
           : isCompleted // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isIncoming: null == isIncoming
-          ? _value.isIncoming
-          : isIncoming // ignore: cast_nullable_to_non_nullable
               as bool,
       recurrenceEndDate: freezed == recurrenceEndDate
           ? _value.recurrenceEndDate
@@ -143,8 +136,8 @@ class _$TransactionEntityCopyWithImpl<$Res, $Val extends TransactionEntity>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $TransactionCategoryEntityCopyWith<$Res> get category {
-    return $TransactionCategoryEntityCopyWith<$Res>(_value.category, (value) {
+  $CategoryEntityCopyWith<$Res> get category {
+    return $CategoryEntityCopyWith<$Res>(_value.category, (value) {
       return _then(_value.copyWith(category: value) as $Val);
     });
   }
@@ -165,14 +158,13 @@ abstract class _$$TransactionEntityImplCopyWith<$Res>
       double amount,
       DateTime date,
       TransactionTypeEnum type,
-      TransactionCategoryEntity category,
+      CategoryEntity category,
       bool isRecurring,
       bool isCompleted,
-      bool isIncoming,
       DateTime? recurrenceEndDate});
 
   @override
-  $TransactionCategoryEntityCopyWith<$Res> get category;
+  $CategoryEntityCopyWith<$Res> get category;
 }
 
 /// @nodoc
@@ -197,7 +189,6 @@ class __$$TransactionEntityImplCopyWithImpl<$Res>
     Object? category = null,
     Object? isRecurring = null,
     Object? isCompleted = null,
-    Object? isIncoming = null,
     Object? recurrenceEndDate = freezed,
   }) {
     return _then(_$TransactionEntityImpl(
@@ -228,7 +219,7 @@ class __$$TransactionEntityImplCopyWithImpl<$Res>
       category: null == category
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
-              as TransactionCategoryEntity,
+              as CategoryEntity,
       isRecurring: null == isRecurring
           ? _value.isRecurring
           : isRecurring // ignore: cast_nullable_to_non_nullable
@@ -236,10 +227,6 @@ class __$$TransactionEntityImplCopyWithImpl<$Res>
       isCompleted: null == isCompleted
           ? _value.isCompleted
           : isCompleted // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isIncoming: null == isIncoming
-          ? _value.isIncoming
-          : isIncoming // ignore: cast_nullable_to_non_nullable
               as bool,
       recurrenceEndDate: freezed == recurrenceEndDate
           ? _value.recurrenceEndDate
@@ -251,7 +238,7 @@ class __$$TransactionEntityImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$TransactionEntityImpl implements _TransactionEntity {
+class _$TransactionEntityImpl extends _TransactionEntity {
   const _$TransactionEntityImpl(
       {required this.id,
       required this.title,
@@ -262,8 +249,8 @@ class _$TransactionEntityImpl implements _TransactionEntity {
       required this.category,
       required this.isRecurring,
       required this.isCompleted,
-      this.isIncoming = false,
-      this.recurrenceEndDate});
+      this.recurrenceEndDate})
+      : super._();
 
   factory _$TransactionEntityImpl.fromJson(Map<String, dynamic> json) =>
       _$$TransactionEntityImplFromJson(json);
@@ -281,20 +268,17 @@ class _$TransactionEntityImpl implements _TransactionEntity {
   @override
   final TransactionTypeEnum type;
   @override
-  final TransactionCategoryEntity category;
+  final CategoryEntity category;
   @override
   final bool isRecurring;
   @override
   final bool isCompleted;
   @override
-  @JsonKey()
-  final bool isIncoming;
-  @override
   final DateTime? recurrenceEndDate;
 
   @override
   String toString() {
-    return 'TransactionEntity(id: $id, title: $title, description: $description, amount: $amount, date: $date, type: $type, category: $category, isRecurring: $isRecurring, isCompleted: $isCompleted, isIncoming: $isIncoming, recurrenceEndDate: $recurrenceEndDate)';
+    return 'TransactionEntity(id: $id, title: $title, description: $description, amount: $amount, date: $date, type: $type, category: $category, isRecurring: $isRecurring, isCompleted: $isCompleted, recurrenceEndDate: $recurrenceEndDate)';
   }
 
   @override
@@ -315,27 +299,14 @@ class _$TransactionEntityImpl implements _TransactionEntity {
                 other.isRecurring == isRecurring) &&
             (identical(other.isCompleted, isCompleted) ||
                 other.isCompleted == isCompleted) &&
-            (identical(other.isIncoming, isIncoming) ||
-                other.isIncoming == isIncoming) &&
             (identical(other.recurrenceEndDate, recurrenceEndDate) ||
                 other.recurrenceEndDate == recurrenceEndDate));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      title,
-      description,
-      amount,
-      date,
-      type,
-      category,
-      isRecurring,
-      isCompleted,
-      isIncoming,
-      recurrenceEndDate);
+  int get hashCode => Object.hash(runtimeType, id, title, description, amount,
+      date, type, category, isRecurring, isCompleted, recurrenceEndDate);
 
   /// Create a copy of TransactionEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -354,7 +325,7 @@ class _$TransactionEntityImpl implements _TransactionEntity {
   }
 }
 
-abstract class _TransactionEntity implements TransactionEntity {
+abstract class _TransactionEntity extends TransactionEntity {
   const factory _TransactionEntity(
       {required final int id,
       required final String title,
@@ -362,11 +333,11 @@ abstract class _TransactionEntity implements TransactionEntity {
       required final double amount,
       required final DateTime date,
       required final TransactionTypeEnum type,
-      required final TransactionCategoryEntity category,
+      required final CategoryEntity category,
       required final bool isRecurring,
       required final bool isCompleted,
-      final bool isIncoming,
       final DateTime? recurrenceEndDate}) = _$TransactionEntityImpl;
+  const _TransactionEntity._() : super._();
 
   factory _TransactionEntity.fromJson(Map<String, dynamic> json) =
       _$TransactionEntityImpl.fromJson;
@@ -384,13 +355,11 @@ abstract class _TransactionEntity implements TransactionEntity {
   @override
   TransactionTypeEnum get type;
   @override
-  TransactionCategoryEntity get category;
+  CategoryEntity get category;
   @override
   bool get isRecurring;
   @override
   bool get isCompleted;
-  @override
-  bool get isIncoming;
   @override
   DateTime? get recurrenceEndDate;
 

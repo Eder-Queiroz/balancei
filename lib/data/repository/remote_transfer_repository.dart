@@ -5,6 +5,7 @@ import 'package:balancei_app/domain/dtos/transfer.dart';
 import 'package:balancei_app/domain/entities/date_filter/date_filter_entity.dart';
 import 'package:balancei_app/domain/entities/financial_summary_entity/financial_summary_entity.dart';
 import 'package:balancei_app/domain/entities/transactions/transaction_entity.dart';
+import 'package:balancei_app/domain/valdiations/transfer_validator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:result_dart/result_dart.dart';
 
@@ -22,7 +23,18 @@ class RemoteTransferRepository implements TransferRepository {
   }) : _transactionDao = transactionDao;
 
   @override
-  AsyncResult<Unit> addTransfer(Transfer transfer) {
+  AsyncResult<Unit> addTransfer(TransferDTO transfer) async {
+    final validator = TransferValidator();
+    final validationResult = validator.validate(transfer);
+
+    if (!validationResult.isValid) {
+      return Failure(
+        Exception(
+          'Validation failed: ${validationResult.exceptions.map((e) => e.message).join(', ')}',
+        ),
+      );
+    }
+
     return _transactionDao.createTransaction(transfer);
   }
 
@@ -40,7 +52,7 @@ class RemoteTransferRepository implements TransferRepository {
   @override
   AsyncResult<Unit> updateTransfer({
     required int id,
-    required Transfer transfer,
+    required TransferDTO transfer,
   }) {
     return _transactionDao.updateTransaction(id, transfer);
   }

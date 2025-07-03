@@ -10,11 +10,11 @@ abstract interface class TransferRepository {
 
   AsyncResult<TransactionEntity> getTransfer(int id);
 
-  AsyncResult<Unit> addTransfer(Transfer transfer);
+  AsyncResult<Unit> addTransfer(TransferDTO transfer);
 
   AsyncResult<Unit> updateTransfer({
     required int id,
-    required Transfer transfer,
+    required TransferDTO transfer,
   });
 
   AsyncResult<Unit> deleteTransfer(int id);

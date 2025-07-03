@@ -231,9 +231,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     description: t.description,
                     value: homeViewModel.formattedValue(t.amount),
                     date: t.date,
-                    color: t.category.color,
-                    icon: t.category.iconData,
-                    isIncoming: t.isIncoming,
+                    color: t.category.colorHex,
+                    icon: IconData(
+                      t.category.iconCodePoint,
+                      fontFamily: 'MaterialIcons',
+                    ),
+                    isIncoming: t.isIncome,
                   );
                 },
               ),
