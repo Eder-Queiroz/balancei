@@ -1,9 +1,11 @@
 import 'package:balancei_app/domain/dtos/transfer.dart';
 import 'package:balancei_app/domain/entities/category/category_entity.dart';
+import 'package:balancei_app/domain/enums/transaction_type_enum.dart';
 import 'package:balancei_app/domain/valdiations/transfer_validator.dart';
 import 'package:balancei_app/router/routers.dart';
 import 'package:balancei_app/ui/home/viewmodel/home_viewmodel.dart';
-import 'package:balancei_app/ui/incoming/viewmodel/add_incoming_viewmodel.dart';
+import 'package:balancei_app/ui/transfer/texts/transaction_text_strategy.dart';
+import 'package:balancei_app/ui/transfer/viewmodel/add_transfer_viewmodel.dart';
 import 'package:balancei_app/ui/utils/buttons/loading_button.dart';
 import 'package:balancei_app/ui/utils/common_spacing.dart';
 import 'package:balancei_app/ui/utils/fields/category_field.dart';
@@ -14,16 +16,19 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class AddIncomingScreen extends ConsumerStatefulWidget {
-  const AddIncomingScreen({super.key});
+class AddTransferScreen extends ConsumerStatefulWidget {
+  final TransactionTypeEnum type;
+  const AddTransferScreen({super.key, required this.type});
 
   @override
-  ConsumerState<AddIncomingScreen> createState() => _AddIncomingScreenState();
+  ConsumerState<AddTransferScreen> createState() => _AddTransferScreenState();
 }
 
-class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
-  late final viewModel = ref.read(addIncomingViewModelProvider.notifier);
+class _AddTransferScreenState extends ConsumerState<AddTransferScreen> {
+  late final transferProvider = addTransferViewModelProvider(widget.type);
+  late final viewModel = ref.read(transferProvider.notifier);
   late final homeNotifier = ref.read(homeViewModelProvider.notifier);
+  late final texts = TransactionTextStrategy.fromType(widget.type);
 
   final currencyFormatter = CurrencyTextInputFormatter.currency(
     locale: 'pt-BR',
@@ -44,11 +49,11 @@ class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(addIncomingViewModelProvider);
+    final state = ref.watch(transferProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nova Receita'),
+        title: Text(texts.screenTitle),
         elevation: 2,
         shadowColor: Colors.black,
         backgroundColor: Colors.white,
@@ -69,8 +74,8 @@ class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
                   children: [
                     TextFormField(
                       decoration: InputDecoration(
-                        labelText: 'Titulo',
-                        hintText: 'Ex: Salário, Freelance, etc.',
+                        labelText: texts.titleLabel,
+                        hintText: texts.titleHint,
                       ),
                       onChanged: (value) => viewModel.title = value,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -79,8 +84,8 @@ class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
                     ),
                     TextFormField(
                       decoration: InputDecoration(
-                        labelText: 'Valor da receita',
-                        hintText: 'R\$ 0,00',
+                        labelText: texts.amountLabel,
+                        hintText: texts.amountHint,
                       ),
                       onChanged: (_) {
                         final doubleValue =
@@ -95,20 +100,20 @@ class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
                         currencyFormatter,
                       ],
                     ),
-                    SwitchFormField(
-                      labelText: 'Recebido',
-                      value: state.dto.isCompleted,
-                      onChanged: (value) => viewModel.isCompleted = value,
-                    ),
                     TextFormField(
                       decoration: InputDecoration(
-                        labelText: 'Descrição',
-                        hintText: 'Ex: Pagamento de freelance mensal',
+                        labelText: texts.descriptionLabel,
+                        hintText: texts.descriptionHint,
                       ),
                       onChanged: (value) => viewModel.description = value,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: validator.byField(state.dto, 'description'),
                       keyboardType: TextInputType.text,
+                    ),
+                    SwitchFormField(
+                      labelText: texts.isCompletedLabel,
+                      value: state.dto.isCompleted,
+                      onChanged: (value) => viewModel.isCompleted = value,
                     ),
                     state.categories.when(
                       data: (categories) {
@@ -124,7 +129,7 @@ class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
                       },
                     ),
                     SwitchFormField(
-                      labelText: 'Ganho recorrente',
+                      labelText: texts.isRecurringLabel,
                       value: state.dto.isRecurring,
                       onChanged: (value) => viewModel.isRecurring = value,
                     ),
@@ -132,10 +137,10 @@ class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
                 ),
               ),
               LoadingButton(
-                label: 'Cadastrar',
+                label: texts.submitButtonText,
                 enabled: isValid(state.dto),
                 onPressed: viewModel.addIncoming,
-                errorMessage: 'Erro ao cadastrar receita',
+                errorMessage: texts.errorMessage,
                 onSuccess: () {
                   homeNotifier.fetchTransfers();
                   context.pop();

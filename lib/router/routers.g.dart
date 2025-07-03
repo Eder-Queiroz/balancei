@@ -70,8 +70,8 @@ RouteBase get $homeRoute => GoRouteData.$route(
       factory: $HomeRouteExtension._fromState,
       routes: [
         GoRouteData.$route(
-          path: 'add-incoming',
-          factory: $IncomingRouterExtension._fromState,
+          path: 'add-transfer',
+          factory: $TransferRouterExtension._fromState,
         ),
         GoRouteData.$route(
           path: 'create-category',
@@ -80,11 +80,17 @@ RouteBase get $homeRoute => GoRouteData.$route(
       ],
     );
 
-extension $IncomingRouterExtension on IncomingRouter {
-  static IncomingRouter _fromState(GoRouterState state) => IncomingRouter();
+extension $TransferRouterExtension on TransferRouter {
+  static TransferRouter _fromState(GoRouterState state) => TransferRouter(
+        type: _$TransactionTypeEnumEnumMap
+            ._$fromName(state.uri.queryParameters['type']!),
+      );
 
   String get location => GoRouteData.$location(
-        '/home/add-incoming',
+        '/home/add-transfer',
+        queryParams: {
+          'type': _$TransactionTypeEnumEnumMap[type],
+        },
       );
 
   void go(BuildContext context) => context.go(location);
@@ -96,6 +102,12 @@ extension $IncomingRouterExtension on IncomingRouter {
 
   void replace(BuildContext context) => context.replace(location);
 }
+
+const _$TransactionTypeEnumEnumMap = {
+  TransactionTypeEnum.income: 'income',
+  TransactionTypeEnum.expense: 'expense',
+  TransactionTypeEnum.balance: 'balance',
+};
 
 extension $CreateCategoryRouterExtension on CreateCategoryRouter {
   static CreateCategoryRouter _fromState(GoRouterState state) =>
@@ -113,4 +125,9 @@ extension $CreateCategoryRouterExtension on CreateCategoryRouter {
       context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
+}
+
+extension<T extends Enum> on Map<T, String> {
+  T _$fromName(String value) =>
+      entries.singleWhere((element) => element.value == value).key;
 }

@@ -1,4 +1,5 @@
-import 'package:balancei_app/router/incoming/add_icoming_router.dart';
+import 'package:balancei_app/domain/enums/transaction_type_enum.dart';
+import 'package:balancei_app/router/transfer/add_transfer_router.dart';
 import 'package:balancei_app/router/routers.dart';
 import 'package:balancei_app/ui/utils/bottom_navigation/viewmodel/speed_dial_viewmodel.dart';
 import 'package:balancei_app/ui/utils/common_radius.dart';
@@ -155,7 +156,9 @@ class _BottomNavigationState extends ConsumerState<BottomNavigation> {
                     icon: Icons.trending_up,
                     label: "Receita",
                     onPressed: () {
-                      IncomingRouter().push(context);
+                      TransferRouter(
+                        type: TransactionTypeEnum.income,
+                      ).push(context);
                       viewModel.toggleAdditionalButtons();
                     },
                   ),
@@ -163,7 +166,12 @@ class _BottomNavigationState extends ConsumerState<BottomNavigation> {
                   _buildAdditionalButton(
                     icon: Icons.trending_down,
                     label: "Gastos",
-                    onPressed: viewModel.toggleAdditionalButtons,
+                    onPressed: () {
+                      TransferRouter(
+                        type: TransactionTypeEnum.expense,
+                      ).push(context);
+                      viewModel.toggleAdditionalButtons();
+                    },
                   ),
                 ],
               ),

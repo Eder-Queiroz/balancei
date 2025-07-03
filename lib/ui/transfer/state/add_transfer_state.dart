@@ -4,20 +4,20 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 @immutable
-class AddIcomingState {
+class AddTransferState {
   final TransferDTO dto;
   final AsyncValue<List<CategoryEntity>> categories;
 
-  const AddIcomingState({
+  const AddTransferState({
     this.dto = const TransferDTO(),
     this.categories = const AsyncLoading(),
   });
 
-  AddIcomingState copyWith({
+  AddTransferState copyWith({
     TransferDTO? dto,
     AsyncValue<List<CategoryEntity>>? categories,
   }) {
-    return AddIcomingState(
+    return AddTransferState(
       dto: dto ?? this.dto,
       categories: categories ?? this.categories,
     );

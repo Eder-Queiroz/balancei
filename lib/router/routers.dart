@@ -1,5 +1,6 @@
+import 'package:balancei_app/domain/enums/transaction_type_enum.dart';
 import 'package:balancei_app/router/category/create_category_router.dart';
-import 'package:balancei_app/router/incoming/add_icoming_router.dart';
+import 'package:balancei_app/router/transfer/add_transfer_router.dart';
 import 'package:balancei_app/ui/dashboard/dashboard_screen.dart';
 import 'package:balancei_app/ui/home/home_screen.dart';
 import 'package:balancei_app/ui/utils/bottom_navigation/bottom_navigation.dart';
@@ -32,7 +33,7 @@ class BottomNavigationShellRoute extends ShellRouteData {
 @TypedGoRoute<HomeRoute>(
   path: '/home',
   routes: <TypedRoute<RouteData>>[
-    incomingRoute,
+    transferRoute,
     createCategoryRoute,
   ],
 )

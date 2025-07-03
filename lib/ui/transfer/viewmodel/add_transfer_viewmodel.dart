@@ -4,19 +4,20 @@ import 'package:balancei_app/domain/dtos/transfer.dart';
 import 'package:balancei_app/domain/entities/category/category_entity.dart';
 import 'package:balancei_app/domain/enums/transaction_type_enum.dart';
 import 'package:balancei_app/providers/categories_notifier.dart';
-import 'package:balancei_app/ui/incoming/state/add_icoming_state.dart';
+import 'package:balancei_app/ui/transfer/state/add_transfer_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:result_dart/result_dart.dart';
 
-final addIncomingViewModelProvider =
-    NotifierProvider.autoDispose<AddIncomingViewModel, AddIcomingState>(
-  AddIncomingViewModel.new,
+final addTransferViewModelProvider = NotifierProvider.autoDispose
+    .family<AddTransferViewModel, AddTransferState, TransactionTypeEnum>(
+  AddTransferViewModel.new,
 );
 
-class AddIncomingViewModel extends AutoDisposeNotifier<AddIcomingState> {
+class AddTransferViewModel
+    extends AutoDisposeFamilyNotifier<AddTransferState, TransactionTypeEnum> {
   late final TransferRepository _transferRepository;
   @override
-  AddIcomingState build() {
+  AddTransferState build(arg) {
     _transferRepository = ref.read(transferRepositoryProvider);
 
     ref.listen(categoriesNotifierProvider, (previous, next) {
@@ -28,9 +29,9 @@ class AddIncomingViewModel extends AutoDisposeNotifier<AddIcomingState> {
       });
     });
 
-    return AddIcomingState(
+    return AddTransferState(
       dto: TransferDTO(
-        type: TransactionTypeEnum.income,
+        type: arg,
         date: DateTime.now(),
       ),
       categories: const AsyncLoading(),
