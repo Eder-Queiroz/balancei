@@ -2,6 +2,7 @@ import 'package:balancei_app/domain/dtos/transfer.dart';
 import 'package:balancei_app/domain/entities/category/category_entity.dart';
 import 'package:balancei_app/domain/valdiations/transfer_validator.dart';
 import 'package:balancei_app/router/routers.dart';
+import 'package:balancei_app/ui/home/viewmodel/home_viewmodel.dart';
 import 'package:balancei_app/ui/incoming/viewmodel/add_incoming_viewmodel.dart';
 import 'package:balancei_app/ui/utils/buttons/loading_button.dart';
 import 'package:balancei_app/ui/utils/common_spacing.dart';
@@ -21,7 +22,8 @@ class AddIncomingScreen extends ConsumerStatefulWidget {
 }
 
 class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
-  late final viewModel = ref.watch(addIncomingViewModelProvider.notifier);
+  late final viewModel = ref.read(addIncomingViewModelProvider.notifier);
+  late final homeNotifier = ref.read(homeViewModelProvider.notifier);
 
   final currencyFormatter = CurrencyTextInputFormatter.currency(
     locale: 'pt-BR',
@@ -135,6 +137,7 @@ class _AddIncomingScreenState extends ConsumerState<AddIncomingScreen> {
                 onPressed: viewModel.addIncoming,
                 errorMessage: 'Erro ao cadastrar receita',
                 onSuccess: () {
+                  homeNotifier.fetchTransfers();
                   context.pop();
                 },
               ),

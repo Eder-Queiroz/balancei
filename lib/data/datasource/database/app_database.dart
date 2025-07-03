@@ -56,7 +56,6 @@ class AppDatabase extends _$AppDatabase {
       await _populateTransactions();
       await _populateAvailableColors();
       await _populateAvailableIcons();
-      await _populateCategories();
     });
   }
 
