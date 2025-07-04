@@ -132,12 +132,12 @@ Este documento apresenta uma análise comparativa entre as expectativas definida
 | **Dart** | ✅ Utilizado | Linguagem de programação base | Utilizado conforme planejado |
 | **Material Design** | ✅ Utilizado | Princípios de design para UI/UX | Implementado nas interfaces |
 
-### 3.2 Tecnologias de Armazenamento - Parcialmente Implementadas
+### 3.2 Tecnologias de Armazenamento - Implementadas com Ajustes
 
 | Tecnologia | Status | Planejamento Original | Implementação Real |
 |------------|--------|----------------------|-------------------|
-| **Hive** | ✅ Utilizado | Armazenamento local offline | Implementado como banco local principal |
-| **SQLite** | ⚠️ Avaliado | Alternativa para armazenamento | Avaliado mas não implementado (Hive se mostrou suficiente) |
+| **SQLite** | ✅ Utilizado | Alternativa para armazenamento | Implementado como banco local principal |
+| **Hive** | ⚠️ Avaliado | Armazenamento local offline | Avaliado mas não implementado (SQLite se mostrou mais adequado) |
 
 ### 3.3 Tecnologias Backend - Não Implementadas
 
@@ -167,6 +167,7 @@ Este documento apresenta uma análise comparativa entre as expectativas definida
 | **Provider** | Gerenciamento de estado | Melhor organização da arquitetura |
 | **Shared Preferences** | Configurações do usuário | Persistência de preferências simples |
 | **Flutter Launcher Icons** | Ícones da aplicação | Padronização visual multiplataforma |
+| **sqflite** | Plugin SQLite para Flutter | Interface otimizada para operações de banco |
 
 ## 4. Impacto das Decisões Tecnológicas
 
@@ -176,9 +177,9 @@ Este documento apresenta uma análise comparativa entre as expectativas definida
    - **Benefício:** Desenvolvimento multiplataforma eficiente
    - **Resultado:** Aplicativo funcional em Android e iOS com código único
 
-2. **Hive para Armazenamento Local:**
-   - **Benefício:** Performance superior e simplicidade de uso
-   - **Resultado:** Operações rápidas e confiáveis offline
+2. **SQLite para Armazenamento Local:**
+   - **Benefício:** Robustez e confiabilidade comprovada em aplicações móveis
+   - **Resultado:** Operações de banco de dados eficientes e estrutura relacional sólida
 
 3. **Foco em Tecnologias Offline:**
    - **Benefício:** Independência de conectividade e maior privacidade
@@ -186,9 +187,9 @@ Este documento apresenta uma análise comparativa entre as expectativas definida
 
 ### 4.2 Ajustes Realizados Durante o Desenvolvimento
 
-1. **Não Implementação de SQLite:**
-   - **Motivo:** Hive se mostrou mais adequado para o caso de uso
-   - **Impacto:** Desenvolvimento mais ágil e menos complexidade
+1. **Não Implementação de Hive:**
+   - **Motivo:** SQLite se mostrou mais adequado para a estrutura relacional necessária
+   - **Impacto:** Maior flexibilidade para consultas complexas e relacionamentos entre dados
 
 2. **Postergação de Backend em Nuvem:**
    - **Motivo:** Foco no MVP offline primeiro
@@ -221,7 +222,7 @@ Este documento apresenta uma análise comparativa entre as expectativas definida
 ### 6.1 Próximas Implementações (Versão 1.1)
 
 - **Charts Flutter:** Para gráficos básicos
-- **SQLite:** Como opção de backup para Hive
+- **Hive:** Como opção alternativa para casos de uso específicos
 - **Flutter Local Notifications:** Para lembretes financeiros
 
 ### 6.2 Implementações Médio Prazo (Versão 2.0)
@@ -238,7 +239,7 @@ Este documento apresenta uma análise comparativa entre as expectativas definida
 
 ## 7. Conclusão
 
-O projeto Balancei demonstrou que uma abordagem pragmática e focada no MVP pode ser mais efetiva que tentar implementar todas as funcionalidades planejadas inicialmente. As tecnologias escolhidas (Flutter + Dart + Hive) se mostraram adequadas para entregar um produto funcional e de qualidade.
+O projeto Balancei demonstrou que uma abordagem pragmática e focada no MVP pode ser mais efetiva que tentar implementar todas as funcionalidades planejadas inicialmente. As tecnologias escolhidas (Flutter + Dart + SQLite) se mostraram adequadas para entregar um produto funcional e de qualidade.
 
 As funcionalidades não implementadas foram resultado de decisões estratégicas conscientes, priorizando a entrega de valor ao usuário através de funcionalidades essenciais bem implementadas. O roadmap futuro está bem definido para incorporar gradualmente as funcionalidades avançadas planejadas.
 
